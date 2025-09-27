@@ -64,6 +64,12 @@ struct AABB3;
 struct OBB2;
 struct OBB3;
 
+
+MOSS_API bool Moss_OBB2_Overlaps(const AABB2& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB3_Overlaps(const AABB3& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB3_Overlaps(const OBB3& inBox, float inEpsilon = 1.0e-6f);
+
 #ifdef __cplusplus
 }
 #endif
