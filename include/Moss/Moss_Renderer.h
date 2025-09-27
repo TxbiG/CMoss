@@ -45,6 +45,25 @@ extern "C" {
 #include <Metal/Metal.hpp>
 #endif // MOSS_USE_METAL
 
+
+struct Moss_Renderer;
+struct Camera2D;
+struct Camera3D;
+struct Pipelinestate;
+struct Texture;
+struct PixelShader;
+struct VertexShader;
+struct ComputeShader;
+struct Surface;
+struct FogVolume;
+struct SubViewport;
+struct Mesh;
+struct Model;
+struct SkyBox;
+struct Font;
+struct Frustum2D;
+struct Frustum3D;
+
 /*              Renderer lifecycle          */
 /*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
 MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window);
@@ -75,5 +94,6 @@ MOSS_API void Moss_TerminateRenderer(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
