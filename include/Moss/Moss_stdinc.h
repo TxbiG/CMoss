@@ -28,8 +28,12 @@
 extern "C" {
 #endif
 
-#include <cstdint>
+#include <stdint.h>
 #include <stdbool.h>
+#include <time.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
 
 #include <Moss/Core/Core.h>
 
@@ -200,12 +204,6 @@ typedef unsigned int size;
 #define MIN_UINT32  ((uint32)0x00000000)
 #define MIN_UINT64  ((uint64)(0x0000000000000000))
 
-
-
-#include <cstdlib>  // for rand()
-#include <ctime>    // for seeding
-#include <cmath>    // for std::floor
-
 MOSS_API inline void seed_random() { std::srand(static_cast<unsigned int>(std::time(nullptr))); }
 
 // Returns a float between min and max
@@ -220,6 +218,7 @@ MOSS_API inline int randi_range(int min, int max) {
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
