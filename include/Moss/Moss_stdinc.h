@@ -37,24 +37,24 @@ extern "C" {
 #define MOSS_TRUE    1U
 
 // Signed
-#define MAX_INT8    ((int8)(0x7F))
-#define MAX_INT16   ((int16)(0x7FFF))
-#define MAX_INT32   ((int32)(0x7FFFFFFF))
-#define MAX_INT64   ((int64)(0x7FFFFFFFFFFFFFFF))
-#define MIN_INT8    ((int8)(~0x7F))
-#define MIN_INT16   ((int16)~0x7FFF)
-#define MIN_INT32   ((int32)(~0x7FFFFFFF))
-#define MIN_INT64   ((int64)(~0x7FFFFFFFFFFFFFFF))
+#define MAX_INT8    ((int8_t)(0x7F))
+#define MAX_INT16   ((int16_t)(0x7FFF))
+#define MAX_INT32   ((int32_t)(0x7FFFFFFF))
+#define MAX_INT64   ((int64_t)(0x7FFFFFFFFFFFFFFF))
+#define MIN_INT8    ((int8_t)(~0x7F))
+#define MIN_INT16   ((int16_t)~0x7FFF)
+#define MIN_INT32   ((int32_t)(~0x7FFFFFFF))
+#define MIN_INT64   ((int64_t)(~0x7FFFFFFFFFFFFFFF))
 
 // Unsigned
-#define MAX_UINT8   ((uint8)(0xFF))
-#define MAX_UINT16  ((uint16)(0xFFFF))
-#define MAX_UINT32  ((uint32)(0xFFFFFFFFu))
-#define MAX_UINT64  ((uint64)(0xFFFFFFFFFFFFFFFF))
-#define MIN_UINT8   ((uint8)0x00)
-#define MIN_UINT16  ((uint16)0x0000)
-#define MIN_UINT32  ((uint32)0x00000000)
-#define MIN_UINT64  ((uint64)(0x0000000000000000))
+#define MAX_UINT8   ((uint8_t)(0xFF))
+#define MAX_UINT16  ((uint16_t)(0xFFFF))
+#define MAX_UINT32  ((uint32_t)(0xFFFFFFFFu))
+#define MAX_UINT64  ((uint64_t)(0xFFFFFFFFFFFFFFFF))
+#define MIN_UINT8   ((uint8_t)0x00)
+#define MIN_UINT16  ((uint16_t)0x0000)
+#define MIN_UINT32  ((uint32_t)0x00000000)
+#define MIN_UINT64  ((uint64_t)(0x0000000000000000))
 
 //#ifndef PI
 //#   define PI          3.141592653589793238462643383279502884F
@@ -220,4 +220,5 @@ MOSS_API inline int randi_range(int min, int max) {
 #endif
 
 #endif // MOSS_STDINC_H
+
 
