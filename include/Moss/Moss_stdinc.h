@@ -33,8 +33,8 @@ extern "C" {
 
 #include <Moss/Core/Core.h>
 
-#define MOSS_FALSE 0U
-#define MOSS_FALSE 1U
+#define MOSS_FALSE   0U
+#define MOSS_TRUE    1U
 
 // Signed
 #define MAX_INT8    ((int8)(0x7F))
@@ -220,3 +220,4 @@ MOSS_API inline int randi_range(int min, int max) {
 #endif
 
 #endif // MOSS_STDINC_H
+
