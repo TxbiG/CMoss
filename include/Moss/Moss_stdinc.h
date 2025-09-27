@@ -204,20 +204,16 @@ typedef unsigned int size;
 #define MIN_UINT32  ((uint32)0x00000000)
 #define MIN_UINT64  ((uint64)(0x0000000000000000))
 
-MOSS_API void seed_random() { std::srand(static_cast<unsigned int>(std::time(nullptr))); }
-
-// Returns a float between min and max
-MOSS_API float randf_range(float min, float max) { return min + static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (max - min); }
-
-MOSS_API int randi_range(int min, int max) {
-    return min + std::rand() % (max - min + 1);
-}
+static inline void seed_random() { srand((unsigned int)time(NULL)); }
+static inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
+static inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
