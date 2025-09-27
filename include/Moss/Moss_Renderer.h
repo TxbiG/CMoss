@@ -45,6 +45,15 @@ extern "C" {
 #include <Metal/Metal.hpp>
 #endif // MOSS_USE_METAL
 
+/*              Renderer lifecycle          */
+/*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
+MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window);
+/*! @brief Begin Frame Clears the renderer ready to capture the next frame. @param Moss_Renderer renderer. @ingroup Renderer. */
+MOSS_API void Moss_RendererBeginFrame(Moss_Renderer* renderer);
+/*! @brief End Frame calls to present frame. @param Moss_Renderer renderer. @ingroup Renderer. */
+MOSS_API void Moss_RendererPresentFrame(Moss_Renderer* renderer);
+/*! @brief Free renderer. @param Moss_Renderer renderer. @ingroup Renderer. */
+MOSS_API void Moss_TerminateRenderer(Moss_Renderer* renderer);
 
 
 // Graphics Specific
@@ -66,3 +75,4 @@ extern "C" {
 
 
 #endif // MOSS_RENDERER_H
+
