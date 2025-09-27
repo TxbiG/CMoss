@@ -163,15 +163,15 @@ extern "C" {
 
 #define ArraySize(x) (sizeof(x)) / (sizeof((x)[0]))
 
-typedef signed char         int8;
-typedef signed short        int16;
-typedef signed int          int32;
-typedef signed long long    int64;
+typedef signed char         i8;
+typedef signed short        i16;
+typedef signed int          i32;
+typedef signed long long    i64;
 
-typedef unsigned char       uint8;
-typedef unsigned short      uint16;
-typedef unsigned int        uint32;
-typedef unsigned long long  uint64;
+typedef unsigned char       u8;
+typedef unsigned short      u16;
+typedef unsigned int        u32;
+typedef unsigned long long  u64;
 
 #if (defined(MOSS_PLATFORM_WINDOWS) || defined(MOSS_PLATFORM_MACSO) || defined(MOSS_PLATFORM_LINUX))
 #include <stddef.h>
@@ -220,6 +220,7 @@ MOSS_API inline int randi_range(int min, int max) {
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
