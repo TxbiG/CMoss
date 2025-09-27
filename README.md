@@ -1,7 +1,7 @@
 # CMoss
 
 
-CMoss is the [Moss Framework](https://github.com/TxbiG/MossFramework) written in C.
+CMoss is the [Moss Framework](https://github.com/TxbiG/MossFramework) binding written in C.
 
 ## Documentation
 
