@@ -40,7 +40,7 @@ extern "C" {
 #ifdef MOSS_GRAPHICS_VULKAN
 #include <vulkan/vulkan.h>
 #elif MOSS_GRAPHICS_DIRECTX
-#include <Moss/Renderer/DX12/Renderer_DX12.h>
+#include <d3d12.h>
 #elif MOSS_GRAPHICS_METAL
 #include <Metal/Metal.hpp>
 #endif // MOSS_USE_METAL
@@ -75,4 +75,5 @@ MOSS_API void Moss_TerminateRenderer(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
