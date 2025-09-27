@@ -33,12 +33,8 @@ extern "C" {
 #include <Moss/Core/Variants/Vector/Vec2.h>
 #include <Moss/Core/Variants/Vector/Vec3.h>
 
-#include <string>
-#include <vector>
-#include <functional>
-#include <cstdint>
+#include <stdint>
 #include <memory>
-
 #include <xaudio2.h>
 /*  Cross-platform audio system supporting:
         - Windows: XAudio
@@ -120,5 +116,6 @@ MOSS_API void RemoveWav(Wav* wav);
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif // MOSS_AUDIO_H
