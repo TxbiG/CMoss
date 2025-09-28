@@ -134,6 +134,19 @@ struct Font;
 struct Frustum2D;
 struct Frustum3D;
 
+
+struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
+struct DirectionalLight2D { float intensity, rotation; Color color; LightMask filter; };									 // DirectionalLight2
+struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
+
+struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
+struct DirectionalLight2D { float intensity, rotation; Color color; };									 // DirectionalLight2
+struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
+struct TextureLight3D 	 { float intensity; Ref<Texture> texture; Float3 position, rotation; Color color; };	//
+struct DirectionalLight3D { float intensity; Float3 rotation; Color color; };														//
+struct SpotLight3D 		 { float intensity, radius, angle, penumbra; Float3 position, rotation; Color color; };	//
+struct OmniLight3D 		 { float intensity, radius; Float3 position; Color color; };							//
+
 /*              Renderer lifecycle          */
 /*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
 MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window);
@@ -181,6 +194,7 @@ MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
