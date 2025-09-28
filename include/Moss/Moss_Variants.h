@@ -70,6 +70,15 @@ MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
 MOSS_API bool Moss_OBB3_Overlaps(const AABB3& inBox, float inEpsilon = 1.0e-6f);
 MOSS_API bool Moss_OBB3_Overlaps(const OBB3& inBox, float inEpsilon = 1.0e-6f);
 
+
+
+static inline Mat44 Moss_Ortho(float left, float right, float bottom, float top, float near, float far);
+static inline Mat44 Moss_Perspective(float fovY, float aspect, float near, float far);
+static inline Mat44 Moss_LookAt(Vec3 position, Vec3 target, Vec3 up);
+
+static inline Vec3 Moss_Vec2_Lerp(Vec2 a, float b, float t);
+static inline Vec3 Moss_Vec3_Clamp(Vec2 value, Vec2 min, Vec2 max);
+
 #ifdef __cplusplus
 }
 #endif
