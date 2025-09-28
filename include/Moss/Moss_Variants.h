@@ -77,8 +77,10 @@ static inline Mat44 Moss_Perspective(float fovY, float aspect, float near, float
 static inline Mat44 Moss_LookAt(Vec3 position, Vec3 target, Vec3 up);
 
 static inline Vec3 Moss_Vec2_Lerp(Vec2 a, Vec2 b, float t);
-static inline Vec3 Moss_Vec3_Clamp(Vec2 value, Vec2 min, Vec2 max);
+static inline Vec3 Moss_Vec2_Clamp(Vec2 value, Vec2 min, Vec2 max);
 
+static inline Vec3 Moss_Vec3_Lerp(Vec3 a, Vec3 b, float t);
+static inline Vec3 Moss_Vec3_Clamp(Vec3 value, Vec3 min, Vec3 max);
 #ifdef __cplusplus
 }
 #endif
