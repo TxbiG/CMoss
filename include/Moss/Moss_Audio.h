@@ -28,14 +28,8 @@
 extern "C" {
 #endif
 
+#include <Moss/Moss_Core.h>
 
-#include <Moss/Core/Core.h>
-#include <Moss/Core/Variants/Vector/Vec2.h>
-#include <Moss/Core/Variants/Vector/Vec3.h>
-
-#include <stdint>
-#include <memory>
-#include <xaudio2.h>
 /*  Cross-platform audio system supporting:
         - Windows: XAudio
         - MacOS: CoreAudio (Testing)
@@ -52,9 +46,13 @@ extern "C" {
     //  Use GPU for baking global acoustic data (impulse responses, reverb zones).
     //  Cache GPU results into reverb convolution buffers.
     //  Use approximate or heuristic models (like ray bins or direction cones) to bridge both worlds.
-#define MOSS_MAXCHANNELS 32        // Number of Max Channels
-#define MOSS_SAMPLE_RATE 44100
-#define MOSS_MAX_STREAMS 32        // Max AudioStreams that can be played at once
+#define MOSS_MAX_CHANNELS         32        // Number of Max Channels
+#define MOSS_MAX_STREAMS          32        // Max AudioStreams that can be played at once
+#define MOSS_MAX_VERTEX_COUNT     200
+#define MOSS_MAX_LINE_COUNT       MAX_VERTEX_COUNT/2
+#define MOSS_SAMPLE_RATE          44100
+#define MOSS_SOUND_SPEED          2043.0f
+#define MOSS_MAX_FILE_LENGTH      10000
 
 // AudioStream player set as signal for calling
 
@@ -74,7 +72,8 @@ enum Moss_AudioFormat {
 } Moss_AudioFormat;
 
 enum AudioEffectType {
-    EFFECT_LOWPASS,
+    EFFECT_NONE = 0x0000u,
+    EFFECT_LOWPASS = 0x0008u,
     EFFECT_HIGHTPASS,
     EFFECT_ECHO,
     EFFECT_FLANGE,
@@ -86,6 +85,7 @@ enum AudioEffectType {
     EFFECT_COMPRESSOR,
     EFFECT_REVERB,
     EFFECT_DELAY,
+    EFFECT_CUSTOM,
 } AudioEffectType;
 
 struct AudioSpec_t {
@@ -95,7 +95,6 @@ struct AudioSpec_t {
 };
 
 struct AudioEffect;
-
 struct Microphone;
 struct Speaker;
 struct Wav;
@@ -106,7 +105,6 @@ struct AudioStream3D;
 
 struct AudioListener2D;
 struct AudioListener3D;
-
 struct RayAudioListener2D;
 struct RayAudioListener3D;
 
@@ -119,3 +117,4 @@ MOSS_API void RemoveWav(Wav* wav);
 
 
 #endif // MOSS_AUDIO_H
+
