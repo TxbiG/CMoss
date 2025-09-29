@@ -180,12 +180,43 @@ MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
 #endif
 
 #ifdef MOSS_GRAPHICS_VULKAN
+MOSS_API VkDevice						GetDevice(Moss_Renderer* renderer);
+MOSS_API VkDescriptorPool				GetDescriptorPool(Moss_Renderer* renderer);
+MOSS_API VkDescriptorSetLayout			GetDescriptorSetLayoutTexture(Moss_Renderer* renderer);
+MOSS_API VkSampler						GetTextureSamplerRepeat(Moss_Renderer* renderer);
+MOSS_API VkSampler						GetTextureSamplerShadow(Moss_Renderer* renderer);
+MOSS_API VkRenderPass					GetRenderPassShadow(Moss_Renderer* renderer);
+MOSS_API VkRenderPass					GetRenderPass(Moss_Renderer* renderer);
+MOSS_API VkPipelineLayout				GetPipelineLayout(Moss_Renderer* renderer);
+MOSS_API VkCommandBuffer				GetCommandBuffer(Moss_Renderer* renderer);
+MOSS_API VkCommandBuffer				StartTempCommandBuffer(Moss_Renderer* renderer);
+MOSS_API void							EndTempCommandBuffer(Moss_Renderer* renderer, VkCommandBuffer inCommandBuffer);
+MOSS_API void							AllocateMemory(Moss_Renderer* renderer, VkDeviceSize inSize, uint32 inMemoryTypeBits, VkMemoryPropertyFlags inProperties, VkDeviceMemory &outMemory);
+MOSS_API void							FreeMemory(Moss_Renderer* renderer, VkDeviceMemory inMemory, VkDeviceSize inSize);
+MOSS_API void							CreateBuffer(Moss_Renderer* renderer, VkDeviceSize inSize, VkBufferUsageFlags inUsage, VkMemoryPropertyFlags inProperties, BufferVK &outBuffer);
+MOSS_API void							CopyBuffer(Moss_Renderer* renderer, VkBuffer inSrc, VkBuffer inDst, VkDeviceSize inSize);
+MOSS_API void							CreateDeviceLocalBuffer(Moss_Renderer* renderer, const void *inData, VkDeviceSize inSize, VkBufferUsageFlags inUsage, BufferVK &outBuffer);
+MOSS_API void							FreeBuffer(Moss_Renderer* renderer, BufferVK &ioBuffer);
+MOSS_API unique_ptr<ConstantBufferVK>	CreateConstantBuffer(Moss_Renderer* renderer, VkDeviceSize inBufferSize);
+MOSS_API void							CreateImage(Moss_Renderer* renderer, uint32 inWidth, uint32 inHeight, VkFormat inFormat, VkImageTiling inTiling, VkImageUsageFlags inUsage, VkMemoryPropertyFlags inProperties, VkImage &outImage, VkDeviceMemory &outMemory);
+MOSS_API void							DestroyImage(Moss_Renderer* renderer, VkImage inImage, VkDeviceMemory inMemory);
+MOSS_API VkImageView					CreateImageView(Moss_Renderer* renderer, VkImage inImage, VkFormat inFormat, VkImageAspectFlags inAspectFlags);
+MOSS_API VkFormat						FindDepthFormat(Moss_Renderer* renderer);
 #endif
 
 #ifdef MOSS_GRAPHICS_DIRECTX
+MOSS_API ID3D12Device*					GetDevice(Moss_Renderer* renderer);
+MOSS_API ID3D12RootSignature*			GetRootSignature(Moss_Renderer* renderer);
+MOSS_API ID3D12GraphicsCommandList*		GetCommandList(Moss_Renderer* renderer);
+MOSS_API CommandQueueDX12&				GetUploadQueue(Moss_Renderer* renderer);
+MOSS_API DescriptorHeapDX12&			GetDSVHeap(Moss_Renderer* renderer);
+MOSS_API DescriptorHeapDX12&			GetSRVHeap(Moss_Renderer* renderer);
 #endif
 
 #ifdef MOSS_GRAPHICS_METAL
+MOSS_API MTKView*						GetView(Moss_Renderer* renderer);
+MOSS_API id<MTLDevice>					GetDevice(Moss_Renderer* renderer);
+MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 #endif
 
 #ifdef __cplusplus
@@ -194,6 +225,7 @@ MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
