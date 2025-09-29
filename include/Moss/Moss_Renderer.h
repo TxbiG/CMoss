@@ -154,6 +154,8 @@ MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window);
 MOSS_API void Moss_RendererBeginFrame(Moss_Renderer* renderer);
 /*! @brief End Frame calls to present frame. @param Moss_Renderer renderer. @ingroup Renderer. */
 MOSS_API void Moss_RendererPresentFrame(Moss_Renderer* renderer);
+/*! @brief Background color each frame by default its set to a grey color. @param Moss_Renderer renderer. @param Color color@ingroup Renderer. */
+MOSS_API void Moss_RendererSetBackground(Moss_Renderer* renderer, Color color);
 /*! @brief Free renderer. @param Moss_Renderer renderer. @ingroup Renderer. */
 MOSS_API void Moss_TerminateRenderer(Moss_Renderer* renderer);
 
@@ -225,6 +227,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
