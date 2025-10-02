@@ -60,9 +60,9 @@ extern "C" {
 #define MIN_UINT32  ((uint32_t)(0x00000000))
 #define MIN_UINT64  ((uint64_t)(0x0000000000000000))
 
-//#ifndef PI
-//#   define PI          3.141592653589793238462643383279502884F
-//#endif  // PI
+#ifndef PI
+#   define PI          3.141592653589793238462643383279502884F
+#endif  // PI
 
 #define HALF_PI        1.5707963267948966F
 #define QUARTER_PI     0.7853981633974483F
@@ -222,6 +222,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
