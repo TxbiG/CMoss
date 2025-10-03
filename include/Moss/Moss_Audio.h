@@ -56,7 +56,7 @@ extern "C" {
 
 // AudioStream player set as signal for calling
 
-enum Moss_AudioFormat {
+typedef enum Moss_AudioFormat {
     UNKNOWN = 0x0000u,  // Unspecified audio format.
     U8      = 0x0008u,  // Unsigned 8-bit samples.
     S8      = 0x8008u,  // Signed 8-bit samples.
@@ -71,7 +71,7 @@ enum Moss_AudioFormat {
     F64BE   = 0x9140u
 } Moss_AudioFormat;
 
-enum AudioEffectType {
+typedef enum AudioEffectType {
     EFFECT_NONE = 0x0000u,
     EFFECT_LOWPASS = 0x0008u,
     EFFECT_HIGHTPASS,
@@ -88,25 +88,25 @@ enum AudioEffectType {
     EFFECT_CUSTOM,
 } AudioEffectType;
 
-struct AudioSpec_t {
+typedef struct AudioSpec_t {
     Moss_AudioFormat format;
     int channels;
     int frequency;
 };
 
-struct AudioEffect;
-struct Microphone;
-struct Speaker;
-struct Wav;
+typedef struct AudioEffect;
+typedef struct Microphone;
+typedef struct Speaker;
+typedef struct Wav;
 
-struct AudioStream;
-struct AudioStream2D;
-struct AudioStream3D;
+typedef struct AudioStream;
+typedef struct AudioStream2D;
+typedef struct AudioStream3D;
 
-struct AudioListener2D;
-struct AudioListener3D;
-struct RayAudioListener2D;
-struct RayAudioListener3D;
+typedef struct AudioListener2D;
+typedef struct AudioListener3D;
+typedef struct RayAudioListener2D;
+typedef struct RayAudioListener3D;
 
 MOSS_API Wav* loadWav(const char* path);
 MOSS_API void RemoveWav(Wav* wav);
@@ -117,4 +117,5 @@ MOSS_API void RemoveWav(Wav* wav);
 
 
 #endif // MOSS_AUDIO_H
+
 
