@@ -45,7 +45,7 @@ extern "C" {
 #include <Metal/Metal.hpp>
 #endif // MOSS_USE_METAL
 
-enum TextureFormat {
+typedef enum TextureFormat {
     // Unsigned normalized color formats
     R8, 
     RG8, 
@@ -100,7 +100,7 @@ enum TextureFormat {
     SRGBA8
 };
 
-enum InputLayoutDescription {
+typedef enum InputLayoutDescription {
 		Position,						///< 3 float position
 		Color,							///< 4 uint8 color
 		Normal,							///< 3 float normal
@@ -109,43 +109,43 @@ enum InputLayoutDescription {
 		InstanceTransform,				///< 4x4 float per instance transform
 		InstanceInvTransform,			///< 4x4 float per instance inverse transform
 	};
-enum class DrawPass { Shadow = 0U, Normal = 1U, Lighting = 2U, Transparent = 3U }; // In which draw pass to use this pipeline state
-enum class Topology { Triangle = 0U, Line = 1U, Point = 2U };					            // The type of topology to emit
-enum class FillMode { Solid = 0U, Wireframe = 1U };						                    // Fill mode of the triangles (<-Should be in Renderer Settings)
-enum class DepthTest { Off = 0U, On = 1U };								                        // If depth write / depth test is on
-enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			              // How to blend the pixel from the shader in the back buffer
-enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
+typedef enum class DrawPass { Shadow = 0U, Normal = 1U, Lighting = 2U, Transparent = 3U }; // In which draw pass to use this pipeline state
+typedef enum class Topology { Triangle = 0U, Line = 1U, Point = 2U };					            // The type of topology to emit
+typedef enum class FillMode { Solid = 0U, Wireframe = 1U };						                    // Fill mode of the triangles (<-Should be in Renderer Settings)
+typedef enum class DepthTest { Off = 0U, On = 1U };								                        // If depth write / depth test is on
+typedef enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			              // How to blend the pixel from the shader in the back buffer
+typedef enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
 
-struct Moss_Renderer;
-struct Camera2D;
-struct Camera3D;
-struct Pipelinestate;
-struct Texture;
-struct PixelShader;
-struct VertexShader;
-struct ComputeShader;
-struct Surface;
-struct FogVolume;
-struct SubViewport;
-struct Mesh;
-struct Model;
-struct SkyBox;
-struct Font;
-struct Frustum2D;
-struct Frustum3D;
+typedef struct Moss_Renderer;
+typedef struct Camera2D;
+typedef struct Camera3D;
+typedef struct Pipelinestate;
+typedef struct Texture;
+typedef struct PixelShader;
+typedef struct VertexShader;
+typedef struct ComputeShader;
+typedef struct Surface;
+typedef struct FogVolume;
+typedef struct SubViewport;
+typedef struct Mesh;
+typedef struct Model;
+typedef struct SkyBox;
+typedef struct Font;
+typedef struct Frustum2D;
+typedef struct Frustum3D;
 
 
-struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
-struct DirectionalLight2D { float intensity, rotation; Color color; LightMask filter; };									 // DirectionalLight2
-struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
+typedef struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
+typedef struct DirectionalLight2D { float intensity, rotation; Color color; LightMask filter; };									 // DirectionalLight2
+typedef struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
 
-struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
-struct DirectionalLight2D { float intensity, rotation; Color color; };									 // DirectionalLight2
-struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
-struct TextureLight3D 	 { float intensity; Ref<Texture> texture; Float3 position, rotation; Color color; };	//
-struct DirectionalLight3D { float intensity; Float3 rotation; Color color; };														//
-struct SpotLight3D 		 { float intensity, radius, angle, penumbra; Float3 position, rotation; Color color; };	//
-struct OmniLight3D 		 { float intensity, radius; Float3 position; Color color; };							//
+typedef struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
+typedef struct DirectionalLight2D { float intensity, rotation; Color color; };									 // DirectionalLight2
+typedef struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
+typedef struct TextureLight3D 	 { float intensity; Ref<Texture> texture; Float3 position, rotation; Color color; };	//
+typedef struct DirectionalLight3D { float intensity; Float3 rotation; Color color; };														//
+typedef struct SpotLight3D 		 { float intensity, radius, angle, penumbra; Float3 position, rotation; Color color; };	//
+typedef struct OmniLight3D 		 { float intensity, radius; Float3 position; Color color; };							//
 
 /*              Renderer lifecycle          */
 /*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
@@ -227,6 +227,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
