@@ -275,7 +275,7 @@ enum Moss_WindowFlags {
     FLAG_WINDOW_INPUT_GRABBED = FLAG_WINDOW_MOUSE_GRABBED // equivalent to FLAG_WINDOW_MOUSE_GRABBED for compatibility
 } Moss_WindowFlags;
 
-enum Moss_MessageBoxFlags {
+typedef enum Moss_MessageBoxFlags {
     Moss_MessageBox_Flag_AbortEntryIgnore = 0,  // The message box contains three push buttons: Abort, Retry, and Ignore.
     Moss_MessageBox_Flag_CancelTryContinue = 1, // The message box contains three push buttons: Cancel, Try Again, Continue.
     Moss_MessageBox_Flag_Help = 3,              // Adds a Help button to the message box.
@@ -286,7 +286,7 @@ enum Moss_MessageBoxFlags {
     Moss_MessageBox_Flag_YesNoCancel = 8,       // The message box contains three push buttons: Yes, No, and Cancel.
 } Moss_MessageBoxFlags;
 
-enum Moss_WindowMode {
+typedef enum Moss_WindowMode {
     Moss_WindowMode_WINDOWED = 0,              //
     Moss_WindowMode_MINIMIZED = 1,             //
     Moss_WindowMode_MAXIMIZED = 2,             //
@@ -295,7 +295,7 @@ enum Moss_WindowMode {
 } Moss_WindowMode;
 
 // Cursor
-enum Moss_CursorMode {
+typedef enum Moss_CursorMode {
     Moss_CursorMode_VISIBLE = 0,             //
     Moss_CursorMode_HIDDEN = 0,              //
     Moss_CursorMode_CAPTURED = 0,            //
@@ -304,7 +304,7 @@ enum Moss_CursorMode {
     Moss_CursorMode_MAX= 0,                  //
 } Moss_CursorMode;
 
-enum Moss_CursorShape {
+typedef enum Moss_CursorShape {
     Moss_CursorShape_ARROW = 0,           //
     Moss_CursorShape_IBEAM = 1,           //
     Moss_CursorShape_POINTING_HAND = 2,   //
@@ -324,13 +324,13 @@ enum Moss_CursorShape {
     Moss_CursorShape_HELP = 16            //
 } Moss_CursorShape;
 
-struct Moss_Window;
-struct Moss_Monitor;
-struct Moss_Curser;
+typedef struct Moss_Window;
+typedef struct Moss_Monitor;
+typedef struct Moss_Curser;
 
-struct Moss_GammaRamp { unsigned char* size; unsigned char* red; unsigned char* green; unsigned char* blue; };
-struct Moss_VideoMode { int width, height, redBits, greenBits, blueBits, refreshRate; };
-struct Moss_Image { int width; int height; unsigned char* pixels; };
+typedef struct Moss_GammaRamp { unsigned char* size; unsigned char* red; unsigned char* green; unsigned char* blue; };
+typedef struct Moss_VideoMode { int width, height, redBits, greenBits, blueBits, refreshRate; };
+typedef struct Moss_Image { int width; int height; unsigned char* pixels; };
 
 struct Moss_Timer;
 struct Moss_Thread;
@@ -353,7 +353,7 @@ enum Moss_ThreadPriority {
     Moss_Thread_Priority_Critical
 } Moss_ThreadPriority;
 */
-enum InputEventType {
+typedef enum InputEventType {
     EVENT_NONE,
     EVENT_KEYDOWN,
     EVENT_KEYUP,
@@ -367,7 +367,7 @@ enum InputEventType {
 #pragma warning(push)
 #pragma warning(disable : 4820)
 
-struct Moss_Event {
+typedef struct Moss_Event {
     InputEventType type;
     union {
         struct { int keycode; } keyboard;
@@ -379,7 +379,7 @@ struct Moss_Event {
 #pragma warning(pop)
 
 
-struct Moss_Locale {
+typedef struct Moss_Locale {
     char* country;
     char* language;
 };
@@ -650,5 +650,6 @@ MOSS_API void Moss_SetGamePadCallback();
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif // MOSS_PLATFORM_H
