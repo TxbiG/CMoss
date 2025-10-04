@@ -578,6 +578,56 @@ MOSS_API bool Moss_OpenURL(const char *url);
 /*! @brief Get Locale of the Operating system e.g. "UK" for United Kingdom and "en" for English.*/
 MOSS_API Moss_Locale* Moss_GetLocale();
 
+// =================================================
+//                 Callback Type Definitions
+// =================================================
+
+//! @brief Callback for framebuffer resize events. @param width  New framebuffer width, in pixels. @param height New framebuffer height, in pixels.
+typedef void (*Moss_FramebufferResizeCallback)(int width, int height);
+
+//! @brief Callback for logical window size changes. @param width  New window width, in screen coordinates. @param height New window height, in screen coordinates.
+typedef void (*Moss_WindowSizeCallback)(int width, int height);
+
+//! @brief Callback for window position changes on screen. @param xpos New X coordinate of the window’s top-left corner. @param ypos New Y coordinate of the window’s top-left corner.
+typedef void (*Moss_WindowPositionCallback)(int xpos, int ypos);
+
+//! @brief Callback for window focus events. @param focused True if the window gained focus; false if it lost focus.
+typedef void (*Moss_WindowFocusCallback)(bool focused);
+
+//! @brief Callback for content scale changes (e.g., HiDPI scaling). @param xscale X-axis content scale factor. @param yscale Y-axis content scale factor.
+typedef void (*Moss_WindowContentScaleCallback)(float xscale, float yscale);
+
+//! @brief Callback for general window resize notifications (platform-driven). @param width  New window width in pixels. @param height New window height in pixels.
+typedef void (*Moss_WindowResizeCallback)(int width, int height);
+
+//! @brief Callback for monitor configuration changes (e.g., hotplug events). @param monitorName Name or ID of the monitor that changed. @param connected True if the monitor was connected; false if disconnected.
+typedef void (*Moss_MonitorCallback)(const char* monitorName, bool connected);
+
+// =================================================
+//              Callback Registration API
+// =================================================
+
+/*! @brief Sets the framebuffer resize callback. @param callback Pointer to a function to be invoked when framebuffer size changes. @ingroup Window */
+MOSS_API void Moss_SetFramebufferResizeCallback(Moss_FramebufferResizeCallback callback);
+
+/*! @brief Sets the window size callback. @param callback Pointer to a function invoked when the window size changes. @ingroup Window */
+MOSS_API void Moss_SetWindowSizeCallback(Moss_WindowSizeCallback callback);
+
+/*! @brief Sets the window resize callback (platform-level, e.g. minimize/maximize). @param callback Pointer to a function invoked when window resizing events occur. @ingroup Window */
+MOSS_API void Moss_SetWindowResizeCallback(Moss_WindowResizeCallback callback);
+
+/*! @brief Sets the window position callback. @param callback Pointer to a function invoked when the window position changes. @ingroup Window */
+MOSS_API void Moss_SetWindowPositionCallback(Moss_WindowPositionCallback callback);
+
+/*! @brief Sets the window focus callback. @param callback Pointer to a function invoked when the window focus changes. @ingroup Window */
+MOSS_API void Moss_SetWindowFocusCallback(Moss_WindowFocusCallback callback);
+
+/*! @brief Sets the window content scale callback (for HiDPI / Retina support). @param callback Pointer to a function invoked when the content scale changes. @ingroup Window */
+MOSS_API void Moss_SetWindowContentScaleCallback(Moss_WindowContentScaleCallback callback);
+
+/*! @brief Sets the monitor connection or configuration callback. @param callback Pointer to a function invoked when a monitor is connected or disconnected. @ingroup Monitor */
+MOSS_API void Moss_SetMonitorCallback(Moss_MonitorCallback callback);
+
 // OpenGL
 #ifdef MOSS_USE_OPENGL
 /*! @brief Sets window as current.  @param X X. @ingroup window */
@@ -606,50 +656,10 @@ MOSS_API void* Moss_GetInstanceProcAddress(VkInstance instance, const char* proc
 MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPhysicalDevice device, uint32_t queuefamily);
 #endif // MOSS_USE_VULKAN
 
-#if defined(MOSS_USE_XR)
-bool Moss_IsXRExtensionSupported(const char* extensionName);
-#endif 
-
-
-// =================================================
-/*                      Callbacks                 */
-// =================================================
-
-typedef void(*FramebufferResizeCallback)(int width, int height);
-// Window
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetFramebufferReSizeCallback(FramebufferResizeCallback callback);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowSizeCallback(Moss_Window* window, int width, int height);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowContentScaleCallback(Moss_Window* window, int width, int height);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowSizeLimits(Moss_Window* window, int width, int height);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowPositionCallback(Moss_Window* window, int x, int y);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowFocusCallback(Moss_Window* window);
-/*! @brief X.  @param X X @ingroup Window.*/
-MOSS_API void Moss_SetWindowResizeCallback(void (*callback)(int width, int height));
-/*! @brief sets the monitor configuration callback.  @param X X. @ingroup Monitor */
-MOSS_API void Moss_SetMonitorCallback();
-
-// Inputs
-/*! @brief Set Key input callback. @param X X @ingroup Keyboard Input Callback. */
-MOSS_API void Moss_SetKeyCallback();
-/*! @brief Set mouse input callback. @param X X @ingroup Mouse Input Callback. */
-MOSS_API void Moss_SetMouseButtonCallback();
-/*! @brief Set mouse position callback. @param X X @ingroup Mouse Input Callback. */
-MOSS_API void Moss_SetMousePositionCallback();
-/*! @brief Set joystick input callback. @param X X @ingroup Joystick Input Callback. */
-MOSS_API void Moss_SetJoyStickCallback();
-/*! @brief Set gamepad input callback. @param X X @ingroup Gamepad Input Callback. */
-MOSS_API void Moss_SetGamePadCallback();
-
-
 #ifdef __cplusplus
 }
 #endif
 
 
 #endif // MOSS_PLATFORM_H
+
