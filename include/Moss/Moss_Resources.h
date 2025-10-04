@@ -26,15 +26,15 @@
 extern "C" {
 #endif
 
-struct BezierCurve;
-struct BezierCurve2;
-struct BezierCurve3;
-struct Gradient;
-struct Json;
-struct Material;
-struct PCK;
-struct Timer;
-struct Tween;
+typedef struct BezierCurve;
+typedef struct BezierCurve2;
+typedef struct BezierCurve3;
+typedef struct Gradient;
+typedef struct Json;
+typedef struct Material;
+typedef struct PCK;
+typedef struct Timer;
+typedef struct Tween;
 
 #ifdef __cplusplus
 }
