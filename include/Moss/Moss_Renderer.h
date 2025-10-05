@@ -23,6 +23,36 @@
 #ifndef MOSS_RENDERER_H
 #define MOSS_RENDERER_H
 
+/*!
+ * @file Moss_Renderer.h
+ * @brief Core rendering interface for the Moss Framework.
+ *
+ * The renderer module provides the abstraction layer for all 2D and 3D graphics
+ * operations. It serves as a unified, API-agnostic rendering backend capable of
+ * targeting multiple graphics APIs (Vulkan, OpenGL, Metal, and DirectX 12).
+ *
+ * ### Primary Responsibilities:
+ * - **2D and 3D Rendering** — Handles scene rendering for both worlds and UI layers.
+ * - **Debug Visualization** — Supports drawing collision bounds, gizmos, and profiling overlays.
+ * - **Lighting & Shadows** — Manages dynamic and baked lighting, real-time shadow mapping, and reflections.
+ * - **Post-Processing Pipeline** — Provides a customizable chain for effects such as bloom, tone mapping, FXAA/TAA, and color grading.
+ * - **Particle Systems** — Unified particle framework for both 2D and 3D effects.
+ * - **Reflection Probes & Global Illumination** — Enables environment-based lighting and reflections.
+ * - **Compositor (Planned)** — Future abstraction for multi-pass rendering and post-fx composition.
+ *
+ * ### Secondary Systems:
+ * - **Scene Graph / Hierarchy** — Entity rendering order, transform propagation, and culling organization.
+ * - **Animation Support** — Skeletal and morph target animation for characters, props, and environment elements.
+ *
+ * ### Planned Features / TODO:
+ * - **Graphics API Abstraction Layers** — Full separation of renderer logic from API-specific backends.
+ * - **Level of Detail (LOD) System** — Mesh simplification and distance-based swapping.
+ * - **Occlusion & View Culling** — Reduce draw calls via frustum and depth testing.
+ * - **Multithreaded Render Submission** — Asynchronous job-based rendering pipeline (future optimization).
+ *
+ * The renderer acts as the core visual subsystem of the Moss engine, directly
+ * integrated with scene management, physics visualization, and UI rendering layers.
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -227,6 +257,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
