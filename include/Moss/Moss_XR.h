@@ -20,18 +20,132 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-////////////////////////////////////////////////////////////////////////////
-/*                              Moss_XR.h
-
-                Moss XR handles all XR using OpenXR version 1.1.
-*/
-///////////////////////////////////////////////////////////////////////////
-
-// Supportd Platforms: Windows, Linux, and Android
-// Supported Graphics: OpenGL, Vulkan, and DirectX
-
 #ifndef MOSS_OPENVR_H
 #define MOSS_OPENVR_H
+
+/*!
+ * @file Moss_XR.h
+ * @brief Cross-platform XR (VR/AR/MR) interface built on OpenXR 1.1 for Moss Engine.
+ *
+ * The Moss XR module provides a unified and extensible interface for Virtual Reality (VR),
+ * Augmented Reality (AR), and Mixed Reality (MR) applications using the OpenXR standard.
+ *
+ * ---
+ *
+ * ### Core Features:
+ * - **OpenXR 1.1 Integration** — Cross-platform, vendor-neutral XR standard (Oculus, SteamVR, WMR, Vive, Pico, Varjo, etc).
+ * - **Session Management** — Handles initialization, frame lifecycle, and synchronization between rendering and XR runtimes.
+ * - **View Configuration** — Supports both stereo (VR) and mono (AR/MR) rendering pipelines.
+ * - **Input System** — Abstracted hand/controller tracking via OpenXR actions and poses.
+ * - **Haptic Feedback** — Vibration, impulse, and frequency-based feedback through OpenXR haptics layer.
+ * - **Tracking System** — Full 6DOF head, hand, and body tracking with prediction and smoothing.
+ * - **Compositor Integration** — Direct connection to Moss Renderer for eye texture management and projection matrices.
+ * - **Multi-View Rendering** — Support for multi-pass, instanced, or single-pass stereo rendering (depending on GPU/driver capabilities).
+ *
+ * ---
+ *
+ * ### Supported XR Runtimes:
+ * - Meta Quest / Oculus (via OpenXR)
+ * - SteamVR (Vive, Index)
+ * - Windows and Windows Mixed Reality
+ * - Varjo XR
+ * - Pico / Lynx / WaveVR
+ * - Android XR devices (via OpenXR Loader)
+ * - Linux
+ *
+ * ---
+ *
+ * ### Supported Renderers:
+ * - OpenGL
+ * - Vulkan
+ * - DirectX
+ *
+ * ---
+ *
+ * ### Example Usage:
+ * ```cpp
+ * Moss_XRInit();
+ *
+ * XRSession* session = Moss_CreateXRSession({
+ *     .enableHandTracking = true,
+ *     .enableEyeTracking  = false,
+ *     .preferredRefreshRate = 90.0f
+ * });
+ *
+ * while (Moss_XRIsRunning(session)) {
+ *     Moss_XRBeginFrame(session);
+ *     Moss_RenderSceneXR(renderer, session);
+ *     Moss_XREndFrame(session);
+ * }
+ *
+ * Moss_XRTerminate(session);
+ * ```
+ *
+ * ---
+ *
+ * ### Extended Moss Features:
+ * - **XR Camera Integration**  
+ *   - `CameraXR` class synchronizes head pose and eye projections with the Moss rendering pipeline.
+ *   - Automatic clipping and stereo culling support.
+ *
+ * - **Hand Tracking / Gesture API**  
+ *   - Access joint transforms (e.g., palm, finger tips) through `Moss_XRGetHandJointPose()`.  
+ *   - Custom gestures and interaction mapping for grabbing, pointing, UI input.  
+ *
+ * - **Eye Tracking & Foveated Rendering** *(optional)*  
+ *   - Dynamic foveation using gaze direction.  
+ *   - Adaptive resolution rendering for performance optimization.  
+ *
+ * - **Spatial Anchors & Scene Understanding** *(AR/MR)*  
+ *   - World anchors for persistent spatial references.  
+ *   - Mesh reconstruction and real-world collision surfaces for physics alignment.  
+ *
+ * ---
+ *
+ * ### Integration Points:
+ * - **Renderer:**  
+ *   - Each XR eye has its own framebuffer.  
+ *   - Moss_Renderer handles projection/view updates per eye.  
+ *
+ * - **Audio:**  
+ *   - Moss_AudioListener3D automatically follows XR head position.  
+ *   - Optional HRTF spatialization for realistic sound in XR.  
+ *
+ * - **Physics:**  
+ *   - Controller poses synchronize with physics rigid bodies (grab, throw, collide).  
+ *   - Supports dynamic object interaction with Moss_Physics.  
+ *
+ * - **Input:**  
+ *   - Unified input mapping for XR controllers, mouse/keyboard, and gamepads.  
+ *   - XR-specific bindings (grip, trigger, thumbstick, menu).  
+ *
+ * ---
+ *
+ * ### Design Goals:
+ * - Fully modular and OpenXR-conformant.  
+ * - Minimal runtime overhead — integrates directly with Moss’ job system and renderer.  
+ * - Real-time, low-latency VR/AR interaction.  
+ * - Plug-and-play with custom runtime layers and extensions (e.g., Varjo gaze, Meta passthrough).  
+ *
+ * ---
+ *
+ * ### Supported Extensions (if available):
+ * - `XR_EXT_hand_tracking`
+ * - `XR_EXT_eye_gaze_interaction`
+ * - `XR_FB_foveation`
+ * - `XR_VARJO_quad_views`
+ * - `XR_EXT_local_floor`
+ * - `XR_KHR_composition_layer_depth`
+ *
+ * ---
+ *
+ * ### Future Roadmap:
+ * - Mixed Reality passthrough with real-time camera streaming.
+ * - Vulkan-based OpenXR layer compositor.
+ * - GPU-driven foveation and reprojection.
+ * - Networked multi-user XR sessions (shared space).
+ * - Haptic feedback synthesis via Moss_Haptics.
+*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -242,3 +356,4 @@ Moss_StopHapticFeedback(XRHaptic* haptic) { xrStopHapticFeedback(XrSession sessi
 
 #endif // (defined(MOSS_USE_OPENXR) && defined(MOSS_PLATFORM_WINDOWS) || defined(MOSS_PLATFORM_LINUX) || defined(MOSS_PLATFORM_ANDROID))
 #endif // MOSS_OPENVR_H
+
