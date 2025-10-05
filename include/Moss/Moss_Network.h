@@ -28,6 +28,95 @@ Modified ENet6 v6.1.2 by SirLynix https://github.com/SirLynix/enet6/
 #ifndef MOSS_ENET_H
 #define MOSS_ENET_H
 
+/*!
+ * @file Moss_Network.h
+ * @brief High-performance networking layer powered by ENet 6 for the Moss Framework.
+ *
+ * The Moss networking module provides a lightweight, low-latency, and reliable communication layer
+ * built on **ENet 6**, an advanced version of the classic ENet library designed for real-time
+ * multiplayer games, simulation, and XR synchronization.
+ *
+ * ---
+ *
+ * ### Core Features:
+ * - **Connection-Oriented UDP** — Uses ENet 6’s hybrid protocol for reliability without TCP overhead.
+ * - **Automatic Packet Fragmentation / Reassembly** — Transparent large-packet handling with zero-copy transfer.
+ * - **Reliability Channels** — Distinct logical channels for reliable and unreliable data streams.
+ * - **Low-Latency Message Delivery** — Fine-grained control over packet priority and delivery guarantees.
+ * - **Peer Management** — Full lifecycle handling for connection, disconnection, and peer state tracking.
+ * - **Compression & Security** — Optional zlib / LZ4 compression and encryption hooks for secure, efficient communication.
+ *
+ * ---
+ *
+ * ### Common Use Cases:
+ * - Multiplayer gameplay replication (e.g., player movement, events, physics states).
+ * - Host-authoritative or peer-to-peer game logic.
+ * - Real-time XR world synchronization.
+ * - Dedicated game servers, lobbies, or matchmaking systems.
+ *
+ * ---
+ *
+ * ### Example Usage:
+ * ```cpp
+ * // Initialize ENet
+ * Moss_NetworkInit();
+ *
+ * // Create a server or client host
+ * ENetHost* server = Moss_CreateServer("0.0.0.0", 7777, maxClients);
+ * ENetHost* client = Moss_CreateClient();
+ *
+ * // Handle network events
+ * Moss_NetworkPoll(server, [](const ENetEvent& event) {
+ *     switch (event.type) {
+ *         case ENET_EVENT_TYPE_CONNECT:
+ *             printf("Client connected: %x\n", event.peer->address.host);
+ *             break;
+ *         case ENET_EVENT_TYPE_RECEIVE:
+ *             HandlePacket(event);
+ *             break;
+ *         case ENET_EVENT_TYPE_DISCONNECT:
+ *             printf("Client disconnected.\n");
+ *             break;
+ *     }
+ * });
+ * ```
+ *
+ * ---
+ *
+ * ### Advanced Features:
+ * - **Multichannel System:**  
+ *   Supports isolated communication lanes such as:
+ *   - Player Input / State Replication
+ *   - Chunk or Level Streaming
+ *   - Entity Synchronization
+ *   - Chat and UI Events
+ *
+ * - **Packet Abstraction Layer:**  
+ *   Moss wraps ENet packets into type-safe structures (e.g., `Packet_EntityUpdate`, `Packet_PlayerState`),
+ *   enabling deterministic serialization for cross-platform play.
+ *
+ * - **Threaded Networking:**  
+ *   Optional worker thread mode for asynchronous send/receive, minimizing latency on the main loop.
+ *
+ * - **Server Authority Layer:**  
+ *   Integrated logic for validating client packets and preventing unauthorized world manipulation.
+ *
+ * ---
+ *
+ * ### Design Goals:
+ * - Lightweight, efficient, and dependency-free beyond ENet.
+ * - Deterministic packet ordering for gameplay-critical updates.
+ * - Extendable for cloud-based hosting, replay capture, and mod networking.
+ * - Unified API for both **client** and **server** roles.
+ *
+ * ---
+ *
+ * ### Future Extensions:
+ * - WebSocket bridge for WebAssembly builds.
+ * - NAT traversal & relay server support.
+ * - Integration with Moss’s scripting layer for user-defined packet handling.
+ * - Optional QUIC backend for future web/desktop builds.
+ */
 
 #include <Moss/Moss_stdinc.h>
 #include <stdlib.h>
