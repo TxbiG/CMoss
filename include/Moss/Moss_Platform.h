@@ -23,21 +23,28 @@
 #ifndef MOSS_PLATFORM_H
 #define MOSS_PLATFORM_H
 
-/*          Moss Platform
- *    Window & Popups windows
- *    Monitor
- *    Input - #define Keyboard, Mouse, Controllers
- *    Camera
- *    Haptic Feedback
- *    Time
- *    OS specific
-*/
-
-/*  TODO
- - Add functions to load in dll/libs in/out.
- - Get GPU info
- - Storage indfo.
-*/
+/*!
+ * @file Moss_Platform.h
+ * @brief Core platform abstraction layer for the Moss Framework.
+ *
+ * The platform module provides a unified API for interacting with
+ * the operating system, hardware devices, and runtime environment.
+ * It ensures cross-platform consistency across Windows, Linux, macOS,
+ * iOS, and Android.
+ *
+ * ### Primary Responsibilities:
+ * - **Window Management** — Creation and control of application and popup windows.
+ * - **Display & Monitor Handling** — Query and manage monitor configurations, resolutions, and refresh rates.
+ * - **Input System** — Unified handling of keyboard, mouse, controller, and touch inputs.
+ * - **Camera Support** — Management of active viewports, XR cameras, and display orientation.
+ * - **Haptic Feedback** — Device vibration and tactile feedback support.
+ * - **Timing Utilities** — High-precision timers, delta-time tracking, and performance profiling.
+ * - **System Integration** — OS-level utilities such as:
+ *    - Dynamic library loading/get/unloading (DLL/SO/DYLIB)
+ *    - Opening URLs or external resources
+ *    - Querying CPU, and memory information
+ *    - Locale access
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -667,5 +674,6 @@ MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPh
 
 
 #endif // MOSS_PLATFORM_H
+
 
 
