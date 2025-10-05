@@ -23,6 +23,53 @@
 #ifndef MOSS_AUDIO_H
 #define MOSS_AUDIO_H
 
+/*!
+ * @file Moss_Audio.h
+ * @brief Cross-platform audio subsystem for the Moss Framework.
+ *
+ * The audio module provides a unified, high-performance abstraction over
+ * multiple platform-specific backends. It is designed to support both
+ * **real-time 3D spatial audio** and **2D streamed playback** for games,
+ * XR experiences, and simulation systems.
+ *
+ * ---
+ *
+ * ### Supported Backends:
+ * - **Windows:** XAudio2 / WASAPI
+ * - **macOS:** CoreAudio *(under testing)*
+ * - **Linux:** ALSA *(under testing)*
+ *
+ * ---
+ *
+ * ### Core Capabilities:
+ * - **2D / 3D Audio Streams** — Play, pause, and stop streamed or preloaded sounds.
+ * - **Audio Effects Pipeline** — Supports a broad range of DSP effects:
+ *   - Lowpass / Highpass filters
+ *   - Echo, Flange, Distortion
+ *   - Normalize, Parametric EQ
+ *   - Pitch Shifting, Chorus, Compressor
+ *   - Reverb and Delay
+ * - **Dynamic Audio Control** — Real-time adjustment of pitch, gain, and pan per stream or channel.
+ * - **Hardware Abstraction** — Unified interface for **Speakers** and **Microphones**, with support for enumeration, selection, and control.
+ * - **Audio Listeners** — Spatial representation for 2D and 3D listener transforms, integrated with camera and XR systems.
+ *
+ * ---
+ *
+ * ### Future Features:
+ * - **Ray-Traced Audio Simulation:**
+ *   - SIMD-accelerated CPU tracing for real-time occlusion and first-order reflections.
+ *   - GPU-based acoustic data baking (impulse responses, reverb zones).
+ *   - Reverb convolution caching for realistic environmental acoustics.
+ *   - Hybrid models using direction cones and ray bins for real-time efficiency.
+ *
+ * ---
+ *
+ * ### Design Goals:
+ * - Low-latency, high-fidelity cross-platform audio.
+ * - Thread-safe mixing and real-time streaming.
+ * - Integration with Moss Engine’s physics and rendering systems for synchronized A/V effects.
+ * - Modular extension for third-party DSPs and audio middleware.
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,5 +164,6 @@ MOSS_API void RemoveWav(Wav* wav);
 
 
 #endif // MOSS_AUDIO_H
+
 
 
