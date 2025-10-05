@@ -24,6 +24,100 @@
 #ifndef MOSS_PHYSICS_H
 #define MOSS_PHYSICS_H
 
+/*!
+ * @file Moss_Physics.h
+ * @brief High-performance 2D and 3D physics simulation system powered by a modified version of Jolt Physics 5.3.0.
+ *
+ * The Moss Physics module provides a fast, deterministic, and multithreaded physics engine
+ * designed for games, XR simulations, and large-scale environments.
+ *
+ * ---
+ *
+ * ### Core Features:
+ * - **Jolt 5.3.0 Integration** — Lightweight, SIMD-accelerated, and cross-platform physics core.
+ * - **2D & 3D Simulation** — Unified system supporting both 2D arcade-style and full 3D rigid-body dynamics.
+ * - **Deterministic Simulation** — Ensures reproducible results across different platforms and frame rates.
+ * - **Broadphase & Narrowphase Collision** — Highly optimized multi-threaded broadphase with efficient shape queries.
+ * - **Continuous Collision Detection (CCD)** — Prevents tunneling for fast-moving objects.
+ * - **Constraint Solver** — Handles joints, springs, and ragdolls with stable stacking and accurate motion.
+ * - **Trigger & Query Support** — Overlap queries, raycasts, sweeps, and shape casts.
+ * - **Material System** — Custom friction, restitution, and physical material blending.
+ *
+ * ---
+ *
+ * ### Extended Moss Features:
+ * - **XR / VR Physics Support**  
+ *   - Physics handles for controllers and tracked devices.  
+ *   - Real-world scale simulation.  
+ *   - Velocity and force-based object manipulation.  
+ *   - Grabbable, throwable, and interactable physics entities.  
+ *
+ * - **Network-Aware Simulation (with ENet 6)**  
+ *   - Snapshot and delta compression of physics states.  
+ *   - Deterministic rollback for synchronized multiplayer.  
+ *   - Network ownership and authority layer for replicated objects.  
+ *
+ * - **Debug Visualization**  
+ *   - Wireframe and contact point rendering via Moss Renderer.  
+ *   - Toggleable in developer builds for live debugging.  
+ *
+ * ---
+ *
+ * ### Example Usage:
+ * ```cpp
+ * Moss_PhysicsInit();
+ *
+ * PhysicsWorld* world = Moss_CreatePhysicsWorld({
+ *     .gravity = Vec3(0.0f, -9.81f, 0.0f),
+ *     .broadphase = BroadphaseType::DynamicAABBTree
+ * });
+ *
+ * // Create a rigid body
+ * RigidBody* box = Moss_CreateRigidBody(world, Shape_Box(Vec3(1.0f, 1.0f, 1.0f)), {0, 10, 0});
+ *
+ * // Step simulation
+ * Moss_PhysicsStep(world, deltaTime);
+ *
+ * // Query collision state
+ * if (Moss_IsOnGround(box)) { ... }
+ * ```
+ *
+ * ---
+ *
+ * ### Advanced Capabilities:
+ * - **Multithreading**  
+ *   Uses job system integration to distribute collision detection, constraint solving, and island building.
+ *
+ * - **Scene Integration**  
+ *   Physics components synchronize seamlessly with the entity system and transform hierarchy.
+ *
+ * - **Physics Queries**  
+ *   - `Moss_Raycast(world, origin, direction, distance)`
+ *   - `Moss_Sweep(world, shape, transform, direction, distance)`
+ *   - `Moss_Overlap(world, shape, transform)`
+ *
+ * - **Dynamic Materials & Layers**  
+ *   - Define collision groups and layers for efficient filtering.  
+ *   - Material blending for sound, haptics, and visual feedback.  
+ *
+ * ---
+ *
+ * ### Design Goals:
+ * - Scalable from mobile to high-end XR devices.
+ * - Deterministic, lock-step safe for multiplayer and replays.
+ * - Fully decoupled from rendering and scene systems.
+ * - Predictable and extensible API for custom physics behaviors.
+ *
+ * ---
+ *
+ * ### Future Extensions:
+ * - Soft-body and cloth simulation.  
+ * - Fluid simulation with particle-based solvers.  
+ * - GPU-accelerated broadphase (Vulkan / CUDA).  
+ * - Async baking for collision meshes and static environments.  
+ * - Haptic feedback integration via Moss_Haptics for physical interactions.  
+ */
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -2867,3 +2961,4 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
