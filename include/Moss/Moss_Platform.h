@@ -575,9 +575,14 @@ MOSS_API int Moss_GetSystemRAM(void);
 
 /*! @brief URL to a website link. @param url URL link.*/
 MOSS_API bool Moss_OpenURL(const char *url);
-/*! @brief Get Locale of the Operating system e.g. "UK" for United Kingdom and "en" for English.*/
+/*! @brief Get Locale of the Operating system. @return Moss_Locale e.g. "UK" for United Kingdom and "en" for English. */
 MOSS_API Moss_Locale* Moss_GetLocale();
-
+/*! @brief Loads a dynamic library from the given path. @param lib_path Path to the library file. @return Handle to the loaded library, or NULL on failure. @note The returned handle must be released using Moss_UnloadDynamicLibrary().*/
+MOSS_API void* Moss_LoadDynamicLibrary(const char* lib_path);
+/*! @brief Retrieves a symbol from a loaded library. @param handle Handle to the loaded library. @param symbol_name Name of the symbol to retrieve. @return Pointer to the symbol, or NULL if not found.  @return A pointer to the requested symbol, or NULL if not found.  @warning The returned pointer must be cast to the appropriate function or data type.*/
+MOSS_API void* Moss_GetLibrarySymbol(void* handle, const char* symbol_name);
+/*! @brief Unloads a previously loaded dynamic library. @param handle Handle to the library to unload. @note After unloading, the handle should not be used again. */
+MOSS_API void Moss_UnloadDynamicLibrary(void* handle);
 // =================================================
 //                 Callback Type Definitions
 // =================================================
@@ -662,4 +667,5 @@ MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPh
 
 
 #endif // MOSS_PLATFORM_H
+
 
