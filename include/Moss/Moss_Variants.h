@@ -59,11 +59,6 @@ typedef struct Rect     { float x, y, width, height; };
 typedef struct iRect    { int x, y, width, height; };
 typedef struct Quat;
 typedef struct Basis;
-typedef struct AABB2;
-typedef struct AABB3;
-typedef struct OBB2;
-typedef struct OBB3;
-
 
 MOSS_API bool Moss_OBB2_Overlaps(const AABB2& inBox, float inEpsilon = 1.0e-6f);
 MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
