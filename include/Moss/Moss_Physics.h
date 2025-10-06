@@ -571,11 +571,15 @@ typedef Matrix4x4 RMatrix4x4;
 
 typedef uint32_t Color;
 
-typedef struct AABox {
+typedef struct AABB2 {
+	Vec2 min;
+	Vec2 max;
+} AABB2;
+
+typedef struct AABB3 {
 	Vec3 min;
 	Vec3 max;
-} AABox;
-
+} AABB3;
 typedef struct Triangle {
 	Vec3 v1;
 	Vec3 v2;
@@ -1346,9 +1350,9 @@ MOSS_API uint64_t Shape_GetUserData(const Shape* shape);
 MOSS_API void Shape_SetUserData(Shape* shape, uint64_t userData);
 MOSS_API bool Shape_MustBeStatic(const Shape* shape);
 MOSS_API void Shape_GetCenterOfMass(const Shape* shape, Vec3* result);
-MOSS_API void Shape_GetLocalBounds(const Shape* shape, AABox* result);
+MOSS_API void Shape_GetLocalBounds(const Shape* shape, AABB3* result);
 MOSS_API uint32_t Shape_GetSubShapeIDBitsRecursive(const Shape* shape);
-MOSS_API void Shape_GetWorldSpaceBounds(const Shape* shape, RMatrix4x4* centerOfMassTransform, Vec3* scale, AABox* result);
+MOSS_API void Shape_GetWorldSpaceBounds(const Shape* shape, RMatrix4x4* centerOfMassTransform, Vec3* scale, AABB3* result);
 MOSS_API float Shape_GetInnerRadius(const Shape* shape);
 MOSS_API void Shape_GetMassProperties(const Shape* shape, MassProperties* result);
 MOSS_API const Shape* Shape_GetLeafShape(const Shape* shape, SubShapeID subShapeID, SubShapeID* remainder);
@@ -1993,8 +1997,8 @@ MOSS_API bool BroadPhaseQuery_CastRay2(const BroadPhaseQuery* query,
 	BroadPhaseLayerFilter* broadPhaseLayerFilter,
 	ObjectLayerFilter* objectLayerFilter);
 
-MOSS_API bool BroadPhaseQuery_CollideAABox(const BroadPhaseQuery* query,
-	const AABox* box, CollideShapeBodyCollectorCallback* callback, void* userData,
+MOSS_API bool BroadPhaseQuery_CollideAABB3(const BroadPhaseQuery* query,
+	const AABB3* box, CollideShapeBodyCollectorCallback* callback, void* userData,
 	BroadPhaseLayerFilter* broadPhaseLayerFilter,
 	ObjectLayerFilter* objectLayerFilter);
 
@@ -2184,7 +2188,7 @@ MOSS_API void Body_GetCenterOfMassPosition(const Body* body, RVec3* result);
 MOSS_API void Body_GetCenterOfMassTransform(const Body* body, RMatrix4x4* result);
 MOSS_API void Body_GetInverseCenterOfMassTransform(const Body* body, RMatrix4x4* result);
 
-MOSS_API void Body_GetWorldSpaceBounds(const Body* body, AABox* result);
+MOSS_API void Body_GetWorldSpaceBounds(const Body* body, AABB3* result);
 MOSS_API void Body_GetWorldSpaceSurfaceNormal(const Body* body, SubShapeID subShapeID, const RVec3* position, Vec3* normal);
 
 MOSS_API MotionProperties* Body_GetMotionProperties(Body* body);
@@ -2585,8 +2589,8 @@ MOSS_API void DebugRenderer_NextFrame(DebugRenderer* renderer);
 MOSS_API void DebugRenderer_SetCameraPos(DebugRenderer* renderer, const RVec3* position);
 
 MOSS_API void DebugRenderer_DrawLine(DebugRenderer* renderer, const RVec3* from, const RVec3* to, Color color);
-MOSS_API void DebugRenderer_DrawWireBox(DebugRenderer* renderer, const AABox* box, Color color);
-MOSS_API void DebugRenderer_DrawWireBox2(DebugRenderer* renderer, const RMatrix4x4* matrix, const AABox* box, Color color);
+MOSS_API void DebugRenderer_DrawWireBox(DebugRenderer* renderer, const AABB3* box, Color color);
+MOSS_API void DebugRenderer_DrawWireBox2(DebugRenderer* renderer, const RMatrix4x4* matrix, const AABB3* box, Color color);
 MOSS_API void DebugRenderer_DrawMarker(DebugRenderer* renderer, const RVec3* position, Color color, float size);
 MOSS_API void DebugRenderer_DrawArrow(DebugRenderer* renderer, const RVec3* from, const RVec3* to, Color color, float size);
 MOSS_API void DebugRenderer_DrawCoordinateSystem(DebugRenderer* renderer, const RMatrix4x4* matrix, float size);
@@ -2595,8 +2599,8 @@ MOSS_API void DebugRenderer_DrawWireTriangle(DebugRenderer* renderer, const RVec
 MOSS_API void DebugRenderer_DrawWireSphere(DebugRenderer* renderer, const RVec3* center, float radius, Color color, int level);
 MOSS_API void DebugRenderer_DrawWireUnitSphere(DebugRenderer* renderer, const RMatrix4x4* matrix, Color color, int level);
 MOSS_API void DebugRenderer_DrawTriangle(DebugRenderer* renderer, const RVec3* v1, const RVec3* v2, const RVec3* v3, Color color, DebugRenderer_CastShadow castShadow);
-MOSS_API void DebugRenderer_DrawBox(DebugRenderer* renderer, const AABox* box, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
-MOSS_API void DebugRenderer_DrawBox2(DebugRenderer* renderer, const RMatrix4x4* matrix, const AABox* box, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
+MOSS_API void DebugRenderer_DrawBox(DebugRenderer* renderer, const AABB3* box, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
+MOSS_API void DebugRenderer_DrawBox2(DebugRenderer* renderer, const RMatrix4x4* matrix, const AABB3* box, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
 MOSS_API void DebugRenderer_DrawSphere(DebugRenderer* renderer, const RVec3* center, float radius, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
 MOSS_API void DebugRenderer_DrawUnitSphere(DebugRenderer* renderer, RMatrix4x4 matrix, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
 MOSS_API void DebugRenderer_DrawCapsule(DebugRenderer* renderer, const RMatrix4x4* matrix, float halfHeightOfCylinder, float radius, Color color, DebugRenderer_CastShadow castShadow, DebugRenderer_DrawMode drawMode);
@@ -2961,4 +2965,5 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
 
