@@ -580,6 +580,17 @@ typedef struct AABB3 {
 	Vec3 min;
 	Vec3 max;
 } AABB3;
+
+typedef struct OBB2 {
+	Mat44 orientation;
+	Vec2 max;
+} AABB2;
+
+typedef struct OBB3 {
+	Mat44 orientation;
+	Vec3 max;
+} AABB3;
+
 typedef struct Triangle {
 	Vec3 v1;
 	Vec3 v2;
@@ -2965,5 +2976,6 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
 
 
