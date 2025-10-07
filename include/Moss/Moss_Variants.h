@@ -54,7 +54,7 @@ typedef struct Mat3;
 typedef struct Mat4x2;
 typedef struct Mat4x3;
 typedef struct Mat4;
-typedef struct Color    { float r, g, b, a; };
+typedef struct Color    { unsigned char r, g, b, a; };
 typedef struct Rect     { float x, y, width, height; };
 typedef struct iRect    { int x, y, width, height; };
 typedef struct Quat;
