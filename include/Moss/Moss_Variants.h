@@ -22,10 +22,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 typedef struct Vec2;
 typedef struct Vec3;
@@ -57,8 +53,21 @@ typedef struct Mat4;
 typedef struct Color    { unsigned char r, g, b, a; };
 typedef struct Rect     { float x, y, width, height; };
 typedef struct iRect    { int x, y, width, height; };
-typedef struct Quat;
+typedef Vec4 Quat;
 typedef struct Basis;
+typedef struct Texture {
+    unsigned int id;        // OpenGL texture id
+    int width;              // Texture base width
+    int height;             // Texture base height
+    int mipmaps;            // Mipmap levels, 1 by default
+    int format;             // Data format (PixelFormat type)
+} Texture;
+typedef Texture Texture2D;
+typedef Texture TextureCubemap;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 MOSS_API bool Moss_OBB2_Overlaps(const AABB2& inBox, float inEpsilon = 1.0e-6f);
 MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
