@@ -23,6 +23,105 @@
 #ifndef MOSS_STDINC_H
 #define MOSS_STDINC_H
 
+/*!
+ * @file Moss_stdinc.h
+ * @brief Standard include header for the Moss Framework.
+ *
+ * Provides:
+ * - Platform and compiler abstraction.
+ * - Standardized type definitions and compile-time configuration.
+ * - Utility macros, assertions, and inline helpers.
+ * - Integration foundation for all other Moss subsystems.
+ *
+ * ---
+ *
+ * ### Overview:
+ * `Moss_stdinc.h` acts as the foundational include for the entire Moss Framework.
+ * It ensures consistent definitions across compilers, platforms, and languages.
+ *
+ * ---
+ *
+ * ### Core Responsibilities:
+ * - **Platform Detection**
+ *   - Identifies OS and hardware targets.
+ *   - Defines portable symbols for Windows, Linux, macOS, Android, iOS, and WebAssembly.
+ *
+ * - **Compiler Detection**
+ *   - Supports MSVC, GCC, Clang, and AppleClang.
+ *   - Enables warning suppression and compiler-specific optimization attributes.
+ *
+ * - **Type Normalization**
+ *   - Defines fixed-size integer and float types (uint8, int16, float32, etc).
+ *   - Establishes Moss-specific aliases for cross-language consistency.
+ *
+ * - **Macros & Attributes**
+ *   - Inline, constexpr, restrict, likely/unlikely, alignment, and export/import macros.
+ *   - Simplifies platform-specific linkage (DLLs, shared libraries).
+ *
+ * - **Error Handling & Debugging**
+ *   - Unified `MOSS_ASSERT`, `MOSS_LOG`, and panic/debug hooks.
+ *   - Optional integration with custom logging systems or crash reporters.
+ *
+ * - **Namespace & Symbol Management**
+ *   - Ensures consistent namespacing for C and C++.
+ *   - Enables `MOSS_NAMESPACE_BEGIN` / `MOSS_NAMESPACE_END` macros.
+ *
+ * ---
+ *
+ * ### Platform Defines:
+ * | Platform | Define | Notes |
+ * |-----------|---------|-------|
+ * | Windows   | `MOSS_PLATFORM_WINDOWS` | Desktop and UWP supported |
+ * | Linux     | `MOSS_PLATFORM_LINUX` | Supports X11, Wayland, headless |
+ * | macOS     | `MOSS_PLATFORM_MACOS` | Metal and OpenGL supported |
+ * | iOS       | `MOSS_PLATFORM_IOS` | Metal-based rendering only |
+ * | Android   | `MOSS_PLATFORM_ANDROID` | GLES / Vulkan support |
+ * | Web (Emscripten) | `MOSS_PLATFORM_WEB` | WebAssembly / WebGPU support |
+ *
+ * ---
+ *
+ * ### Compiler Defines:
+ * | Compiler | Define | Notes |
+ * |-----------|---------|-------|
+ * | MSVC      | `MOSS_COMPILER_MSVC` | Supports MSVC-specific intrinsics |
+ * | GCC       | `MOSS_COMPILER_GCC` | Enables GCC attributes |
+ * | Clang     | `MOSS_COMPILER_CLANG` | Unified with AppleClang |
+ *
+ * ---
+ *
+ * ### Common Macros:
+ * ```cpp
+ * #define MOSS_INLINE       inline __attribute__((always_inline))
+ * #define MOSS_NOINLINE     __attribute__((noinline))
+ * #define MOSS_ALIGN(x)     __attribute__((aligned(x)))
+ * #define MOSS_LIKELY(x)    __builtin_expect(!!(x), 1)
+ * #define MOSS_UNLIKELY(x)  __builtin_expect(!!(x), 0)
+ *
+ * #define MOSS_EXPORT       extern "C" __declspec(dllexport)
+ * #define MOSS_IMPORT       extern "C" __declspec(dllimport)
+ * ```
+ *
+ * ---
+ *
+ * ### Utility Macros:
+ * - `MOSS_ARRAY_SIZE(arr)` — Returns the number of elements in an array.
+ * - `MOSS_UNUSED(x)` — Prevents unused variable warnings.
+ * - `MOSS_BIT(x)` — Shifts bitmask `(1 << x)`.
+ * - `MOSS_OFFSET_OF(type, member)` — Returns byte offset of struct member.
+ *
+ * ---
+ *
+ * Ensures version compatibility between Moss Framework components and bindings.
+ *
+ * ---
+ *
+ * ### Future Roadmap:
+ * - Platform-independent threading primitives (atomic, mutex, condition variable).
+ * - Intrinsic wrappers for SIMD (SSE, NEON, AVX).
+ * - Compile-time feature detection macros (`MOSS_HAS_VULKAN`, `MOSS_HAS_OPENXR`, etc).
+ * - Static compile-time assertion and reflection utilities.
+ *
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -476,6 +575,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
