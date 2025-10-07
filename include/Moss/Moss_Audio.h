@@ -71,10 +71,6 @@
  * - Modular extension for third-party DSPs and audio middleware.
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <Moss/Moss_Core.h>
 
 /*  Cross-platform audio system supporting:
@@ -155,6 +151,10 @@ typedef struct AudioListener3D;
 typedef struct RayAudioListener2D;
 typedef struct RayAudioListener3D;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 MOSS_API Wav* loadWav(const char* path);
 MOSS_API void RemoveWav(Wav* wav);
 
@@ -164,6 +164,7 @@ MOSS_API void RemoveWav(Wav* wav);
 
 
 #endif // MOSS_AUDIO_H
+
 
 
 
