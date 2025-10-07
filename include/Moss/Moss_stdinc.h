@@ -461,10 +461,10 @@ typedef unsigned int size;
     #define MOSS_FREE(ptr)        free(ptr)
 #endif
 #ifndef MOSS_ALIGNED_ALLOC
-    #define MOSS_ALIGNED_ALLOC(size_t alignment, size_t size)        free(ptr)
+    #define MOSS_ALIGNED_ALLOC(ptr, size_t alignment, size_t size) aligned_alloc(alignment, alignment*sizeof *ptr);
 #endif
 #ifndef MOSS_ALIGNED_FREE
-    #define MOSS_ALIGNED_FREE(void *mem)        free(ptr)
+    #define MOSS_ALIGNED_FREE(void *mem) aligned_free(void *mem)
 #endif
 
 static inline void seed_random() { srand((unsigned int)time(NULL)); }
@@ -476,6 +476,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
