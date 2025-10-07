@@ -448,13 +448,24 @@ typedef unsigned int size;
 #define MIN_UINT64  ((uint64_t)(0x0000000000000000))
 
 
-void * Moss_calloc(size_t nmemb, size_t size);
-void * Moss_realloc(void *mem, size_t size);
-void * Moss_malloc(size_t size);
-void Moss_free(void *mem);
-
-void * Moss_aligned_alloc(size_t alignment, size_t size);
-void Moss_aligned_free(void *mem);
+#ifndef MOSS_MALLOC
+    #define MOSS_MALLOC(size)       malloc(sz)
+#endif
+#ifndef MOSS_CALLOC
+    #define MOSS_CALLOC(nmemb, size)     calloc(n,sz)
+#endif
+#ifndef MOSS_REALLOC
+    #define MOSS_REALLOC(ptr, size)  realloc(ptr,sz)
+#endif
+#ifndef MOSS_FREE
+    #define MOSS_FREE(ptr)        free(ptr)
+#endif
+#ifndef MOSS_ALIGNED_ALLOC
+    #define MOSS_ALIGNED_ALLOC(size_t alignment, size_t size)        free(ptr)
+#endif
+#ifndef MOSS_ALIGNED_FREE
+    #define MOSS_ALIGNED_FREE(void *mem)        free(ptr)
+#endif
 
 static inline void seed_random() { srand((unsigned int)time(NULL)); }
 static inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
@@ -465,6 +476,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
