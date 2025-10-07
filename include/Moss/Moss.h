@@ -37,7 +37,6 @@
 extern "C" {
 #endif
 
-
 // Moss Framework version
 #define MOSS_MAJOR_VERSION 0
 #define MOSS_MINOR_VERSION 1
@@ -50,6 +49,15 @@ extern "C" {
 #error "CMoss 0.2.0 or higher is required!"
 #endif
 
+#include <Moss/Moss_Platform.h>
+#include <Moss/Moss_Renderer.h>
+#include <Moss/Moss_Resources.h>
+#include <Moss/Moss_Variants.h>
+#include <Moss/Moss_Network.h>
+#include <Moss/Moss_Physics.h>
+#include <Moss/Moss_Audio.h>
+#include <Moss/Moss_stdinc.h>
+#include <Moss/Moss_XR.h>
 
 #ifdef __cplusplus
 }
