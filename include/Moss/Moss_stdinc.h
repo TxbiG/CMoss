@@ -123,10 +123,6 @@
  *
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <time.h>
@@ -566,6 +562,10 @@ typedef unsigned int size;
     #define MOSS_ALIGNED_FREE(void *mem) aligned_free(void *mem)
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 static inline void seed_random() { srand((unsigned int)time(NULL)); }
 static inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
 static inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
@@ -575,6 +575,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
