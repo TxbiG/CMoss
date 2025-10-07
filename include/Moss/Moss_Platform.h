@@ -46,9 +46,6 @@
  *    - Locale access
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifdef MOSS_USE_VULKAN
 #include <vulkan/vulkan.h>
@@ -427,6 +424,10 @@ static void (Moss_WindowPositionCallback)(int, int);
 static void (Moss_WindowFocusCallback)(bool focused);
 static void (Moss_WindowSizeCallback)(int width, int height);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 MOSS_API Moss_Monitor* Moss_GetPrimaryMonitor();
 MOSS_API Moss_Monitor* Moss_GetSecondaryMonitor();
@@ -674,6 +675,7 @@ MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPh
 
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
