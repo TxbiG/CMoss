@@ -75,6 +75,13 @@ extern "C" {
 #include <Metal/Metal.hpp>
 #endif // MOSS_USE_METAL
 
+#define VIRTUAL_RESOLUTION_WIDTH 1920
+#define VIRTUAL_RESOLUTION_HEIGHT 1080
+
+#define MAX_DECALS 200
+#define MAX_LIGHTS2D 200
+#define MAX_LIGHTS3D 200
+
 typedef enum TextureFormat {
     // Unsigned normalized color formats
     R8, 
@@ -147,6 +154,10 @@ typedef enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			     
 typedef enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
 
 typedef struct Moss_Renderer;
+typedef struct Shader;
+typedef Shader ShaderPixel;
+typedef Shader ShaderVertex;
+typedef Shader ShaderComputing;
 typedef struct Camera2D;
 typedef struct Camera3D;
 typedef struct Pipelinestate;
@@ -164,10 +175,6 @@ typedef struct Font;
 typedef struct Frustum2D;
 typedef struct Frustum3D;
 
-
-typedef struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
-typedef struct DirectionalLight2D { float intensity, rotation; Color color; LightMask filter; };									 // DirectionalLight2
-typedef struct PointLight2D       { float intensity, rotation, radius; Float2 position; Color color; };			 // PointLight2
 
 typedef struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
 typedef struct DirectionalLight2D { float intensity, rotation; Color color; };									 // DirectionalLight2
@@ -193,7 +200,12 @@ MOSS_API Camera2* Moss_CreateCamera2(Moss_Renderer* renderer, );
 MOSS_API void Moss_DestoryCamera2(Moss_Renderer* renderer, );
 
 MOSS_API Camera3* Moss_CreateCamera3(Moss_Renderer* renderer, );
-MOSS_API void  Moss_DestoryCamera3(Moss_Renderer* renderer, );
+MOSS_API void Moss_DestoryCamera3(Moss_Renderer* renderer, );
+
+MOSS_API ShaderPixel* Moss_Create_ShaderPixel()
+MOSS_API ShaderVertex* Moss_Create_ShaderVertex()
+MOSS_API ShaderComputing* Moss_Create_ShaderComputing()
+MOSS_API void Moss_Destroy_Shader();
 
 MOSS_API Moss_CreatePipelinestate(Moss_Renderer* renderer, VertexShader* vertex, const InputDescription* inputDescription, uint inputDescriptionCount, 
       const PixelShaderVK* pixel, DrawPass drawPass, FillMode fillMode, Topology topology, 
@@ -206,6 +218,9 @@ MOSS_API void Moss_DestoryTexture(Moss_Renderer* renderer, );
 
 MOSS_API Moss_CreateSurface(Moss_Renderer* renderer, );
 MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
+
+MOSS_API Moss_CreateSurfaceTexture(Moss_Renderer* renderer, );
+MOSS_API void Moss_DestorySurfaceTexture(Moss_Renderer* renderer, );
 
 // Graphics Specific
 #ifdef MOSS_GRAPHICS_OPENGL
@@ -257,6 +272,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
