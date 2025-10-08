@@ -154,17 +154,26 @@ typedef enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			     
 typedef enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
 
 typedef struct Moss_Renderer;
+typedef struct Camera2D { Float2 position, offset; float zoom = 1.0f, float rotation = 0.0f; };
+typedef struct Camera3D {
+	Float3 position;
+	Float3 up;    // Y is up
+    Float3 target;
+    float speed = 0.1f;
+    float sensitivity = 100;
+    float fov = 45.0f;          // Field of view (degrees)
+    float aspectRatio;          // avoid divide-by-zero
+    float nearPlane = 0.1f;
+    float farPlane = 1000.0f; 
+};
 typedef struct Shader;
 typedef Shader ShaderPixel;
 typedef Shader ShaderVertex;
 typedef Shader ShaderComputing;
-typedef struct Camera2D;
-typedef struct Camera3D;
 typedef struct Pipelinestate;
 typedef struct Texture;
-typedef struct PixelShader;
-typedef struct VertexShader;
-typedef struct ComputeShader;
+typedef Texture Texture2D;
+typedef Texture NoiseTexture2D;
 typedef struct Surface;
 typedef struct FogVolume;
 typedef struct SubViewport;
@@ -272,6 +281,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
