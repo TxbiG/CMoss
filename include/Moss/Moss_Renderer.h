@@ -216,20 +216,29 @@ MOSS_API ShaderVertex* Moss_Create_ShaderVertex()
 MOSS_API ShaderComputing* Moss_Create_ShaderComputing()
 MOSS_API void Moss_Destroy_Shader();
 
-MOSS_API Moss_CreatePipelinestate(Moss_Renderer* renderer, VertexShader* vertex, const InputDescription* inputDescription, uint inputDescriptionCount, 
+MOSS_API Pipelinestate* Moss_CreatePipelinestate(Moss_Renderer* renderer, VertexShader* vertex, const InputDescription* inputDescription, uint inputDescriptionCount, 
       const PixelShaderVK* pixel, DrawPass drawPass, FillMode fillMode, Topology topology, 
       EDepthTest inDepthTest, EBlendMode inBlendMode, ECullMode inCullMode);
 
-MOSS_API Moss_DestoryPipelinestate(Moss_Renderer* renderer, );
+MOSS_API void Moss_DestoryPipelinestate(Moss_Renderer* renderer, );
 
-MOSS_API Moss_CreateTexture(Moss_Renderer* renderer, );
+MOSS_API Texture* Moss_CreateTexture(Moss_Renderer* renderer, );
 MOSS_API void Moss_DestoryTexture(Moss_Renderer* renderer, );
 
-MOSS_API Moss_CreateSurface(Moss_Renderer* renderer, );
+MOSS_API Surface* Moss_CreateSurface(Moss_Renderer* renderer, );
+MOSS_API void Moss_PresentSurface(Surface* surface);
 MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
 
-MOSS_API Moss_CreateSurfaceTexture(Moss_Renderer* renderer, );
+MOSS_API Surface* Moss_CreateSurfaceTexture(Moss_Renderer* renderer, );
+MOSS_API void Moss_PresentSurfaceTexture(Surface* surface);
 MOSS_API void Moss_DestorySurfaceTexture(Moss_Renderer* renderer, );
+
+MOSS_API Mesh* Moss_CreateMesh(Moss_Renderer* renderer, );
+MOSS_API void Moss_PresentMesh(Mesh* mesh);
+MOSS_API void Moss_DestoryMesh();
+MOSS_API Model* Moss_CreateModel(Moss_Renderer* renderer, );
+MOSS_API void Moss_PresentMesh(Model* model);
+MOSS_API void Moss_DestoryMesh();
 
 // Graphics Specific
 #ifdef MOSS_GRAPHICS_OPENGL
@@ -281,6 +290,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
