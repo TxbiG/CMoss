@@ -229,9 +229,12 @@ MOSS_API Surface* Moss_CreateSurface(Moss_Renderer* renderer, );
 MOSS_API void Moss_PresentSurface(Surface* surface);
 MOSS_API void Moss_DestorySurface(Moss_Renderer* renderer, );
 
-MOSS_API Surface* Moss_CreateSurfaceTexture(Moss_Renderer* renderer, );
-MOSS_API void Moss_PresentSurfaceTexture(Surface* surface);
-MOSS_API void Moss_DestorySurfaceTexture(Moss_Renderer* renderer, );
+MOSS_API Surface* Moss_CreateSurfaceRectTexture(Moss_Renderer* renderer, );
+MOSS_API void Moss_PresentSurfaceRectTexture(Surface* surface);
+MOSS_API void Moss_DestorySurfaceRectTexture(Moss_Renderer* renderer, );
+
+MOSS_API Surface* Moss_CreateSurfaceSquare(Moss_Renderer* renderer, );
+MOSS_API Surface* Moss_CreateSurfaceCircle(Moss_Renderer* renderer, );
 
 MOSS_API Mesh* Moss_CreateMesh(Moss_Renderer* renderer, );
 MOSS_API void Moss_PresentMesh(Mesh* mesh);
@@ -239,6 +242,25 @@ MOSS_API void Moss_DestoryMesh();
 MOSS_API Model* Moss_CreateModel(Moss_Renderer* renderer, );
 MOSS_API void Moss_PresentMesh(Model* model);
 MOSS_API void Moss_DestoryMesh();
+
+
+// Utils
+MOSS_API void Moss_DrawLine2D();
+MOSS_API void Moss_DrawLine3D();
+MOSS_API void Moss_DrawPoint2D();
+MOSS_API void Moss_DrawPoint3D();
+MOSS_API void Moss_DrawCricle2D();
+MOSS_API void Moss_DrawCricle3D();
+MOSS_API void Moss_DrawTriangle2D();
+MOSS_API void Moss_DrawTriangle3D();
+MOSS_API void Moss_DrawBox2D();
+MOSS_API void Moss_DrawBox3D();
+MOSS_API void Moss_DrawCylinder2D();
+MOSS_API void Moss_DrawCylinder3D();
+MOSS_API void Moss_DrawCapsule2D();
+MOSS_API void Moss_DrawCapsule3D();
+MOSS_API void Moss_DrawRay2D();
+MOSS_API void Moss_DrawRay3D();
 
 // Graphics Specific
 #ifdef MOSS_GRAPHICS_OPENGL
@@ -290,6 +312,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
