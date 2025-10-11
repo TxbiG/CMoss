@@ -312,16 +312,3 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
