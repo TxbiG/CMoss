@@ -46,12 +46,13 @@ set(MOSS_SOURCES
     ${MOSS_ROOT}/network/win32.c
 
     # Renderer
-    ${MOSS_ROOT}/Renderer.cpp
+    ${MOSS_ROOT}/renderer/moss_renderer.c
 
     # Physics
-
+	${MOSS_ROOT}/physics/moss_physics.c
 
     # XR <OpenXR>
+	${MOSS_ROOT}/XR/moss_xr.c
 )
 
 add_library(Moss STATIC ${MOSS_SOURCES})
