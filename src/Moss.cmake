@@ -15,6 +15,7 @@ set(MOSS_ROOT ${REPO_ROOT}/src)
 # Define library sources
 set(MOSS_SOURCES
     # Platform
+    ${MOSS_ROOT}/moss_stdinc.c
     ${MOSS_ROOT}/platform/platform_intern.h
     
     ${MOSS_ROOT}/platform/android/.h
