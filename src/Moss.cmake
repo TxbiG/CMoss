@@ -30,7 +30,9 @@ set(MOSS_SOURCES
     ${MOSS_ROOT}/platform/linux/x11_monitor.c
     ${MOSS_ROOT}/platform/linux/x11_window.c
 
-    ${MOSS_ROOT}/platform/windows/.h
+    ${MOSS_ROOT}/platform/windows/win32_window.c
+    ${MOSS_ROOT}/platform/windows/win32_monitor.c
+    ${MOSS_ROOT}/platform/windows/win32_input.c
 
     # Audio
 
