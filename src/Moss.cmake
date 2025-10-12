@@ -20,21 +20,29 @@ set(MOSS_SOURCES
     
     ${MOSS_ROOT}/platform/android/.h
     ${MOSS_ROOT}/platform/ios/.h
-
     ${MOSS_ROOT}/platform/macos/.h
-    
+	
     ${MOSS_ROOT}/platform/linux/linux_platform.h
     ${MOSS_ROOT}/platform/linux/linux_input.c
     ${MOSS_ROOT}/platform/linux/wl_monitor.c
     ${MOSS_ROOT}/platform/linux/wl_window.c
     ${MOSS_ROOT}/platform/linux/x11_monitor.c
     ${MOSS_ROOT}/platform/linux/x11_window.c
-
     ${MOSS_ROOT}/platform/windows/win32_window.c
     ${MOSS_ROOT}/platform/windows/win32_monitor.c
     ${MOSS_ROOT}/platform/windows/win32_input.c
 
     # Audio
+	${MOSS_ROOT}/audio/audio_intern.h
+	${MOSS_ROOT}/audio/linux/alsa_audio.c
+	${MOSS_ROOT}/audio/linux/alsa_microphone.c
+	${MOSS_ROOT}/audio/linux/alsa_speaker.c
+	${MOSS_ROOT}/audio/mac/mac_audio.c
+	${MOSS_ROOT}/audio/mac/mac_microphone.c
+	${MOSS_ROOT}/audio/mac/mac_speaker.c
+	${MOSS_ROOT}/audio/windows/win32_audio.c
+	${MOSS_ROOT}/audio/windows/win32_microphone.c
+	${MOSS_ROOT}/audio/windows/win32_speaker.c
 
     # Network
     ${MOSS_ROOT}/network/address.c
