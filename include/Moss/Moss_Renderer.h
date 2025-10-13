@@ -153,16 +153,6 @@ typedef enum class DepthTest { Off = 0U, On = 1U };								                     
 typedef enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			              // How to blend the pixel from the shader in the back buffer
 typedef enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
 
-typedef struct Moss_RendererSettings {
-    bool vsync;
-    bool hdr;
-    bool enableShadows;
-    bool wireframe;
-    uint32_t maxFPS;
-    uint32_t msaaSamples;
-    Color clearColor;
-} Moss_RendererSettings;
-
 typedef struct Moss_Renderer;
 typedef struct Camera2D { Float2 position, offset; float zoom = 1.0f, float rotation = 0.0f; };
 typedef struct Camera3D {
@@ -177,10 +167,10 @@ typedef struct Camera3D {
     float farPlane = 1000.0f; 
 };
 typedef struct Shader;
-typedef Shader ShaderPixel;
-typedef Shader PostProcessing;
-typedef Shader ShaderVertex;
-typedef Shader ShaderComputing;
+typedef struct ShaderPixel;
+typedef ShaderPixel PostProcessing;
+typedef struct ShaderVertex;
+typedef struct ShaderComputing;
 typedef struct Pipelinestate;
 typedef struct Texture;
 typedef Texture Texture2D;
@@ -323,6 +313,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
