@@ -245,22 +245,22 @@ MOSS_API void Moss_DestoryMesh();
 
 
 // Utils
-MOSS_API void Moss_DrawLine2D();
-MOSS_API void Moss_DrawLine3D();
-MOSS_API void Moss_DrawPoint2D();
-MOSS_API void Moss_DrawPoint3D();
-MOSS_API void Moss_DrawCricle2D();
-MOSS_API void Moss_DrawCricle3D();
-MOSS_API void Moss_DrawTriangle2D();
-MOSS_API void Moss_DrawTriangle3D();
-MOSS_API void Moss_DrawBox2D();
-MOSS_API void Moss_DrawBox3D();
-MOSS_API void Moss_DrawCylinder2D();
-MOSS_API void Moss_DrawCylinder3D();
-MOSS_API void Moss_DrawCapsule2D();
-MOSS_API void Moss_DrawCapsule3D();
-MOSS_API void Moss_DrawRay2D();
-MOSS_API void Moss_DrawRay3D();
+MOSS_API void Moss_CreateLine2D();
+MOSS_API void Moss_CreateLine3D();
+MOSS_API void Moss_CreatePoint2D();
+MOSS_API void Moss_CreatePoint3D();
+MOSS_API void Moss_CreateCricle2D();
+MOSS_API void Moss_CreateCricle3D();
+MOSS_API void Moss_CreateTriangle2D();
+MOSS_API void Moss_CreateTriangle3D();
+MOSS_API void Moss_CreateBox2D();
+MOSS_API void Moss_CreateBox3D();
+MOSS_API void Moss_CreateCylinder2D();
+MOSS_API void Moss_CreateCylinder3D();
+MOSS_API void Moss_CreateCapsule2D();
+MOSS_API void Moss_CreateCapsule3D();
+MOSS_API void Moss_CreateRay2D();
+MOSS_API void Moss_CreateRay3D();
 
 // Graphics Specific
 #ifdef MOSS_GRAPHICS_OPENGL
@@ -312,3 +312,4 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
