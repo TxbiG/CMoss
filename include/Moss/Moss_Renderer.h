@@ -178,6 +178,7 @@ typedef struct Camera3D {
 };
 typedef struct Shader;
 typedef Shader ShaderPixel;
+typedef Shader PostProcessing;
 typedef Shader ShaderVertex;
 typedef Shader ShaderComputing;
 typedef struct Pipelinestate;
@@ -322,5 +323,6 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
