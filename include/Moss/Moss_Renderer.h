@@ -39,6 +39,13 @@
  * - **Particle Systems** — Unified particle framework for both 2D and 3D effects.
  * - **Reflection Probes & Global Illumination** — Enables environment-based lighting and reflections.
  * - **Compositor (Planned)** — Future abstraction for multi-pass rendering and post-fx composition.
+ * 
+ *
+ * ### Graphics Rendering
+ * - **OpenGL** - Compatibility & Mobile
+ * - **Vulkan** - Forward+ & Mobile
+ * - **DirectX 12** - Forward+
+ * - **Metal** - Forward+ & Mobile
  *
  * ### Secondary Systems:
  * - **Scene Graph / Hierarchy** — Entity rendering order, transform propagation, and culling organization.
@@ -59,15 +66,8 @@ extern "C" {
 #endif
 
 #ifdef MOSS_GRAPHICS_OPENGL
-#include <Moss/Renderer/GL/FontGL.h>
-//#include <Moss/Renderer/GL/MeshGL.h>
-#include <Moss/Renderer/GL/ShaderGL.h>
-#include <Moss/Renderer/GL/SubViewportGL.h>
-#include <Moss/Renderer/GL/SurfaceGL.h>
-#include <Moss/Renderer/GL/TextureGL.h>
-#include <Moss/Renderer/GL/ShaderGL.h>
-#endif
-#ifdef MOSS_GRAPHICS_VULKAN
+#include <Moss/Moss_GL.h>
+#elif MOSS_GRAPHICS_VULKAN
 #include <vulkan/vulkan.h>
 #elif MOSS_GRAPHICS_DIRECTX
 #include <d3d12.h>
@@ -153,6 +153,16 @@ typedef enum class DepthTest { Off = 0U, On = 1U };								                     
 typedef enum class BlendMode { Opaque = 0U, Alpha = 1U, Additive = 2U };			              // How to blend the pixel from the shader in the back buffer
 typedef enum class CullMode { None = 0U, Backface = 1U, FrontFace = 2U };				          // How to cull triangles
 
+typedef struct Moss_RendererSettings {
+    bool vsync;
+    bool hdr;
+    bool enableShadows;
+    bool wireframe;
+    uint32_t maxFPS;
+    uint32_t msaaSamples;
+    Color clearColor;
+} Moss_RendererSettings;
+
 typedef struct Moss_Renderer;
 typedef struct Camera2D { Float2 position, offset; float zoom = 1.0f, float rotation = 0.0f; };
 typedef struct Camera3D {
@@ -205,11 +215,11 @@ MOSS_API void Moss_RendererSetBackground(Moss_Renderer* renderer, Color color);
 /*! @brief Free renderer. @param Moss_Renderer renderer. @ingroup Renderer. */
 MOSS_API void Moss_TerminateRenderer(Moss_Renderer* renderer);
 
-MOSS_API Camera2* Moss_CreateCamera2(Moss_Renderer* renderer, );
-MOSS_API void Moss_DestoryCamera2(Moss_Renderer* renderer, );
+MOSS_API Camera2D* Moss_CreateCamera2D(Moss_Renderer* renderer, Float2 position, Float2 offset);
+MOSS_API void Moss_DestroyCamera2D(Camera2D* camera);
 
-MOSS_API Camera3* Moss_CreateCamera3(Moss_Renderer* renderer, );
-MOSS_API void Moss_DestoryCamera3(Moss_Renderer* renderer, );
+MOSS_API Camera3D* Moss_CreateCamera3D(Moss_Renderer* renderer, Float3 position, Float3 target);
+MOSS_API void Moss_DestroyCamera3D(Camera3D* camera);
 
 MOSS_API ShaderPixel* Moss_Create_ShaderPixel()
 MOSS_API ShaderVertex* Moss_Create_ShaderVertex()
@@ -312,4 +322,5 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
