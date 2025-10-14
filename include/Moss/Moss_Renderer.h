@@ -175,9 +175,27 @@ typedef struct Pipelinestate;
 typedef struct Texture;
 typedef Texture Texture2D;
 typedef Texture NoiseTexture2D;
-typedef struct Surface;
 typedef struct FogVolume;
 typedef struct SubViewport;
+
+typedef struct Material2D {
+    Float3 albedo;
+    Texture* albedoMap;
+    Texture* normalMap;
+};
+typedef struct Material3D {
+    Float3 albedo;
+    float metallic;
+    float roughness;
+    float ao;
+    float specular;
+    Texture* albedoMap;
+    Texture* normalMap;
+    Texture* roughnessMap;
+    Texture* metallicMap;
+    Texture* aoMap;
+};
+typedef struct Surface;
 typedef struct Mesh;
 typedef struct Model;
 typedef struct SkyBox;
@@ -313,6 +331,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
