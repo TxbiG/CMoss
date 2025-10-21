@@ -230,9 +230,9 @@ MOSS_API void Moss_DestroyCamera2D(Camera2D* camera);
 MOSS_API Camera3D* Moss_CreateCamera3D(Moss_Renderer* renderer, Float3 position, Float3 target);
 MOSS_API void Moss_DestroyCamera3D(Camera3D* camera);
 
-MOSS_API ShaderPixel* Moss_Create_ShaderPixel()
-MOSS_API ShaderVertex* Moss_Create_ShaderVertex()
-MOSS_API ShaderComputing* Moss_Create_ShaderComputing()
+MOSS_API ShaderPixel* Moss_Create_ShaderPixel();
+MOSS_API ShaderVertex* Moss_Create_ShaderVertex();
+MOSS_API ShaderComputing* Moss_Create_ShaderComputing();
 MOSS_API void Moss_Destroy_Shader();
 
 MOSS_API Pipelinestate* Moss_CreatePipelinestate(Moss_Renderer* renderer, VertexShader* vertex, const InputDescription* inputDescription, uint inputDescriptionCount, 
@@ -331,6 +331,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
