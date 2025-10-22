@@ -284,6 +284,8 @@ MOSS_API void Moss_CreateRay3D();
 // Graphics Specific
 #ifdef MOSS_GRAPHICS_OPENGL
 #endif
+#ifdef MOSS_GRAPHICS_OPENGLES
+#endif
 
 #ifdef MOSS_GRAPHICS_VULKAN
 MOSS_API VkDevice						GetDevice(Moss_Renderer* renderer);
@@ -331,6 +333,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
