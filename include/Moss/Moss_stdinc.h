@@ -562,6 +562,8 @@ typedef unsigned int size;
     #define MOSS_ALIGNED_FREE(void *mem) aligned_free(void *mem)
 #endif
 
+typedef float DeltaTime;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -575,6 +577,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
