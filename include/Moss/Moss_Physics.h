@@ -115,7 +115,6 @@
  * - Fluid simulation with particle-based solvers.  
  * - GPU-accelerated broadphase (Vulkan / CUDA).  
  * - Async baking for collision meshes and static environments.  
- * - Haptic feedback integration via Moss_Haptics for physical interactions.  
  */
 
 #include <stdbool.h>
@@ -2976,6 +2975,7 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
 
 
 
