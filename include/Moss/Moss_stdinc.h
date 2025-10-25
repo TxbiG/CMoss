@@ -375,6 +375,38 @@
 	#error Undefined
 #endif
 
+// SIMD vector typedefs
+#if defined(MOSS_USE_AVX512)
+    typedef __m512   Moss_f32vec16_t;
+    typedef __m512d  Moss_f64vec8_t;
+    typedef __m512i  Moss_i32vec16_t;
+    typedef __m512i  Moss_i64vec8_t;
+#elif defined(MOSS_USE_AVX2)
+    typedef __m256   Moss_f32vec8_t;
+    typedef __m256d  Moss_f64vec4_t;
+    typedef __m256i  Moss_i32vec8_t;
+    typedef __m256i  Moss_i64vec4_t;
+#elif defined(MOSS_USE_AVX)
+    typedef __m256   Moss_f32vec8_t;
+    typedef __m256d  Moss_f64vec4_t;
+#elif defined(MOSS_USE_SSE)
+    typedef __m128   Moss_f32vec4_t;
+    typedef __m128d  Moss_f64vec2_t;
+    typedef __m128i  Moss_i32vec4_t;
+    typedef __m128i  Moss_i64vec2_t;
+#elif defined(MOSS_USE_NEON)
+    typedef float32x4_t Moss_f32vec4_t;
+    typedef int32x4_t   Moss_i32vec4_t;
+    typedef uint32x4_t  Moss_u32vec4_t;
+    #if defined(__aarch64__)
+        typedef float64x2_t Moss_f64vec2;
+    #endif
+#elif defined(MOSS_PLATFORM_WASM)
+    typedef v128_t Moss_f32vec4;
+    typedef v128_t Moss_i32vec4;
+    typedef v128_t Moss_u32vec4;
+#endif
+
 #define MOSS_FALSE   0U
 #define MOSS_TRUE    1U
 
@@ -577,6 +609,7 @@ static inline int randi_range(int min, int max) { return min + rand() % (max - m
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
