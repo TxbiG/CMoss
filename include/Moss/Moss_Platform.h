@@ -52,7 +52,7 @@
 #endif
 
 
-#include <Moss/Core/Core.h>
+#include <Moss/Moss_stdinc.h>
 
 #define KEY_0
 #define KEY_1
@@ -675,6 +675,7 @@ MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPh
 
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
