@@ -158,12 +158,30 @@ extern "C" {
 MOSS_API Wav* loadWav(const char* path);
 MOSS_API void RemoveWav(Wav* wav);
 
+
+MOSS_API AudioStream* Moss_CreateAudioStream();
+MOSS_API AudioStream* Moss_CreateAudioStream2D();
+MOSS_API AudioStream* Moss_CreateAudioStream3D();
+MOSS_API void Moss_DestoryAudioStream(AudioStream* audiostream);
+MOSS_API void Moss_DestoryAudioStream2D(AudioStream2D* audiostream);
+MOSS_API void Moss_DestoryAudioStream3D(AudioStream3D* audiostream);
+
+
+MOSS_API AudioListener2D* Moss_CreateAudioListener2D();
+MOSS_API AudioListener3D* Moss_CreateAudioListener3D();
+MOSS_API RayAudioListener2D* Moss_CreateRayAudioListener2D();
+MOSS_API RayAudioListener3D* Moss_CreateRayAudioListener3D();
+MOSS_API void Moss_DestoryAudioListener2D(AudioStream* audiostream);
+MOSS_API void Moss_DestoryAudioListener3D(AudioStream* audiostream);
+MOSS_API void Moss_DestoryRayAudioListener2D(AudioStream* audiostream);
+MOSS_API void Moss_DestoryRayAudioListener3D(AudioStream* audiostream);
 #ifdef __cplusplus
 }
 #endif
 
 
 #endif // MOSS_AUDIO_H
+
 
 
 
