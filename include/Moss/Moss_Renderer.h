@@ -61,6 +61,9 @@
  * integrated with scene management, physics visualization, and UI rendering layers.
  */
 
+
+#include <Moss/Moss_Platform.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -333,6 +336,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
