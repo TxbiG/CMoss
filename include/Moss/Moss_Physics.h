@@ -120,6 +120,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <Moss/Moss_stdinc.h>
+#include <Moss/Moss_Renderer.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -2975,6 +2977,7 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
 
 
 
