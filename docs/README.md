@@ -3,7 +3,7 @@
 ## Overview
 - [Introduction](#) — What is MossFramework?
 - [Architecture Overview](#) — Key systems/components.
-- [Thirdparties](/docs/Thirdparties.md)
+- [Thirdparties](/External/Thirdparties.md)
 - [Licensing](https://github.com/TxbiG/MossFramework/blob/main/LICENSE)
 
 ## Getting Started
