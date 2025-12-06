@@ -71,7 +71,8 @@
  * - Modular extension for third-party DSPs and audio middleware.
  */
 
-#include <Moss/Moss_Core.h>
+#include <Moss/Moss_stdinc.h>
+#include <Moss/Moss_Physics.h>
 
 /*  Cross-platform audio system supporting:
         - Windows: XAudio
@@ -138,9 +139,9 @@ typedef struct AudioSpec_t {
 };
 
 typedef struct AudioEffect;
+typedef struct Wav;
 typedef struct Microphone;
 typedef struct Speaker;
-typedef struct Wav;
 
 typedef struct AudioStream;
 typedef struct AudioStream2D;
@@ -154,6 +155,10 @@ typedef struct RayAudioListener3D;
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+MOSS_API bool Moss_Init_Audio();
+MOSS_API void Moss_Terminate_Audio();
 
 MOSS_API Wav* loadWav(const char* path);
 MOSS_API void RemoveWav(Wav* wav);
@@ -181,6 +186,7 @@ MOSS_API void Moss_DestoryRayAudioListener3D(AudioStream* audiostream);
 
 
 #endif // MOSS_AUDIO_H
+
 
 
 
