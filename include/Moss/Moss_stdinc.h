@@ -480,13 +480,9 @@
 
 #define RAD(x)        ((x) * (PI / 180.0))
 #define FACT(n)       ((n) <= 1 ? 1 : (n) * FACT((n) - 1))
-#define SIN(x)        ((x) - ((x)*(x)*(x))/FACT(3) + ((x)*(x)*(x)*(x)*(x))/FACT(5) - ((x)*(x)*(x)*(x)*(x)*(x)*(x))/FACT(7))
-#define COS(x)        (1 - ((x)*(x))/FACT(2) + ((x)*(x)*(x)*(x))/FACT(4) - ((x)*(x)*(x)*(x)*(x)*(x))/FACT(6))
-#define TAN(x)        (SIN(x) / COS(x))
 #define SIGN(x)       ((inV < 0)? (-1) : (1))
 //#define LERP(a, b, t) ((a) + (t) * ((b) - (a)))
 
-#define ABS(x)       ((x) < 0 ? -(x) : (x))
 #define ATAN2(y, x)  ((x) > 0 ? ATAN_POLY((y) / (x)) : \ ((x) < 0 && (y) >= 0 ? ATAN_POLY((y) / (x)) + PI : \ ((x) < 0 && (y) < 0 ? ATAN_POLY((y) / (x)) - PI : \ ((x) == 0 && (y) > 0 ? HALF_PI : \ ((x) == 0 && (y) < 0 ? -HALF_PI : 0)))))
 #define SQRT(x)      ({ double guess = (x) / 2; \ for (int i = 0; i < 5; i++) guess = (guess + (x) / guess) / 2; \ guess; }) // using Newton method
 #define ACOS(x)      (ATAN2(SQRT(1 - (x) * (x)), (x)))
@@ -495,7 +491,6 @@
 #define CEIL(x)      (((x) == (int)(x)) ? (x) : (int)((x) + 1))
 #define FABS(x)      ((x) < 0 ? -(x) : (x))
 #define FLOOR(x)     (((x) == (int)(x)) ? (x) : (int)(x))
-#define FMOD(x, y)   ((x) - ((int)((x) / (y))) * (y))
 
 // Logarithm approximations using Taylor series
 #define LOG(x)       ((x) - 1 - (((x) - 1) * ((x) - 1)) / 2 + (((x) - 1) * ((x) - 1) * ((x) - 1)) / 3)
@@ -528,8 +523,6 @@
 
 #define CLAMP(x, a, b) (((x) < (a)) ? (a) : (((x) > (b)) ? (b) : (x)))
 
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MOSS_DIFFERENCE(x, y) ((x) < (y) ? (y) - (x) : (x) - (y))
 
 #define SQUARE(x) (x * x)
@@ -600,15 +593,57 @@ typedef float DeltaTime;
 extern "C" {
 #endif
 
-static inline void seed_random() { srand((unsigned int)time(NULL)); }
-static inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
-static inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
+
+inline float Moss_Cos();
+inline float Moss_Sin();
+inline float Moss_Tan();
+
+inline float Moss_Min(float a, float b) { return (a < b) ? a : b; }
+inline float Moss_Max(float a, float b) { return (a > b) ? a : b; }
+inline float Moss_Abs(float v)         { return (v < 0.0f) ? -v : v; }
+
+inline float Moss_Sqrt(float v)        { return sqrtf(v); }
+inline float Moss_Ceil(float v)        { return ceilf(v); }
+inline float Moss_Floor(float v)       { return floorf(v); }
+inline float Moss_Trunc(float v)       { return truncf(v); }
+inline float Moss_Round(float v)       { return roundf(v); }
+inline float Moss_Fmod(float a, float b) { return fmodf(a, b); }
+
+
+
+inline bool Moss_IsFinite(float v) { return isfinite(v) != 0; }
+inline bool Moss_IsNaN(float v)    { return isnan(v) != 0; }
+
+
+inline float Moss_Asinh(float v) { return asinhf(v); }
+inline float Moss_Acosh(float v) { return acoshf(v); }
+inline float Moss_Atanh(float v) { return atanhf(v); }
+
+inline float Moss_Clamp(float v, float minv, float maxv)
+{
+    if (v < minv) return minv;
+    if (v > maxv) return maxv;
+    return v;
+}
+
+inline float Moss_Lerp(float a, float b, float t)
+{
+    return a + t * (b - a);
+}
+
+
+
+
+inline void seed_random() { srand((unsigned int)time(NULL)); }
+inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
+inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
