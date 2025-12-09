@@ -130,8 +130,6 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <Moss/Core/Core.h>
-
 
 // Determine platform
 #if defined(MOSS_PLATFORM_BLUE)
@@ -350,7 +348,7 @@
 	#define MOSS_EXPORT
 #endif
 
-#define MOSS_API MOSS_EXPORT
+#define MOSS_API extern "C" MOSS_EXPORT
 
 #ifndef MOSS_EXPORT_GCC_BUG_WORKAROUND
 	#define MOSS_EXPORT_GCC_BUG_WORKAROUND MOSS_EXPORT
@@ -643,6 +641,7 @@ inline int randi_range(int min, int max) { return min + rand() % (max - min + 1)
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
