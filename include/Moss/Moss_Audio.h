@@ -94,19 +94,19 @@ typedef struct Moss_Microphone Moss_Microphone;
 
 typedef uint32_t ChannelID;
 
-enum class AudioEffectType : uint8_t {
-    LOWPASS,
-    HIGHTPASS,
-    ECHO,
-    FLANGE,
-    DISTORTION,
-    NORMALIZE,
-    PARAMEQ,
-    PITCHSHIFTER,
-    CHORUS,
-    COMPRESSOR,
-    REVERB,
-    DELAY,
+enum AudioEffectType {
+    AUDIO_EFFECT_TYPE_LOWPASS,
+    AUDIO_EFFECT_TYPE_HIGHTPASS,
+    AUDIO_EFFECT_TYPE_ECHO,
+    AUDIO_EFFECT_TYPE_FLANGE,
+    AUDIO_EFFECT_TYPE_DISTORTION,
+    AUDIO_EFFECT_TYPE_NORMALIZE,
+    AUDIO_EFFECT_TYPE_PARAMEQ,
+    AUDIO_EFFECT_TYPE_PITCHSHIFTER,
+    AUDIO_EFFECT_TYPE_CHORUS,
+    AUDIO_EFFECT_TYPE_COMPRESSOR,
+    AUDIO_EFFECT_TYPE_REVERB,
+    AUDIO_EFFECT_TYPE_DELAY,
     // Doppler, panning, distance attenuation
 };
 
@@ -301,3 +301,4 @@ MOSS_API int Moss_ListMicrophoneDevices();
 MOSS_SUPRESS_WARNINGS_END
 
 #endif // MOSS_AUDIO_H
+
