@@ -19,11 +19,10 @@
 
 ## Audio
 - [Overview](/docs/Audio.md#overview)
-  - [Channels](/docs/Audio.md#channels), [Effects](/docs/Audio.md#effects)
-  - [AudioStream](/docs/Audio.md#audiostream), [AudioStream2](/docs/Audio.md#audiostream2), [AudioStream3](/docs/Audio.md#audiostream3)
-  - [AudioListener2](/docs/Audio.md#audiolistener2), [AudioListener3](/docs/Audio.md#audiolistener3)
+  - [Channel](/docs/Audio.md#channels), [AudioEffect](/docs/Audio.md#effects)
+  - [AudioStream](/docs/Audio.md#audiostream), [AudioStream2D](/docs/Audio.md#audiostream2), [AudioStream3D](/docs/Audio.md#audiostream3)
+  - [AudioListener2D](/docs/Audio.md#audiolistener2), [AudioListener3D](/docs/Audio.md#audiolistener3) [RayAudioListener2D](/docs/Audio.md#audiolistener2), [RayAudioListener3D](/docs/Audio.md#audiolistener3)
   - [Speaker](/docs/Audio.md#speaker), [Microphone](/docs/Audio.md#microphone)
-  - [RayTrace Audio](/docs/Audio.md#raytraceaudio)
 
 ## Components
 - 2D
