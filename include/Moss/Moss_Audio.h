@@ -180,12 +180,57 @@ MOSS_API void Moss_DestoryAudioListener2D(AudioStream* audiostream);
 MOSS_API void Moss_DestoryAudioListener3D(AudioStream* audiostream);
 MOSS_API void Moss_DestoryRayAudioListener2D(AudioStream* audiostream);
 MOSS_API void Moss_DestoryRayAudioListener3D(AudioStream* audiostream);
+
+
+
+
+// Speakers
+/*! @brief X. */
+bool Moss_IsSpeakerDeviceReady();
+/*! @brief X. */
+void Moss_AudioSpeakerOpen();
+/*! @brief X. */
+void Moss_AudioSpeakerPause();
+/*! @brief X. */
+void Moss_AudioSpeakerResume();
+/*! @brief X. */
+bool Moss_AudioSpeakerIsPaused();
+/*! @brief X. @param X X. */
+bool Moss_SelectSpeakerDevice(int id);
+/*! @brief X. */
+int Moss_GetCurrentSpeakerDeviceID();
+/*! @brief Get speaker name. @param X X. */
+const char* Moss_GetSpeakerDeviceName(int id);
+/*! @brief X. */
+int Moss_ListSpeakerDevices();
+
+// Microphone
+/*! @brief Check if microphone is ready. */
+bool Moss_IsMicrophoneDeviceReady();
+/*! @brief Initialize microphone. */
+int Moss_AudioMicrophoneOpen();              // Initialize microphone
+/*! @brief Start capture. */
+void Moss_AudioMicrophonePlay();
+/*! @brief Stop capture. */
+void Moss_AudioMicrophoneStop();
+/*! @brief Get default microphone ID. */
+int  Moss_AudioMicrophoneID();
+/*! @brief X. */
+void Moss_AudioMicrophoneType();              // Optional: get mic type
+/*! @brief X. @param X X. */
+bool Moss_SelectMicrophoneDevice(int id);
+/*! @brief Get microphone name. */
+const char* Moss_GetMicrophoneDeviceName(int index);
+/*! @brief Return number of microphones. */
+int Moss_ListMicrophoneDevices();
+
 #ifdef __cplusplus
 }
 #endif
 
 
 #endif // MOSS_AUDIO_H
+
 
 
 
