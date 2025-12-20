@@ -4,7 +4,7 @@
 - [Introduction](#) — What is MossFramework?
 - [Architecture Overview](#) — Key systems/components.
 - [Thirdparties](/External/Thirdparties.md)
-- [Licensing](https://github.com/TxbiG/MossFramework/blob/main/LICENSE)
+- [Licensing](/LICENSE)
 
 ## Getting Started
 [Your First 2D Game](/docs/2DGame#your-first-2d-game), [Your First 3D Game](/docs/3DGame#your-first-3d-game)
