@@ -170,10 +170,13 @@ typedef struct Camera3D {
     float farPlane = 1000.0f; 
 };
 typedef struct Shader;
-typedef struct ShaderPixel;
+typedef struct PixelShader;
 typedef ShaderPixel PostProcessing;
-typedef struct ShaderVertex;
-typedef struct ShaderComputing;
+typedef struct VertexShader;
+typedef struct ComputingShader;
+typedef struct GeometryShader;
+typedef struct TesselationControlShader;
+typedef struct TesselationEvaluationShader;
 typedef struct Pipelinestate;
 typedef struct Texture;
 typedef Texture Texture2D;
@@ -203,8 +206,13 @@ typedef struct Mesh;
 typedef struct Model;
 typedef struct SkyBox;
 typedef struct Font;
-typedef struct Frustum2D;
-typedef struct Frustum3D;
+typedef struct Frustum2D {
+	AABB2 bounds;
+}
+typedef struct Frustum3D {
+	static constexpr int PLANE_COUNT = 5; // or 6 if you include the far plane
+	Plane			planes[PLANE_COUNT]; // Planes that form the frustum
+};
 
 
 typedef struct TextureLight2D     { float intensity, rotation; Ref<Texture> texture; Float2 position; Color color; }; // TextureLight2 is a Light that uses a texture as its emission
@@ -214,6 +222,10 @@ typedef struct TextureLight3D 	 { float intensity; Ref<Texture> texture; Float3 
 typedef struct DirectionalLight3D { float intensity; Float3 rotation; Color color; };														//
 typedef struct SpotLight3D 		 { float intensity, radius, angle, penumbra; Float3 position, rotation; Color color; };	//
 typedef struct OmniLight3D 		 { float intensity, radius; Float3 position; Color color; };							//
+
+typedef struct Decal { Ref<Texture> Albedo, Ref<Texture> Normal, Ref<Texture> Orm, Ref<Texture> Emission; Color color; float emission_energy, float blendFactor = 1.0f; Mat44 model; CullFilter filter; }
+typedef struct Sprite2D { Texture texture, Surface surface };
+typedef struct Sprite3D { Texture texture, Mesh mesh };
 
 /*              Renderer lifecycle          */
 /*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
@@ -336,6 +348,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 
 
 #endif // MOSS_RENDERER_H
+
 
 
 
