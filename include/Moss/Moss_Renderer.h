@@ -29,36 +29,40 @@
  *
  * The renderer module provides the abstraction layer for all 2D and 3D graphics
  * operations. It serves as a unified, API-agnostic rendering backend capable of
- * targeting multiple graphics APIs (Vulkan, OpenGL, Metal, and DirectX 12).
- *
+ * targeting multiple graphics APIs (Vulkan, OpenGL, OpenGL ES, Metal, and DirectX 12).
+ * 
+ * ### Renderer Types
+ * - Forward+       - Vulkan, DirectX 12, Metal (Modern Gen PC and consoles)
+ * - Mobile         - Vulkan, OpenGL ES v2.0 & v3.0, Metal (IOS & Android)
+ * - Compatibility  - OpenGL v3.3   (Older Gen PC and consoles)
+ * 
+ * ### Anti Aliasing
+ * - Forward+       - MSAA, SSAA, FXAA, SMAA, SSRL, TAA, FSR2
+ * - Mobile         - MSAA, SSAA, FXAA, SMAA, SSRL
+ * - Compatibility  - MSAA, SSAA
+ * 
+ * ### Macros
+ * - MOSS_GRAPHICS_OPENGL 	- OpenGL v3.3
+ * - MOSS_GRAPHICS_OPENGLES - OpenGL ES v2.0 or v3.0
+ * - MOSS_GRAPHICS_VULKAN 	- Vulkan
+ * - MOSS_GRAPHICS_DIRECTX 	- DirectX 12
+ * - MOSS_GRAPHICS_METAL 	- Metal
+ * - MOSS_RENDERER_FORWARD 	- Forward+ Rendering
+ * - MOSS_RENDERER_MOBILE 	- Mobile Rendering
+ * - MOSS_RENDERER_COMPATI 	- Compatibility Rendering
+ * 
  * ### Primary Responsibilities:
  * - **2D and 3D Rendering** — Handles scene rendering for both worlds and UI layers.
  * - **Debug Visualization** — Supports drawing collision bounds, gizmos, and profiling overlays.
  * - **Lighting & Shadows** — Manages dynamic and baked lighting, real-time shadow mapping, and reflections.
  * - **Post-Processing Pipeline** — Provides a customizable chain for effects such as bloom, tone mapping, FXAA/TAA, and color grading.
- * - **Particle Systems** — Unified particle framework for both 2D and 3D effects.
  * - **Reflection Probes & Global Illumination** — Enables environment-based lighting and reflections.
  * - **Compositor (Planned)** — Future abstraction for multi-pass rendering and post-fx composition.
- * 
- *
- * ### Graphics Rendering
- * - **OpenGL** - Compatibility & Mobile
- * - **Vulkan** - Forward+ & Mobile
- * - **DirectX 12** - Forward+
- * - **Metal** - Forward+ & Mobile
- *
- * ### Secondary Systems:
- * - **Scene Graph / Hierarchy** — Entity rendering order, transform propagation, and culling organization.
- * - **Animation Support** — Skeletal and morph target animation for characters, props, and environment elements.
- *
- * ### Planned Features / TODO:
  * - **Graphics API Abstraction Layers** — Full separation of renderer logic from API-specific backends.
  * - **Level of Detail (LOD) System** — Mesh simplification and distance-based swapping.
- * - **Occlusion & View Culling** — Reduce draw calls via frustum and depth testing.
- * - **Multithreaded Render Submission** — Asynchronous job-based rendering pipeline (future optimization).
  *
- * The renderer acts as the core visual subsystem of the Moss engine, directly
- * integrated with scene management, physics visualization, and UI rendering layers.
+ * The renderer acts as the core visual subsystem of Moss, directly
+ * integrated with physics visualisation and UI rendering layers.
  */
 
 #include <Moss/Moss_Platform.h>
@@ -328,6 +332,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 #endif
 
 #endif // MOSS_RENDERER_H
+
 
 
 
