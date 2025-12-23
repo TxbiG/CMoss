@@ -61,22 +61,7 @@
  * integrated with scene management, physics visualization, and UI rendering layers.
  */
 
-
 #include <Moss/Moss_Platform.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef MOSS_GRAPHICS_OPENGL
-#include <Moss/Moss_GL.h>
-#elif MOSS_GRAPHICS_VULKAN
-#include <vulkan/vulkan.h>
-#elif MOSS_GRAPHICS_DIRECTX
-#include <d3d12.h>
-#elif MOSS_GRAPHICS_METAL
-#include <Metal/Metal.hpp>
-#endif // MOSS_USE_METAL
 
 #define VIRTUAL_RESOLUTION_WIDTH 1920
 #define VIRTUAL_RESOLUTION_HEIGHT 1080
@@ -342,12 +327,8 @@ MOSS_API id<MTLDevice>					GetDevice(Moss_Renderer* renderer);
 MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 #endif
 
-#ifdef __cplusplus
-}
-#endif
-
-
 #endif // MOSS_RENDERER_H
+
 
 
 
