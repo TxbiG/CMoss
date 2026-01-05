@@ -578,6 +578,7 @@ MOSS_API int Moss_GetSystemRAM(void);
 
 /*! @brief URL to a website link. @param url URL link.*/
 MOSS_API bool Moss_OpenURL(const char *url);
+MOSS_API Moss_PowerState Moss_GetPowerInfo(int *seconds, int *percent);
 /*! @brief Get Locale of the Operating system. @return Moss_Locale e.g. "UK" for United Kingdom and "en" for English. */
 MOSS_API Moss_Locale* Moss_GetLocale();
 /*! @brief Loads a dynamic library from the given path. @param lib_path Path to the library file. @return Handle to the loaded library, or NULL on failure. @note The returned handle must be released using Moss_UnloadDynamicLibrary().*/
@@ -636,8 +637,116 @@ MOSS_API void Moss_SetWindowContentScaleCallback(Moss_WindowContentScaleCallback
 /*! @brief Sets the monitor connection or configuration callback. @param callback Pointer to a function invoked when a monitor is connected or disconnected. @ingroup Monitor */
 MOSS_API void Moss_SetMonitorCallback(Moss_MonitorCallback callback);
 
-// OpenGL
-#ifdef MOSS_USE_OPENGL
+
+MOSS_API bool Moss_CopyFile();
+MOSS_API bool Moss_CreateDirectory();
+MOSS_API bool Moss_EnumerateDirectory();
+MOSS_API bool Moss_GetBasePath();
+MOSS_API bool Moss_GetCurrentDirectory();
+MOSS_API bool Moss_GetPathInfo();
+MOSS_API bool Moss_GetPrefPath();
+MOSS_API bool Moss_GetUserFolder();
+MOSS_API bool Moss_GlobDirectory();
+MOSS_API bool Moss_RemovePath();
+MOSS_API bool Moss_RenamePath();
+
+MOSS_API void Moss_ShowFileDialogWithProperties(Moss_DialogFileCallback callback, void *userdata, Moss_Window *window, const Moss_DialogFileFilter *filters, int nfilters, const char *default_location);
+MOSS_API void Moss_ShowOpenFileDialog(Moss_DialogFileCallback callback, void *userdata, Moss_Window *window, const char *default_location, bool allow_many);
+MOSS_API void Moss_ShowOpenFolderDialog(Moss_DialogFileCallback callback, void *userdata, Moss_Window *window, const Moss_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);
+MOSS_API void Moss_ShowSaveFileDialog(Moss_FileDialogType type, Moss_DialogFileCallback callback, void *userdata, Moss_PropertiesID props);
+
+
+MOSS_API bool Moss_CloseStorage(Moss_Storage *storage);
+MOSS_API bool Moss_CopyStorageFile(Moss_Storage *storage, const char *oldpath, const char *newpath);
+MOSS_API bool Moss_CreateStorageDirectory(Moss_Storage *storage, const char *path);
+MOSS_API bool Moss_EnumerateStorageDirectory(Moss_Storage *storage, const char *path, Moss_EnumerateDirectoryCallback callback, void *userdata);
+MOSS_API bool Moss_GetStorageFileSize(Moss_Storage *storage, const char *path, uint64 *length);
+MOSS_API uint64 Moss_GetStorageSpaceRemaining(Moss_Storage *storage);
+MOSS_API bool Moss_GetStoragePathInfo(Moss_Storage *storage, const char *path, Moss_PathInfo *info);
+MOSS_API char** Moss_GlobStorageDirectory(Moss_Storage *storage, const char *path, const char *pattern, Moss_GlobFlags flags, int *count);
+MOSS_API Moss_Storage* Moss_OpenFileStorage(const char *path);
+MOSS_API Moss_Storage* Moss_OpenStorage(const Moss_Storage *iface, void *userdata);
+MOSS_API Moss_Storage* Moss_OpenTitleStorage(const char *override, Moss_PropertiesID props);
+MOSS_API Moss_Storage* Moss_OpenUserStorage(const char *org, const char *app, Moss_PropertiesID props);
+MOSS_API bool Moss_ReadStorageFile(Moss_Storage *storage, const char *path, void *destination, uint64 length);
+MOSS_API bool Moss_RemoveStoragePath(Moss_Storage *storage, const char *path);
+MOSS_API bool Moss_RenameStoragePath(Moss_Storage *storage, const char *oldpath, const char *newpath);
+MOSS_API bool Moss_StorageReady(Moss_Storage *storage);
+MOSS_API bool Moss_WriteStorageFile(Moss_Storage *storage, const char *path, const void *source, uint64 length);
+
+MOSS_API Moss_PenDeviceType Moss_GetPenDeviceType(Moss_PenID instance_id);
+
+MOSS_API const char* Moss_GetTouchDeviceName(Moss_TouchID touchID);
+MOSS_API Moss_TouchID* Moss_GetTouchDevices(int *count);
+MOSS_API Moss_TouchDeviceType Moss_GetTouchDeviceType(Moss_TouchID touchID);
+MOSS_API Moss_Finger** Moss_GetTouchFingers(Moss_TouchID touchID, int *count);
+
+
+MOSS_API int Moss_AddGamepadMapping(const char *mapping);
+MOSS_API int Moss_AddGamepadMappingsFromFile(const char *file);
+MOSS_API void Moss_CloseGamepad(Moss_Gamepad* gamepad);
+MOSS_API bool Moss_GamepadConnected(Moss_Gamepad* gamepad);
+MOSS_API bool Moss_GamepadEventsEnabled(void);
+MOSS_API bool Moss_GamepadHasAxis(Moss_Gamepad* gamepad, Moss_GamepadAxis axis);
+MOSS_API bool Moss_GamepadHasButton(Moss_Gamepad* gamepad, Moss_GamepadButton button);
+MOSS_API const char* Moss_GetGamepadAppleSFSymbolsNameForAxis(Moss_Gamepad* gamepad, Moss_GamepadAxis axis);
+MOSS_API const char* Moss_GetGamepadAppleSFSymbolsNameForButton(Moss_Gamepad* gamepad, Moss_GamepadButton button);
+MOSS_API int16 Moss_GetGamepadAxis(Moss_Gamepad* gamepad, Moss_GamepadAxis axis);
+MOSS_API Moss_GamepadAxis Moss_GetGamepadAxisFromString(Moss_Gamepad* gamepad, const char *str);
+MOSS_API Moss_GamepadBinding** Moss_GetGamepadBindings(Moss_Gamepad* gamepad, int *count);
+MOSS_API bool Moss_GetGamepadButton(Moss_Gamepad* gamepad, Moss_GamepadButton button);
+MOSS_API Moss_GamepadButton Moss_GetGamepadButtonFromString(const char *str);
+MOSS_API Moss_GamepadButtonLabel Moss_GetGamepadButtonLabel(Moss_Gamepad* gamepad, Moss_GamepadButton button);
+MOSS_API Moss_GamepadButtonLabel Moss_GetGamepadButtonLabelForType(Moss_GamepadType *gamepad, Moss_GamepadButton button);
+MOSS_API Moss_JoystickConnectionState Moss_GetGamepadConnectionState(Moss_Gamepad* gamepad);
+MOSS_API uint16 Moss_GetGamepadFirmwareVersion(Moss_Gamepad* gamepad);
+MOSS_API Moss_GetGamepadFromID(Moss_Gamepad* gamepad, );
+MOSS_API Moss_Gamepad* Moss_GetGamepadFromPlayerIndex(int playerID);
+MOSS_API Moss_joyStickID Moss_GetGamepadID(Moss_Gamepad* gamepad);
+MOSS_API Moss_Joystick* Moss_GetGamepadJoystick(Moss_Gamepad* gamepad);
+MOSS_API char* Moss_GetGamepadMapping(Moss_Gamepad* gamepad);
+MOSS_API char** Moss_GetGamepadMappings(int* count);
+MOSS_API const char* Moss_GetGamepadName(Moss_Gamepad* gamepad);
+MOSS_API const char* Moss_GetGamepadNameForID(Moss_JoyStickID id);
+MOSS_API const char* Moss_GetGamepadPath(Moss_Gamepad* gamepad);
+MOSS_API const char* Moss_GetGamepadPathForID(Moss_JoyStickID id);
+MOSS_API int Moss_GetGamepadPlayerIndex(Moss_Gamepad* gamepad);
+MOSS_API int Moss_GetGamepadPlayerIndexForID(Moss_JoyStickID id);
+MOSS_API Moss_PowerState Moss_GetGamepadPowerInfo(Moss_Gamepad* gamepad, int* percent);
+MOSS_API uint16 Moss_GetGamepadProduct(Moss_Gamepad* gamepad);
+MOSS_API uint16 Moss_GetGamepadProductForID(Moss_JoyStickID id);
+MOSS_API uint16 Moss_GetGamepadProductVersion(Moss_Gamepad* gamepad);
+MOSS_API uint16 Moss_GetGamepadProductVersionForID(Moss_JoyStickID id);
+MOSS_API Moss_JoyStickID Moss_GetGamepads(int* count);
+MOSS_API const char* Moss_GetGamepadSerial(Moss_Gamepad* gamepad);
+MOSS_API uint64 Moss_GetGamepadSteamHandle(Moss_Gamepad* gamepad);
+MOSS_API const char* Moss_GetGamepadStringForAxis(Moss_GamepadAxis axis);
+MOSS_API const char* Moss_GetGamepadStringForButton(Moss_GamepadButton button);
+MOSS_API const char* Moss_GetGamepadStringForType(Moss_GamePadType type);
+MOSS_API bool Moss_GetGamepadTouchpadFinger(Moss_Gamepad* gamepad, int touchpad, int finger, bool *down, float *x, float *y, float *pressure);
+MOSS_API Moss_GamepadType Moss_GetGamepadType(Moss_Gamepad* gamepad);
+MOSS_API Moss_GamepadType Moss_GetGamepadTypeForID(Moss_JoyStickID id);
+MOSS_API Moss_GamepadType Moss_GetGamepadTypeFromString(const char* str);
+MOSS_API uint16 Moss_GetGamepadVendor(Moss_Gamepad* gamepad);
+MOSS_API uint16 Moss_GetGamepadVendorForID(Moss_JoyStickID id);
+MOSS_API int Moss_GetNumGamepadTouchpadFingers(Moss_Gamepad* gamepad);
+MOSS_API int Moss_GetNumGamepadTouchpads(Moss_Gamepad* gamepad);
+MOSS_API Moss_GamepadType Moss_GetRealGamepadType(Moss_Gamepad* gamepad);
+MOSS_API Moss_GamepadType Moss_GetRealGamepadTypeForID(Moss_JoyStickID id);
+MOSS_API bool Moss_HasGamepad(void);
+MOSS_API bool Moss_IsGamepad(Moss_JoyStickID id);
+MOSS_API Moss_Gamepad Moss_OpenGamepad(Moss_JoyStickID id);
+MOSS_API bool Moss_ReloadGamepadMappings(void);
+MOSS_API bool Moss_RumbleGamepad(Moss_Gamepad* gamepad, uint16 low_frequency_rumble, uint16 high_frequency_rumble, uint32 duration_ms);
+MOSS_API bool Moss_RumbleGamepadTriggers(Moss_Gamepad* gamepad, uint16 left_rumble, uint16 right_rumble, uint32 duration_ms);
+MOSS_API bool Moss_SendGamepadEffect(Moss_Gamepad* gamepad, const void *data, int size);
+MOSS_API void Moss_SetGamepadEventsEnabled(bool enabled);
+MOSS_API bool Moss_SetGamepadLED(Moss_Gamepad* gamepad, uint8 red, uint8 green, uint8 blue);
+MOSS_API bool Moss_SetGamepadMapping(Moss_Gamepad* gamepad, const char *mapping);
+MOSS_API bool Moss_SetGamepadPlayerIndex(Moss_Gamepad* gamepad, int index);
+MOSS_API void Moss_UpdateGamepads(void);
+// OpenGL / OpenGL-ES
+#if defined(MOSS_GRAPHICS_OPENGL) || defined(MOSS_GRAPHICS_OPENGLES)
 /*! @brief Sets window as current.  @param X X. @ingroup window */
 MOSS_API void Moss_MakeContextCurrent(Moss_Window* window);
 /*! @brief Swapbuffers used to swapbuffers for opengl. @ingroup window */
@@ -649,7 +758,7 @@ MOSS_API void* Moss_GetProcAddress(const char* procname);
 #endif // MOSS_USE_OPENGL
 
 // Vulkan
-#ifdef MOSS_USE_VULKAN
+#if defined(MOSS_GRAPHICS_VULKAN)
 /*! @brief Creates the window for vulkan @param X X @ingroup Vulkan. */
 MOSS_API VkResult Moss_CreateWindowSurface(Moss_Window* window, VkInstance vk_instance, const VkAllocationCallbacks *allocator, VkSurfaceKHR* vk_surface);
 /*! @brief X @param X X @ingroup Vulkan. */
@@ -664,7 +773,16 @@ MOSS_API void* Moss_GetInstanceProcAddress(VkInstance instance, const char* proc
 MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPhysicalDevice device, uint32_t queuefamily);
 #endif // MOSS_USE_VULKAN
 
+// Metal
+#if defined(MOSS_GRAPHICS_METAL)
+typedef void *Moss_MetalView;
+MOSS_API Moss_MetalView Moss_Metal_CreateView(Moss_Window *window);
+MOSS_API void Moss_Metal_DestroyView(Moss_MetalView view);
+MOSS_API void* Moss_Metal_GetLayer(Moss_MetalView view);
+MOSS_API void Moss_Metal_Resize(Moss_MetalView handle, uint32_t width, uint32_t height);
+
 #endif // MOSS_PLATFORM_H
+
 
 
 
