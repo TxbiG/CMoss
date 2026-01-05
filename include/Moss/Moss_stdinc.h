@@ -373,38 +373,6 @@
 	#error Undefined
 #endif
 
-// SIMD vector typedefs
-#if defined(MOSS_USE_AVX512)
-    typedef __m512   Moss_f32vec16_t;
-    typedef __m512d  Moss_f64vec8_t;
-    typedef __m512i  Moss_i32vec16_t;
-    typedef __m512i  Moss_i64vec8_t;
-#elif defined(MOSS_USE_AVX2)
-    typedef __m256   Moss_f32vec8_t;
-    typedef __m256d  Moss_f64vec4_t;
-    typedef __m256i  Moss_i32vec8_t;
-    typedef __m256i  Moss_i64vec4_t;
-#elif defined(MOSS_USE_AVX)
-    typedef __m256   Moss_f32vec8_t;
-    typedef __m256d  Moss_f64vec4_t;
-#elif defined(MOSS_USE_SSE)
-    typedef __m128   Moss_f32vec4_t;
-    typedef __m128d  Moss_f64vec2_t;
-    typedef __m128i  Moss_i32vec4_t;
-    typedef __m128i  Moss_i64vec2_t;
-#elif defined(MOSS_USE_NEON)
-    typedef float32x4_t Moss_f32vec4_t;
-    typedef int32x4_t   Moss_i32vec4_t;
-    typedef uint32x4_t  Moss_u32vec4_t;
-    #if defined(__aarch64__)
-        typedef float64x2_t Moss_f64vec2;
-    #endif
-#elif defined(MOSS_PLATFORM_WASM)
-    typedef v128_t Moss_f32vec4;
-    typedef v128_t Moss_i32vec4;
-    typedef v128_t Moss_u32vec4;
-#endif
-
 #define MOSS_FALSE   0U
 #define MOSS_TRUE    1U
 
@@ -538,6 +506,63 @@ typedef unsigned short      u16;
 typedef unsigned int        u32;
 typedef unsigned long long  u64;
 
+// Variants
+typedef struct Vec2;
+typedef struct Vec3;
+typedef struct Vec4;
+typedef struct iVec2;
+typedef struct iVec3;
+typedef struct iVec4;
+typedef struct dVec2;
+typedef struct dVec3;
+typedef struct dVec4;
+typedef struct Float2   { float x, y; };
+typedef struct Float3   { float x, y, z; };
+typedef struct Float4   { float x, y, z, w; };
+typedef struct Int2     { int x, y; };
+typedef struct Int3     { int x, y, z; };
+typedef struct Int4     { int x, y, z, w; };
+typedef struct Double2  { double x, y; };
+typedef struct Double3  { double x, y, z; };
+typedef struct Double4  { double x, y, z, w; };
+typedef struct Mat2x3;
+typedef struct Mat2x4;
+typedef struct Mat2;
+typedef struct Mat3x2;
+typedef struct Mat3x4;
+typedef struct Mat3;
+typedef struct Mat4x2;
+typedef struct Mat4x3;
+typedef struct Mat4;
+typedef struct Color    { unsigned char r, g, b, a; };
+typedef struct Rect     { float x, y, width, height; };
+typedef struct iRect    { int x, y, width, height; };
+typedef Vec4 Quat;
+typedef struct Basis;
+typedef struct Texture {
+    unsigned int id;        // OpenGL texture id
+    int width;              // Texture base width
+    int height;             // Texture base height
+    int mipmaps;            // Mipmap levels, 1 by default
+    int format;             // Data format (PixelFormat type)
+} Texture;
+typedef Texture Texture2D;
+typedef Texture3D Texture3D;
+typedef Texture TextureCubemap;
+
+
+
+// Resources
+typedef struct BezierCurve;
+typedef struct BezierCurve2;
+typedef struct BezierCurve3;
+typedef struct Gradient;
+typedef struct Json;
+typedef struct Material;
+typedef struct PCK;
+typedef struct Timer;
+
+
 #if (defined(MOSS_PLATFORM_WINDOWS) || defined(MOSS_PLATFORM_MACSO) || defined(MOSS_PLATFORM_LINUX))
 #include <stddef.h>
 typedef unsigned long long size;
@@ -592,55 +617,72 @@ extern "C" {
 #endif
 
 
-inline float Moss_Cos();
-inline float Moss_Sin();
-inline float Moss_Tan();
+MOSS_API inline float Moss_Cos();
+MOSS_API inline float Moss_Sin();
+MOSS_API inline float Moss_Tan();
 
-inline float Moss_Min(float a, float b) { return (a < b) ? a : b; }
-inline float Moss_Max(float a, float b) { return (a > b) ? a : b; }
-inline float Moss_Abs(float v)         { return (v < 0.0f) ? -v : v; }
+MOSS_API inline float Moss_Min(float a, float b) { return (a < b) ? a : b; }
+MOSS_API inline float Moss_Max(float a, float b) { return (a > b) ? a : b; }
+MOSS_API inline float Moss_Abs(float v)         { return (v < 0.0f) ? -v : v; }
 
-inline float Moss_Sqrt(float v)        { return sqrtf(v); }
-inline float Moss_Ceil(float v)        { return ceilf(v); }
-inline float Moss_Floor(float v)       { return floorf(v); }
-inline float Moss_Trunc(float v)       { return truncf(v); }
-inline float Moss_Round(float v)       { return roundf(v); }
-inline float Moss_Fmod(float a, float b) { return fmodf(a, b); }
-
-
-
-inline bool Moss_IsFinite(float v) { return isfinite(v) != 0; }
-inline bool Moss_IsNaN(float v)    { return isnan(v) != 0; }
+MOSS_API inline float Moss_Sqrt(float v)        { return sqrtf(v); }
+MOSS_API inline float Moss_Ceil(float v)        { return ceilf(v); }
+MOSS_API inline float Moss_Floor(float v)       { return floorf(v); }
+MOSS_API inline float Moss_Trunc(float v)       { return truncf(v); }
+MOSS_API inline float Moss_Round(float v)       { return roundf(v); }
+MOSS_API inline float Moss_Fmod(float a, float b) { return fmodf(a, b); }
 
 
-inline float Moss_Asinh(float v) { return asinhf(v); }
-inline float Moss_Acosh(float v) { return acoshf(v); }
-inline float Moss_Atanh(float v) { return atanhf(v); }
 
-inline float Moss_Clamp(float v, float minv, float maxv)
+MOSS_API inline bool Moss_IsFinite(float v) { return isfinite(v) != 0; }
+MOSS_API inline bool Moss_IsNaN(float v)    { return isnan(v) != 0; }
+
+
+MOSS_API inline float Moss_Asinh(float v) { return asinhf(v); }
+MOSS_API inline float Moss_Acosh(float v) { return acoshf(v); }
+MOSS_API inline float Moss_Atanh(float v) { return atanhf(v); }
+
+MOSS_API inline float Moss_Clamp(float v, float minv, float maxv)
 {
     if (v < minv) return minv;
     if (v > maxv) return maxv;
     return v;
 }
 
-inline float Moss_Lerp(float a, float b, float t)
+MOSS_API inline float Moss_Lerp(float a, float b, float t)
 {
     return a + t * (b - a);
 }
 
 
+MOSS_API bool Moss_OBB2_Overlaps(const AABB2& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB3_Overlaps(const AABB3& inBox, float inEpsilon = 1.0e-6f);
+MOSS_API bool Moss_OBB3_Overlaps(const OBB3& inBox, float inEpsilon = 1.0e-6f);
 
 
-inline void seed_random() { srand((unsigned int)time(NULL)); }
-inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
-inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
+
+MOSS_API static inline Mat44 Moss_Ortho(float left, float right, float bottom, float top, float near, float far);
+MOSS_API static inline Mat44 Moss_Perspective(float fovY, float aspect, float near, float far);
+MOSS_API static inline Mat44 Moss_LookAt(Vec3 position, Vec3 target, Vec3 up);
+
+MOSS_API static inline Vec3 Moss_Vec2_Lerp(Vec2 a, Vec2 b, float t);
+MOSS_API static inline Vec3 Moss_Vec2_Clamp(Vec2 value, Vec2 min, Vec2 max);
+
+MOSS_API static inline Vec3 Moss_Vec3_Lerp(Vec3 a, Vec3 b, float t);
+MOSS_API static inline Vec3 Moss_Vec3_Clamp(Vec3 value, Vec3 min, Vec3 max);
+
+
+MOSS_API inline void seed_random() { srand((unsigned int)time(NULL)); }
+MOSS_API inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
+MOSS_API inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
