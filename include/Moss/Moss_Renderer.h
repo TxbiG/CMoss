@@ -218,7 +218,7 @@ typedef struct Sprite3D { Texture texture, Mesh mesh };
 
 /*              Renderer lifecycle          */
 /*! @brief Initalise Renderer. @param Moss_Window window. @ingroup Renderer. */
-MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window, Color* color, int virt_res_wdith, int virt_res_hight);
+MOSS_API Moss_Renderer* Moss_CreateRenderer(Moss_Window* window, Color* bg_color, int virt_res_wdith, int virt_res_hight);
 /*! @brief Begin Frame Clears the renderer ready to capture the next frame. @param Moss_Renderer renderer. @ingroup Renderer. */
 MOSS_API void Moss_RendererBeginFrame(Moss_Renderer* renderer);
 /*! @brief End Frame calls to present frame. @param Moss_Renderer renderer. @ingroup Renderer. */
@@ -332,6 +332,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 #endif
 
 #endif // MOSS_RENDERER_H
+
 
 
 
