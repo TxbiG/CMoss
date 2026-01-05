@@ -67,13 +67,6 @@
 
 #include <Moss/Moss_Platform.h>
 
-#define VIRTUAL_RESOLUTION_WIDTH 1920
-#define VIRTUAL_RESOLUTION_HEIGHT 1080
-
-#define MAX_DECALS 200
-#define MAX_LIGHTS2D 200
-#define MAX_LIGHTS3D 200
-
 typedef enum TextureFormat {
     // Unsigned normalized color formats
     R8, 
@@ -332,6 +325,7 @@ MOSS_API id<MTLRenderCommandEncoder>	GetRenderEncoder(Moss_Renderer* renderer);
 #endif
 
 #endif // MOSS_RENDERER_H
+
 
 
 
