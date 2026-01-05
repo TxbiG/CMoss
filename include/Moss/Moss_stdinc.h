@@ -134,37 +134,90 @@
 // Determine platform
 #if defined(MOSS_PLATFORM_BLUE)
 	// Correct define already defined, this overrides everything else
+#elif defined(__EMSCRIPTEN__)
+	#define MOSS_PLATFORM_WASM
 #elif defined(_WIN32) || defined(_WIN64)
 	#include <winapifamily.h>
-	#if WINAPI_FAMILY == WINAPI_FAMILY_APP
-		// Building for Universal Windows Platform
-		#define MOSS_PLATFORM_WINDOWS_UWP
-	#endif
+
 	// Windows
 	#define MOSS_PLATFORM_WINDOWS
+
+	#if (WINAPI_FAMILY == WINAPI_FAMILY_APP)
+        #define MOSS_PLATFORM_WINDOWS_UWP
+    #endif
+
+	/* Xbox (GDK covers Xbox One + Series) */
+    #if defined(_GAMING_XBOX)
+        #define MOSS_PLATFORM_GDK
+        #if defined(_GAMING_XBOX_X)
+            #define MOSS_PLATFORM_XBOXSERIES
+        #else
+            #define MOSS_PLATFORM_XBOXONE
+        #endif
+    #endif
+#elif defined(__APPLE__)
+	#elif defined(__APPLE__)
+    #include <TargetConditionals.h>
+    #define MOSS_PLATFORM_APPLE
+
+    #if TARGET_OS_OSX
+        #define MOSS_PLATFORM_MACOS
+    #elif TARGET_OS_IPHONE
+        #define MOSS_PLATFORM_IOS
+    #elif TARGET_OS_TV
+        #define MOSS_PLATFORM_TVOS
+    #elif TARGET_OS_VISION
+        #define MOSS_PLATFORM_VISIONOS
+    #endif
 #elif defined(ANDROID) || defined(__ANDROID__) 	// Android is linux too, so that's why we check it first
 	#define MOSS_PLATFORM_ANDROID
 	// Add Android TV
-#elif (defined(linux) || defined(__linux) || defined(__linux__))
+#elif defined(linux) || defined(__linux) || defined(__linux__)
 	// Linux
     #define MOSS_PLATFORM_LINUX
-#elif (defined(__unix__) || defined(__unix) || defined(unix))
-	// UNIX
-	#define MOSS_PLATFORM_UNIX 
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
-	#define MOSS_PLATFORM_BSD
-#elif defined(__APPLE__)
-	#include <TargetConditionals.h>
-	#if defined(TARGET_OS_IPHONE) && !TARGET_OS_IPHONE
-		// Apple MacOS
-		#define MOSS_PLATFORM_MACOS
-	#elif defined(TARGET_OS_IPHONE)
-		// Apple IOS Phone
-		#define MOSS_PLATFORM_IOS
-	#elif defined(TARGET_OS_TV)
-		// Apple TV
-		#define MOSS_PLATFORM_TVOS
-	#endif // TARGET_OS_IPHONE && !TARGET_OS_IPHONE
+#elif defined(__FreeBSD__)
+    #define MOSS_PLATFORM_FREEBSD
+#elif defined(__OpenBSD__)
+    #define MOSS_PLATFORM_OPENBSD
+#elif defined(__NetBSD__)
+    #define MOSS_PLATFORM_NETBSD
+#elif defined(__bsdi__)
+    #define MOSS_PLATFORM_BSDI
+#elif defined(__sun)
+    #define MOSS_PLATFORM_SOLARIS
+#elif defined(_AIX)
+    #define MOSS_PLATFORM_AIX
+#elif defined(__hpux)
+    #define MOSS_PLATFORM_HPUX
+#elif defined(__HAIKU__)
+    #define MOSS_PLATFORM_HAIKU
+#elif defined(__GNU__)
+    #define MOSS_PLATFORM_HURD
+#elif defined(__sgi)
+    #define MOSS_PLATFORM_IRIX
+#elif defined(__QNX__)
+    #define MOSS_PLATFORM_QNXNTO
+#elif defined(__riscos__)
+    #define MOSS_PLATFORM_RISCOS
+#elif defined(__osf__)
+    #define MOSS_PLATFORM_OSF
+#elif defined(__unix__) || defined(__unix)
+    #define MOSS_PLATFORM_UNIX
+#elif defined(__3DS__)
+    #define MOSS_PLATFORM_3DS
+#elif defined(__NGAGE__)
+    #define MOSS_PLATFORM_NGAGE
+#elif defined(__psp__)
+    #define MOSS_PLATFORM_PSP
+#elif defined(__vita__)
+    #define MOSS_PLATFORM_VITA
+#elif defined(__ps2__)
+    #define MOSS_PLATFORM_PS2
+#elif defined(__CYGWIN__)
+    #define MOSS_PLATFORM_CYGWIN
+#elif defined(__OS2__)
+    #define MOSS_PLATFORM_OS2
+#endif
 #elif defined(__EMSCRIPTEN__)
 	#define MOSS_PLATFORM_WASM
 #endif
@@ -682,6 +735,7 @@ MOSS_API inline int randi_range(int min, int max) { return min + rand() % (max -
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
