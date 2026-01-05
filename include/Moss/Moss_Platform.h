@@ -242,7 +242,7 @@
 #define MOSS_HAPTIC_STEERING_AXIS
 #define MOSS_HAPTIC_TRIANGLE
 
-enum Moss_WindowFlags {
+typedef enum Moss_WindowFlags {
     MOSS_WINDOW_NOTITLEBAR = 0x00000001,        // no window decoration
     FLAG_RESIZE_DISABLED = 0,
     FLAG_ALWAYS_ON_TOP = 20,
@@ -423,11 +423,6 @@ static void (Moss_WindowContentScaleCallback)(int, int);
 static void (Moss_WindowPositionCallback)(int, int);
 static void (Moss_WindowFocusCallback)(bool focused);
 static void (Moss_WindowSizeCallback)(int width, int height);
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 MOSS_API Moss_Monitor* Moss_GetPrimaryMonitor();
 MOSS_API Moss_Monitor* Moss_GetSecondaryMonitor();
@@ -669,12 +664,8 @@ MOSS_API void* Moss_GetInstanceProcAddress(VkInstance instance, const char* proc
 MOSS_API int Moss_GetPhysicalDevicePresentationSupport(Moss_Window& window, VkPhysicalDevice device, uint32_t queuefamily);
 #endif // MOSS_USE_VULKAN
 
-#ifdef __cplusplus
-}
-#endif
-
-
 #endif // MOSS_PLATFORM_H
+
 
 
 
