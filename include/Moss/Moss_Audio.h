@@ -155,20 +155,27 @@ MOSS_API void Moss_Terminate_Audio();
 
 
 MOSS_API AudioEffect* Moss_CreateAudioEffect(AudioEffectType type);
-MOSS_API void Moss_AudioEffectSetParameter(AudioEffect* fx, const char* paramName, float value) 
-// Destroy effect
-MOSS_API void Moss_DestoryAudioEffect(AudioEffect* effect);
+MOSS_API void Moss_AudioCreateEffect(AudioEffect* effect, const char* paramName, float value);
+MOSS_API void Moss_AudioRemoveEffect(AudioEffect* effect);
 
 
 // Channels
-MOSS_API ChannelID Audio_CreateChannel(ChannelID parent);
+/*! @brief X. */
+MOSS_API ChannelID Moss_AudioCreateChannel(ChannelID channel);
+/*! @brief X. */
 MOSS_API void      Audio_RemoveChannel(ChannelID channel);
-
-MOSS_API void Audio_ChannelSetVolume(ChannelID channel, float volume);
-MOSS_API void Audio_ChannelSetMute(ChannelID channel, int mute);
-
-MOSS_API void Audio_ChannelAddEffect(ChannelID channel, AudioEffect* effect);
-MOSS_API void Audio_ChannelRemoveAllEffects(ChannelID channel);
+/*! @brief X. */
+MOSS_API ChannelID Moss_AudioGetMasterChannel();
+/*! @brief X. */
+MOSS_API void Moss_AudioSetChannelVolume(ChannelID channel, float volume);
+/*! @brief X. */
+MOSS_API void Moss_AudioSetChannelMute(ChannelID channel, bool mute);
+/*! @brief X. */
+MOSS_API void Moss_AudioAddChannelEffect(ChannelID channel, AudioEffect* effect);
+/*! @brief X. */
+MOSS_API void Moss_AudioRemoveChannelEffect(ChannelID channel, AudioEffect* effect);
+/*! @brief X. */
+MOSS_API void Moss_AudioRemoveAllChannelEffects(ChannelID channel);
 
 
 MOSS_API Wav* CreateWav(const char* path);
@@ -301,4 +308,5 @@ MOSS_API int Moss_ListMicrophoneDevices();
 MOSS_SUPRESS_WARNINGS_END
 
 #endif // MOSS_AUDIO_H
+
 
