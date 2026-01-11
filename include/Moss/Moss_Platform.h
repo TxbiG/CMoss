@@ -51,6 +51,8 @@
 #include <vulkan/vulkan.h>
 #endif
 
+#include <stddef.h>
+#include <stdint.h>
 
 #include <Moss/Moss_stdinc.h>
 
@@ -78,100 +80,101 @@
 #define KEY_L
 #define KEY_M
 #define KEY_N
-#define KEY_O, 
-#define KEY_P, 
-#define KEY_Q, 
-#define KEY_R, 
-#define KEY_S, 
-#define KEY_T, 
-#define KEY_U, 
-#define KEY_V, 
-#define KEY_W, 
-#define KEY_X, 
-#define KEY_Y, 
-#define KEY_Z,
-#define KEY_APOSTROPHE, 
-#define KEY_BACKSLASH, 
-#define KEY_COMMA, 
-#define KEY_EQUAL, 
-#define KEY_GRAVE_ACCENT, 
-#define KEY_LEFT_BRACKET, 
-#define KEY_MINUS, 
-#define KEY_PERIOD, 
-#define KEY_RIGHT_BRACKET, 
-#define KEY_SEMICOLON, 
-#define KEY_SLASH, 
-#define KEY_WORLD_2,     
-#define KEY_BACKSPACE, 
-#define KEY_DELETE, 
-#define KEY_END, 
-#define KEY_ENTER, 
-#define KEY_ESCAPE, 
-#define KEY_HOME, 
-#define KEY_INSERT, 
-#define KEY_MENU, 
-#define KEY_PAGE_DOWN, 
-#define KEY_PAGE_UP, 
-#define KEY_PAUSE, 
-#define KEY_SPACE, 
-#define KEY_TAB,
-#define KEY_CAPS_LOCK, 
-#define KEY_NUM_LOCK, 
-#define KEY_SCROLL_LOCK,
-#define KEY_F1, 
-#define KEY_F2, 
-#define KEY_F3,  
-#define KEY_F4,  
-#define KEY_F5,  
-#define KEY_F6,  
-#define KEY_F7,  
-#define KEY_F8,  
-#define KEY_F9, 
-#define KEY_F10, 
-#define KEY_F11, 
-#define KEY_F12, 
-#define KEY_F13, 
-#define KEY_F14, 
-#define KEY_F15, 
-#define KEY_F16, 
-#define KEY_F17, 
-#define KEY_F18, 
-#define KEY_F19, 
-#define KEY_F20, 
-#define KEY_F21, 
-#define KEY_F22, 
-#define KEY_F23, 
-#define KEY_F24,
-#define KEY_LEFT_ALT, 
-#define KEY_LEFT_CONTROL, 
-#define KEY_LEFT_SHIFT, 
-#define KEY_LEFT_SUPER,
-#define KEY_PRINT_SCREEN, 
-#define KEY_RIGHT_ALT, 
-#define KEY_RIGHT_CONTROL, 
-#define KEY_RIGHT_SHIFT, 
-#define KEY_RIGHT_SUPER, 
-#define KEY_DOWN, 
-#define KEY_LEFT, 
-#define KEY_RIGHT, 
-#define KEY_UP,
-#define KEY_KP_0, 
-#define KEY_KP_1, 
-#define KEY_KP_2, 
-#define KEY_KP_3, 
-#define KEY_KP_4, 
-#define KEY_KP_5, 
-#define KEY_KP_6, 
-#define KEY_KP_7, 
-#define KEY_KP_8, 
-#define KEY_KP_9, 
-#define KEY_KP_ADD, 
-#define KEY_KP_DECIMAL, 
-#define KEY_KP_DIVIDE, 
-#define KEY_KP_ENTER, 
-#define KEY_KP_EQUAL, 
-#define KEY_KP_MULTIPLY, 
-#define KEY_KP_SUBTRACT,
+#define KEY_O
+#define KEY_P
+#define KEY_Q
+#define KEY_R
+#define KEY_S
+#define KEY_T
+#define KEY_U
+#define KEY_V
+#define KEY_W
+#define KEY_X
+#define KEY_Y
+#define KEY_Z
+#define KEY_APOSTROPHE
+#define KEY_BACKSLASH
+#define KEY_COMMA
+#define KEY_EQUAL
+#define KEY_GRAVE_ACCENT
+#define KEY_LEFT_BRACKET
+#define KEY_MINUS
+#define KEY_PERIOD
+#define KEY_RIGHT_BRACKET
+#define KEY_SEMICOLON
+#define KEY_SLASH
+#define KEY_WORLD_1
+#define KEY_WORLD_2
+#define KEY_BACKSPACE
+#define KEY_DELETE
+#define KEY_END
+#define KEY_ENTER
+#define KEY_ESCAPE
+#define KEY_HOME
+#define KEY_INSERT
+#define KEY_MENU
+#define KEY_PAGE_DOWN
+#define KEY_PAGE_UP
+#define KEY_PAUSE
+#define KEY_SPACE
+#define KEY_TAB
+#define KEY_CAPS_LOCK
+#define KEY_NUM_LOCK
+#define KEY_SCROLL_LOCK
+#define KEY_F1
+#define KEY_F2
+#define KEY_F3
+#define KEY_F4
+#define KEY_F5
+#define KEY_F6
+#define KEY_F7
+#define KEY_F8
+#define KEY_F9
+#define KEY_F10
+#define KEY_F11
+#define KEY_F12
+#define KEY_F13
+#define KEY_F14
+#define KEY_F15
+#define KEY_F16
+#define KEY_F17
+#define KEY_F18
+#define KEY_F19
+#define KEY_F20
+#define KEY_F21
+#define KEY_F22
+#define KEY_F23
+#define KEY_F24
+#define KEY_LEFT_ALT
+#define KEY_LEFT_CONTROL
+#define KEY_LEFT_SHIFT
+#define KEY_LEFT_SUPER
+#define KEY_PRINT_SCREEN
+#define KEY_RIGHT_ALT
+#define KEY_RIGHT_CONTROL
+#define KEY_RIGHT_SHIFT
+#define KEY_RIGHT_SUPER
+#define KEY_DOWN
+#define KEY_LEFT
+#define KEY_RIGHT
+#define KEY_UP
+#define KEY_KP_0
+#define KEY_KP_1
+#define KEY_KP_2
+#define KEY_KP_3
+#define KEY_KP_4
+#define KEY_KP_5
+#define KEY_KP_6
+#define KEY_KP_7
+#define KEY_KP_8
+#define KEY_KP_9
+#define KEY_KP_ADD
+#define KEY_KP_DECIMAL
+#define KEY_KP_DIVIDE
+#define KEY_KP_ENTER
+#define KEY_KP_EQUAL
+#define KEY_KP_MULTIPLY
+#define KEY_KP_SUBTRACT
 
 #define MOUSE_LEFT,
 #define MOUSE_RIGHT
@@ -182,38 +185,43 @@
 #define MOUSE_BUTTON_7
 #define MOUSE_BUTTON_8
 
-#define GAMEPAD_BUTTON_A
-#define GAMEPAD_BUTTON_B
-#define GAMEPAD_BUTTON_X
-#define GAMEPAD_BUTTON_Y
-#define GAMEPAD_BUTTON_LEFT_BUMPER
-#define GAMEPAD_BUTTON_RIGHT_BUMPER
-#define GAMEPAD_BUTTON_BACK
-#define GAMEPAD_BUTTON_START
-#define GAMEPAD_BUTTON_GUIDE
-#define GAMEPAD_BUTTON_LEFT_THUMB
-#define GAMEPAD_BUTTON_RIGHT_THUMB
-#define GAMEPAD_BUTTON_DPAD_UP
-#define GAMEPAD_BUTTON_DPAD_RIGHT
-#define GAMEPAD_BUTTON_DPAD_DOWN
-#define GAMEPAD_BUTTON_DPAD_LEFT
+#define GAMEPAD_BUTTON_A                0
+#define GAMEPAD_BUTTON_B                1
+#define GAMEPAD_BUTTON_X                2
+#define GAMEPAD_BUTTON_Y                3
+#define GAMEPAD_BUTTON_LEFT_BUMPER      4
+#define GAMEPAD_BUTTON_RIGHT_BUMPER     5
+#define GAMEPAD_BUTTON_BACK             6
+#define GAMEPAD_BUTTON_START            7
+#define GAMEPAD_BUTTON_GUIDE            8
+#define GAMEPAD_BUTTON_LEFT_THUMB       9
+#define GAMEPAD_BUTTON_RIGHT_THUMB      10
+#define GAMEPAD_BUTTON_DPAD_UP          11
+#define GAMEPAD_BUTTON_DPAD_RIGHT       12
+#define GAMEPAD_BUTTON_DPAD_DOWN        13
+#define GAMEPAD_BUTTON_DPAD_LEFT        14
+
+#define MOSS_GAMEPAD_BUTTON_LAST            GAMEPAD_BUTTON_DPAD_LEFT
 
 #define GAMEPAD_BUTTON_CROSS  = GAMEPAD_BUTTON_A
 #define GAMEPAD_BUTTON_CIRCLE = GAMEPAD_BUTTON_B
 #define GAMEPAD_BUTTON_SQUARE = GAMEPAD_BUTTON_X
 #define GAMEPAD_BUTTON_TRIANGLE = GAMEPAD_BUTTON_Y
 
-#define GAMEPAD_AXIS_LEFT_X,            // Left Stick X Axis
-#define GAMEPAD_AXIS_LEFT_Y,            // Left Stick Y Axis
-#define GAMEPAD_AXIS_RIGHT_X,           // Right Stick X Axis
-#define GAMEPAD_AXIS_RIGHT_Y,           // Right Stick Y Axis
-#define GAMEPAD_AXIS_LEFT_TRIGGER,      // Left Trigger
-#define GAMEPAD_AXIS_RIGHT_TRIGGER,     // Right Trigger
-#define GAMEPAD_AXIS_TOUCHPAD_X,        // (PS4/PS5)
-#define GAMEPAD_AXIS_TOUCHPAD_Y,
-#define GAMEPAD_AXIS_GYRO_X,
-#define GAMEPAD_AXIS_GYRO_Y,
-#define GAMEPAD_AXIS_GYRO_Z,
+
+
+#define GAMEPAD_AXIS_LEFT_X          0
+#define GAMEPAD_AXIS_LEFT_Y          1
+#define GAMEPAD_AXIS_RIGHT_X         2
+#define GAMEPAD_AXIS_RIGHT_Y         3
+#define GAMEPAD_AXIS_LEFT_TRIGGER    4
+#define GAMEPAD_AXIS_RIGHT_TRIGGER   5
+#define GAMEPAD_AXIS_TOUCHPAD_X      6
+#define GAMEPAD_AXIS_TOUCHPAD_Y      7 
+#define GAMEPAD_AXIS_GYRO_X          8
+#define GAMEPAD_AXIS_GYRO_Y          9
+#define GAMEPAD_AXIS_GYRO_Z          10
+
 
 /*          Haptic          */
 #define MOSS_HAPTIC_AUTOCENTER
@@ -782,6 +790,7 @@ MOSS_API void* Moss_Metal_GetLayer(Moss_MetalView view);
 MOSS_API void Moss_Metal_Resize(Moss_MetalView handle, uint32_t width, uint32_t height);
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
