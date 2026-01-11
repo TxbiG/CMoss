@@ -344,6 +344,11 @@ typedef struct Moss_GammaRamp { unsigned char* size; unsigned char* red; unsigne
 typedef struct Moss_VideoMode { int width, height, redBits, greenBits, blueBits, refreshRate; };
 typedef struct Moss_Image { int width; int height; unsigned char* pixels; };
 
+typedef struct Moss_Locale {
+    char* country;
+    char* language;
+};
+
 struct Moss_Timer;
 struct Moss_Thread;
 typedef uint64 Moss_Time;
@@ -389,12 +394,6 @@ typedef struct Moss_Event {
 };
 
 #pragma warning(pop)
-
-
-typedef struct Moss_Locale {
-    char* country;
-    char* language;
-};
 
 struct Moss_HapticDirection;
 struct Moss_HapticConstant;
@@ -790,6 +789,7 @@ MOSS_API void* Moss_Metal_GetLayer(Moss_MetalView view);
 MOSS_API void Moss_Metal_Resize(Moss_MetalView handle, uint32_t width, uint32_t height);
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
