@@ -615,6 +615,23 @@ typedef struct Material;
 typedef struct PCK;
 typedef struct Timer;
 
+#ifndef MOSS_DOUBLE_PRECISION
+typedef dVec2 RVec2;
+typedef dVec3 RVec3;
+typedef dVec4 RVec4;
+#else
+typedef Vec2 RVec2;
+typedef Vec3 RVec3;
+typedef Vec4 RVec4;
+#endif // MOSS_DOUBLE_PRECISION
+
+#ifndef MOSS_USE_OBB
+typedef OBB2 AABox2;
+typedef OBB2 AABox3;
+#else
+typedef AABB2 AABox2;
+typedef AABB3 AABox3;
+#endif // MOSS_USE_OBB
 
 #if (defined(MOSS_PLATFORM_WINDOWS) || defined(MOSS_PLATFORM_MACSO) || defined(MOSS_PLATFORM_LINUX))
 #include <stddef.h>
@@ -735,6 +752,7 @@ MOSS_API inline int randi_range(int min, int max) { return min + rand() % (max -
 #endif
 
 #endif // MOSS_STDINC_H
+
 
 
 
