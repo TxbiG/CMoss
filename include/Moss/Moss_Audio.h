@@ -67,8 +67,6 @@
 
 #include <Moss/Moss_stdinc.h>
 #include <Moss/Moss_Physics.h>
-#include <Moss/Core/Variants/Vector/Vec2.h>
-#include <Moss/Core/Variants/Vector/Vec3.h>
 
 // AudioStream player set as signal for calling
 #define CHANNEL_INVALID 0U
@@ -422,6 +420,7 @@ MOSS_API void Moss_AudioMicrophoneSetCallback(Microphone* mic, MicrophoneCallbac
 MOSS_SUPRESS_WARNINGS_END
 
 #endif // MOSS_AUDIO_H
+
 
 
 
