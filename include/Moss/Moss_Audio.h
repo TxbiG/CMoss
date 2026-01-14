@@ -81,8 +81,8 @@ struct AudioListener3D;
 struct RayAudioListener2D;
 struct RayAudioListener3D;
 struct Moss_AudioSource;
-class Microphone;
-class Wav;
+struct Moss_Microphone;
+struct Moss_Wav;
 
 typedef uint32_t ChannelID;
 
@@ -173,7 +173,7 @@ MOSS_API Moss_AudioSource* Moss_AudioLoadMP3(const char* filename);
  * @param mic Microphone device handle.
  * @return Pointer to an audio source capturing microphone input.
  */
-MOSS_API Moss_AudioSource* Moss_AudioCaptureMicrophone(Microphone* mic);
+MOSS_API Moss_AudioSource* Moss_AudioCaptureMicrophone(Moss_Microphone* mic);
 
 // Effects
 /*!
@@ -395,11 +395,11 @@ MOSS_API const char* Moss_GetMicrophoneDeviceName(int index);
 /*! @brief Return number of microphones. */
 MOSS_API int Moss_ListMicrophoneDevices();
 
-void Moss_AudioMicrophoneSetGain(Microphone* mic, float gain);
+void Moss_AudioMicrophoneSetGain(Moss_Microphone* mic, float gain);
 
-int Moss_AudioMicrophoneGetSampleRate(Microphone* mic);
+int Moss_AudioMicrophoneGetSampleRate(Moss_Microphone* mic);
 
-int Moss_AudioMicrophoneGetChannels(Microphone* mic);
+int Moss_AudioMicrophoneGetChannels(Moss_Microphone* mic);
 
 /*!
  * @brief Open the microphone device.
@@ -420,6 +420,7 @@ MOSS_API void Moss_AudioMicrophoneSetCallback(Microphone* mic, MicrophoneCallbac
 MOSS_SUPRESS_WARNINGS_END
 
 #endif // MOSS_AUDIO_H
+
 
 
 
