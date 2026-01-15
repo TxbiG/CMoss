@@ -1,6 +1,6 @@
 //                        MIT License
 //
-//                  Copyright (c) 2025 Toby
+//                  Copyright (c) 2026 Toby
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,13 +52,13 @@
  *
  * ---
  *
- * ### Supported Renderers: OpenGL, Vulkan, DirectX
+ * ### Supported Renderers: OpenGL, Vulkan, DirectX 12
  *
  * ---
  *
  * ### Extended Moss Features:
  * - **XR Camera Integration**  
- *   - `CameraXR` synchronizes head pose and eye projections with the Moss rendering pipeline.
+ *   - `CameraXR` class synchronizes head pose and eye projections with the Moss rendering pipeline.
  *   - Automatic clipping and stereo culling support.
  *
  * - **Hand Tracking / Gesture API**  
@@ -75,7 +75,7 @@
  *
  * ---
  *
- * ### Supported Extensions (if available):
+ * ### Supported Extensions:
  * - `XR_EXT_hand_tracking`
  * - `XR_EXT_eye_gaze_interaction`
  * - `XR_FB_foveation`
@@ -101,16 +101,7 @@
  * - Plug-and-play with custom runtime layers and extensions (e.g. Varjo gaze, Meta passthrough).  
 */
 
-
-/*
-MOSS_XR_VENDOR_OCULUSTOUCH - OculusTouch
-MOSS_XR_VENDOR_VALVEINDEX - ValveIndex
-MOSS_XR_VENDOR_MSFIXEDREALITY - MicrosoftMixedReality
-MOSS_XR_VENDOR_PICO - PICO VR
-MOSS_XR_VENDOR_PIMAX - Pimax
-MOSS_XR_VENDOR_SONY - Sony VR
-MOSS_XR_VENDOR_Varjo - Varjo VR
-*/
+// WARNING I don't have a headset to test this code, please if you have one let me know if theres any problems.
 
 #ifndef MOSS_OPENXR_H
 #define MOSS_OPENXR_H
@@ -118,32 +109,77 @@ MOSS_XR_VENDOR_Varjo - Varjo VR
 #include <Moss/Moss_stdinc.h>
 #include <Moss/Moss_Renderer.h>
 
-typedef struct MossXR_Context   MossXR_Context;
-typedef struct Moss_XRSession   Moss_XRSession;
-typedef struct Moss_XRSwapchain Moss_XRSwapchain;
-typedef struct Moss_XRAction    MossXR_Action;
-typedef struct Moss_XRSpace     MossXR_Space;
+/* ======================================================
+ * Forward Declarations
+ * =================================================== */
 
-typedef void* Moss_XROrigin;
-typedef struct Moss_XRAnchor Moss_XRAnchor;
+typedef struct MossXR_Context        MossXR_Context;
+typedef struct MossXR_Session        MossXR_Session;
+typedef struct MossXR_Swapchain      MossXR_Swapchain;
+typedef struct MossXR_Space          MossXR_Space;
+typedef struct MossXR_Action         MossXR_Action;
+typedef struct MossXR_ActionSet      MossXR_ActionSet;
+typedef struct MossXR_Layer          MossXR_Layer;
+typedef struct MossXR_Anchor         MossXR_Anchor;
+typedef struct MossXR_Origin         MossXR_Origin;
 
-typedef struct XRFaceModifier XRFaceModifier;           // Facial Modifier tracks facial expressions.
-typedef struct XRBodyModifier XRBodyModifier;           // Body Modifier tracks body.
-typedef struct XRHandModifier XRHandModifier;           // Hand Modifier tracks Hand movement.
 
-typedef struct MossXR_ActionSet MossXR_ActionSet;
-typedef struct MossXR_CompositionLayer MossXR_CompositionLayer;
+typedef struct MossXR_HandModifier   MossXR_HandModifier;   // Hand Modifier tracks Hand movement.
+typedef struct MossXR_BodyModifier   MossXR_BodyModifier;   // Body Modifier tracks body.
+typedef struct MossXR_FaceModifier   MossXR_FaceModifier;   // Facial Modifier tracks facial expressions.
 
-typedef int64_t Moss_XRTime;
+typedef int64_t MossXR_Time;
 
-typedef enum MossXR_TextureFormat {
-    MOSS_XR_FORMAT_RGBA8,
-    MOSS_XR_FORMAT_RGBA16F,
-    MOSS_XR_FORMAT_DEPTH24,
-    MOSS_XR_FORMAT_DEPTH32F,
-} MossXR_TextureFormat;
+/* ======================================================
+ * Enums
+ * =================================================== */
 
-typedef enum XRBodyJoint {
+enum MossXR_SessionState : uint8_t {
+    Unknown,
+    Ready,
+    Synchronized,
+    Visible,
+    Focused,
+    Stopping,
+    Exiting,
+    LossPending
+};
+
+enum MossXR_ActionType : uint8_t {
+    Boolean,
+    Float,
+    Vec2,
+    Pose,
+    Haptic
+};
+
+enum MossXR_ViewType : uint8_t {
+    Mono,
+    Stereo
+};
+
+enum MossXR_Handedness : uint8_t {
+    Left,
+    Right
+};
+
+
+enum Moss_XRImageLayout {
+    COLOR_ATTACHMENT,
+    SHADER_READ,
+};
+
+
+enum Moss_XREventType {
+    SESSION_STATE_CHANGED,
+    USER_PRESENCE_CHANGED,
+    REFERENCE_SPACE_CHANGED,
+    INSTANCE_LOSS_PENDING,
+    INTERACTION_PROFILE_CHANGED,
+    VISIBILITY_CHANGED,
+};
+
+enum XRBodyJoint {
     XR_BODY_ROOT,
     XR_BODY_SPINE,
     XR_BODY_CHEST,
@@ -162,9 +198,9 @@ typedef enum XRBodyJoint {
     XR_BODY_RIGHT_KNEE,
     XR_BODY_RIGHT_FOOT,
     XR_BODY_JOINT_COUNT
-} XRBodyJoint;
+};
 
-typedef enum XRHandJoint {
+enum XRHandJoint {
     XR_HAND_WRIST,
     XR_HAND_THUMB_METACARPAL,
     XR_HAND_THUMB_PROXIMAL,
@@ -191,218 +227,174 @@ typedef enum XRHandJoint {
     XR_HAND_PINKY_DISTAL,
     XR_HAND_PINKY_TIP,
     XR_HAND_JOINT_COUNT
-} XRHandJoint;
-
-typedef enum Moss_XRSessionState { 
-    MOSS_XR_SESSION_STATE_Unknown, 
-    MOSS_XR_SESSION_STATE_Ready, 
-    MOSS_XR_SESSION_STATE_Synchronized, 
-    MOSS_XR_SESSION_STATE_Visible, 
-    MOSS_XR_SESSION_STATE_Focused, 
-    MOSS_XR_SESSION_STATE_Stopping, 
-    MOSS_XR_SESSION_STATE_Exiting, 
-    MOSS_XR_SESSION_STATE_LossPending 
-} Moss_XRSessionState;
-
-typedef enum Moss_XREventType {
-    MOSS_XR_EVENT_SESSION_STATE_CHANGED,
-    MOSS_XR_EVENT_USER_PRESENCE_CHANGED,
-    MOSS_XR_EVENT_REFERENCE_SPACE_CHANGED,
-    MOSS_XR_EVENT_INSTANCE_LOSS_PENDING,
 };
 
-typedef enum Moss_XRActionType {
-    MOSS_XR_ACTION_BOOLEAN,
-    MOSS_XR_ACTION_FLOAT,
-    MOSS_XR_ACTION_VEC2,
-    MOSS_XR_ACTION_POSE,
-    MOSS_XR_ACTION_HAPTIC
-};
 
-typedef struct Moss_XRPose {
+
+/* ======================================================
+ * Structs
+ * =================================================== */
+
+typedef struct MossXR_Pose {
     Vec3 position;
     Quat orientation;
 } Moss_XRPose;
 
-typedef struct Moss_XRFov {
+typedef struct MossXR_Fov {
     float left, right, up, down;
 } Moss_XRFov;
 
-typedef struct Moss_XRCapabilities {
-    uint32_t view_count;
-    bool supports_stereo;
-    bool supports_mono;
-    bool supports_hand_tracking;
-    bool supports_eye_tracking;
-    bool supports_plane_detection;
-    bool supports_passthrough;
-    bool supports_depth_layers;
-} Moss_XRCapabilities;
 
-typedef struct Moss_XREvent {
-    Moss_XREventType type;
-    union {
-        struct {
-            Moss_XRSessionState state;
-        } session;
-    };
-} Moss_XREvent;
-
-typedef struct MossXR_HandState {
-    bool isTracked;
-    Moss_XRPose joints[25]; // e.g., 25 joints for hand
-} MossXR_HandState;
-
-typedef struct MossXR_ControllerState {
-    bool isActive;
-    bool buttons[16]; // generic buttons
-    float triggers[2];
-    Moss_XRPose gripPose;
-    Moss_XRPose aimPose;
-} MossXR_ControllerState;
-struct Moss_XRBodyState { /* joints, pose, etc. */ };
-typedef struct XRFaceState {
-    bool isTracked;
-    float blendShapes[64];   // 64 common facial blendshapes (can expand)
-} XRFaceState;
-
-typedef struct XRBodyState {
-    bool isTracked;
-    MossXR_Pose jointPoses[XR_BODY_JOINT_COUNT];
-} XRBodyState;
-
-typedef struct XRHandState {
-    bool isTracked;
-    MossXR_Pose jointPoses[XR_HAND_JOINT_COUNT];
-} XRHandState;
-
-struct Moss_XREyeGaze {
-    bool isValid;
-    Moss_XRPose gazePose;
+struct MossXR_View {
+    MossXR_Pose pose;
+    MossXR_Fov  fov;
+    Mat44      view;
+    Mat44      projection;
 };
 
-typedef struct CameraXR {
-    Moss_XRPose headPose;
-    Moss_XRFov eyeFov[2];
-    Matrix viewMatrix[2];
-    Matrix projMatrix[2];
-} CameraXR;
 
-MOSS_API bool Moss_XR_Init(void);
+struct MossXR_Capabilities {
+    uint32_t viewCount;
+    MossXR_ViewType viewType;
+
+    bool handTracking;
+    bool eyeTracking;
+    bool bodyTracking;
+    bool faceTracking;
+
+    bool passthrough;
+    bool anchors;
+    bool depthLayers;
+};
+
+
+struct MossXR_InitInfo {
+    ERendererBackend renderer;
+    void* graphicsDevice;
+    void* graphicsContext;
+};
+
+
+/*! @brief X */
+MOSS_API bool Moss_XR_Initialize(const MossXR_InitInfo* info);
+/*! @brief X */
 MOSS_API void Moss_XR_Shutdown(void);
 
-MOSS_API bool Moss_XR_CreateSession(void);
-MOSS_API void Moss_XR_DestroySession(void);
+/*! @brief X */
+MOSS_API MossXR_Session* Moss_XR_CreateSession(void);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroySession(MossXR_Session* session);
+/*! @brief X @param X */
+MOSS_API MossXR_SessionState Moss_XR_GetSessionState(MossXR_Session* session);
 
-MOSS_API const Moss_XRCapabilities* Moss_XR_GetCapabilities(void);
-MOSS_API bool Moss_XR_PollEvents(MossXRContext* ctx);
 
-MOSS_API bool Moss_XR_BeginFrame(void);
-MOSS_API void Moss_XR_EndFrame(void);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_BeginFrame(MossXR_Session* session);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_EndFrame(MossXR_Session* session);
+/*! @brief X @param X */
+MOSS_API MossXR_Time Moss_XR_GetPredictedDisplayTime(MossXR_Session* session);
+/*! @brief X @return */
+MOSS_API float Moss_XR_GetDeltaSeconds(void);
 
-MOSS_API uint32_t Moss_XR_GetViewCount(void);
-MOSS_API void Moss_XR_GetViewPose(uint32_t viewIndex, Moss_XRPose* outPose);
-MOSS_API void Moss_XR_GetViewFov(uint32_t viewIndex, Moss_XRFov* outFov);
+
+/*! @brief X @param X */
+MOSS_API uint32_t Moss_XR_GetViewCount(MossXR_Session* session);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_GetView(MossXR_Session* session, uint32_t index, MossXR_View* outView);
 
 MOSS_API Moss_XRAction* Moss_XR_CreateAction(const char* name, Moss_XRActionType type);
 
-MOSS_API bool Moss_XR_GetActionBoolean(Moss_XRAction* action);
-MOSS_API float Moss_XR_GetActionFloat(Moss_XRAction* action);
-MOSS_API bool Moss_XR_GetActionPose(Moss_XRAction* action, Moss_XRPose* outPose);
-
-MOSS_API void Moss_XR_PlayHaptic(Moss_XRAction* action, float amplitude, float durationSeconds);
-MOSS_API void Moss_XR_StopHaptic(Moss_XRAction* action);
-MOSS_API void Moss_XR_PlayHapticPattern(Moss_XRAction* action, const float* pattern, uint32_t sampleCount, float frequency);
-
-MOSS_API uint32_t Moss_XR_GetSupportedTextureFormats(MossXR_TextureFormat* outFormats, uint32_t maxCount);
-
-MOSS_API Moss_XRTime Moss_XR_GetPredictedDisplayTime(void);
-MOSS_API float Moss_XR_GetFrameDeltaSeconds(void);
+/*! @brief X @param X */
+MOSS_API MossXR_Swapchain* Moss_XR_CreateSwapchain(MossXR_Session* session, uint32_t width, uint32_t height, ETextureFormat format);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroySwapchain(MossXR_Swapchain* swapchain);
+/*! @brief X @param X */
+MOSS_API void* Moss_XR_AcquireSwapchainImage(MossXR_Swapchain* swapchain, uint32_t* outImageIndex);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_ReleaseSwapchainImage(MossXR_Swapchain* swapchain, uint32_t imageIndex);
 
 
-
-MOSS_API Moss_XRSwapchain* Moss_XR_CreateSwapchain(uint32_t width, uint32_t height, MossXR_TextureFormat format);
-MOSS_API void Moss_XR_DestroySwapchain(Moss_XRSwapchain* swapchain);
-
-MOSS_API void* Moss_XR_AcquireSwapchainImage(Moss_XRSwapchain* swapchain, uint32_t* outIndex);
-MOSS_API void Moss_XR_ReleaseSwapchainImage(Moss_XRSwapchain* swapchain, uint32_t imageIndex);
-
-
-MOSS_API Moss_XRSpace* Moss_XR_CreateReferenceSpace(Moss_XRSession* session, Moss_XRPose pose);
-MOSS_API void Moss_XR_DestroyReferenceSpace(Moss_XRSpace* space);
-MOSS_API bool Moss_XR_LocateSpace(Moss_XRSpace* space, Moss_XRTime time, Moss_XRPose* outPose);
-
-MOSS_API bool Moss_XR_GetHandState(uint32_t handIndex, MossXR_HandState* outState);
-
-
-
-MOSS_API bool Moss_XR_EnablePassthrough(bool enable);
-MOSS_API bool Moss_XR_GetPassthroughTexture(MossXR_Swapchain** outSwapchain);
-
-
-// Callbacks
-MOSS_API bool Moss_XR_RegisterEventCallback(Moss_XREventType type, void(*callback)(Moss_XREvent*));
-MOSS_API void Moss_XR_UnregisterEventCallback(Moss_XREventType type);
-
-
-
-// Tools
-/*! */
-MOSS_API int Moss_OpenXRGetRequiredInstanceExtensions();
-/*! */
-MOSS_API const char** Moss_XRGetEnabledExtensions(uint32_t* outCount);
-/*! */
-MOSS_API bool Moss_IsXRExtensionSupported(const char* extensionName);
-/*! */
-MOSS_API const char* Moss_XR_GetBackendName(void);
-/*! */
-MOSS_API uint32_t Moss_XR_GetBackendVersion(void);
-
-MOSS_API bool Moss_XR_GetControllerState(uint32_t controllerIndex, MossXR_ControllerState* outState);
-
+/*! @brief X @param X */
 MOSS_API MossXR_ActionSet* Moss_XR_CreateActionSet(const char* name);
-MOSS_API void Moss_XR_DestroyActionSet(MossXR_ActionSet* actionSet);
-MOSS_API void Moss_XR_AttachActionSet(Moss_XRSession* session, MossXR_ActionSet* actionSet);
-MOSS_API void Moss_XR_SyncActions(Moss_XRSession* session);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyActionSet(MossXR_ActionSet* set);
+/*! @brief X @param X */
+MOSS_API MossXR_Action* Moss_XR_CreateAction(MossXR_ActionSet* set, const char* name, MossXR_ActionType type);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyAction(MossXR_Action* action);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_AttachActionSet(MossXR_Session* session, MossXR_ActionSet* set);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_SyncActions(MossXR_Session* session);
+/*! @brief X @param X */
+MOSS_API bool  Moss_XR_GetActionBoolean(MossXR_Action* action);
+/*! @brief X @param X */
+MOSS_API float Moss_XR_GetActionFloat(MossXR_Action* action);
+/*! @brief X @param X */
+MOSS_API bool  Moss_XR_GetActionPose(MossXR_Action* action, MossXR_Pose* outPose);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_PlayHaptic(MossXR_Action* action, float amplitude, float durationSeconds);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_StopHaptic(MossXR_Action* action);
 
-MOSS_API MossXR_CompositionLayer* Moss_XR_CreateProjectionLayer(Moss_XRSwapchain* swapchain);
-MOSS_API MossXR_CompositionLayer* Moss_XR_CreateQuadLayer(Moss_XRSwapchain* swapchain, Moss_XRPose pose, Vec2 size);
-MOSS_API void Moss_XR_DestroyLayer(MossXR_CompositionLayer* layer);
-MOSS_API void Moss_XR_SubmitLayers(uint32_t layerCount, MossXR_CompositionLayer** layers);
 
 
-MOSS_API Moss_XRAnchor* Moss_XR_CreateAnchor(Moss_XRPose pose);
-MOSS_API void Moss_XR_DestroyAnchor(Moss_XRAnchor* anchor);
-MOSS_API bool Moss_XR_LocateAnchor(Moss_XRAnchor* anchor, Moss_XRTime time, Moss_XRPose* outPose);
 
+/*! @brief X @return X*/
+MOSS_API MossXR_HandModifier* Moss_XR_CreateHand(void);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_GetHandJointPose(MossXR_HandModifier* hand, XRHandJoint joint, MossXR_Pose* outPose);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyHand(MossXR_HandModifier* hand);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_GetHandPose(MossXR_HandModifier* hand, MossXR_Pose* outPose);
+/*! @brief X @return X*/
+MOSS_API MossXR_BodyModifier* Moss_XR_CreateBody(void);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_GetBodyJointPose(MossXR_BodyModifier* body, XRBodyJoint joint, MossXR_Pose* outPose);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyBody(MossXR_BodyModifier* body);
+/*! @brief X @return X*/
+MOSS_API MossXR_FaceModifier* Moss_XR_CreateFace(void);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyFace(MossXR_FaceModifier* face);
+/*! @brief X @param X */
+void Moss_XR_UpdateBodyTracking(MossXR_Session* session);
+/*! @brief X @param X */
+void Moss_XR_UpdateHandTracking(MossXR_Session* session);
 
-MOSS_API bool Moss_XR_GetBodyState(uint32_t bodyIndex, Moss_XRBodyState* outState);
-MOSS_API bool Moss_XR_GetFaceState(uint32_t faceIndex, Moss_XRFaceState* outState);
+/*! @brief X @param X */
+MOSS_API MossXR_Anchor* Moss_XR_CreateAnchor(const MossXR_Pose* pose);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyAnchor(MossXR_Anchor* anchor);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_LocateAnchor( MossXR_Anchor* anchor, MossXR_Time time, MossXR_Pose* outPose);
 
+/*! @brief X @param X */
+MOSS_API MossXR_Layer* Moss_XR_CreateProjectionLayer(MossXR_Swapchain* swapchain);
+/*! @brief X @param X */
+MOSS_API MossXR_Layer* Moss_XR_CreateQuadLayer(MossXR_Swapchain* swapchain, const MossXR_Pose* pose, Vec2 size);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_DestroyLayer(MossXR_Layer* layer);
+/*! @brief X @param X */
+MOSS_API void Moss_XR_SubmitLayers(MossXR_Session* session, uint32_t layerCount, MossXR_Layer** layers);
 
-MOSS_API XRFaceModifier* XR_CreateFaceModifier(void);
-MOSS_API void XR_DestroyFaceModifier(XRFaceModifier* face);
-MOSS_API bool XR_UpdateFaceModifier(XRFaceModifier* face, Moss_XRTime predictedTime);
-MOSS_API bool XR_GetFaceState(XRFaceModifier* face, XRFaceState* outState);
-
-MOSS_API XRBodyModifier* XR_CreateBodyModifier(void);
-MOSS_API void XR_DestroyBodyModifier(XRBodyModifier* body);
-MOSS_API bool XR_UpdateBodyModifier(XRBodyModifier* body, Moss_XRTime predictedTime);
-MOSS_API bool XR_GetBodyState(XRBodyModifier* body, XRBodyState* outState);
-
-MOSS_API XRHandModifier* XR_CreateHandModifier(void);
-MOSS_API void XR_DestroyHandModifier(XRHandModifier* hand);
-MOSS_API bool XR_UpdateHandModifier(XRHandModifier* hand, Moss_XRTime predictedTime);
-MOSS_API bool XR_GetHandState(XRHandModifier* hand, XRHandState* outState);
-
-MOSS_API bool Moss_XR_GetEyeGaze(uint32_t eyeIndex, Moss_XREyeGaze* outGaze);
+/*! @brief X @param X */
+MOSS_API bool Moss_XR_EnablePassthrough(bool enable);
+/*! @brief X @param X */
 MOSS_API bool Moss_XR_EnableFoveatedRendering(bool enable);
 
-// Utils
+/*! @brief X @param X */
+MOSS_API const MossXR_Capabilities* Moss_XR_GetCapabilities(void);
+/*! @brief X @return X*/
+MOSS_API const char* Moss_XR_GetBackendName(void);
+/*! @brief X @return X*/
+MOSS_API uint32_t Moss_XR_GetBackendVersion(void);
+
+/*! @brief X @param X */
 MOSS_API void Moss_XR_BeginDebugLabel(const char* label);
-MOSS_API void Moss_XR_EndDebugLabel();
-MOSS_API void Moss_XR_SetPerfLevel(uint32_t domain, uint32_t level);
-MOSS_API Matrix Moss_XR_PoseToMatrix(Moss_XRPose pose);
-MOSS_API Moss_XRPose Moss_XR_MatrixToPose(Matrix m);
+/*! @brief X */
+MOSS_API void Moss_XR_EndDebugLabel(void);
 
 #endif // MOSS_OPENXR_H
