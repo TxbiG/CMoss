@@ -519,10 +519,12 @@ MOSS_API void Moss_MonitorSetGamma(Moss_Monitor monitor, float gamma);
 MOSS_API bool Moss_IsKeyPressed(Moss_Key key);
 MOSS_API bool Moss_IsKeyJustPressed(Moss_Key key);
 MOSS_API bool Moss_IsKeyJustReleased(Moss_Key key);
+MOSS_API Moss_Keyboard Moss_InputGetKey();
 
 MOSS_API bool Moss_IsMousePressed(Moss_MouseButton button);
 MOSS_API bool Moss_IsMouseJustPressed(Moss_MouseButton button);
 MOSS_API bool Moss_IsMouseJustReleased(Moss_MouseButton button);
+MOSS_API Moss_Keyboard Moss_InputGetMouse();
 MOSS_API void Moss_GetMousePosition(int* x, int* y);
 MOSS_API void Moss_SetMousePosition(int x, int y);
 MOSS_API void Moss_SetMouseVisible(bool visible);
@@ -560,7 +562,9 @@ MOSS_API const char* Moss_GetGamepadMapping(Moss_Gamepad* gp);
 MOSS_API bool Moss_SetGamepadMapping(Moss_Gamepad* gp, const char* mapping);
 MOSS_API void Moss_ReloadGamepadMappings(void);
 
-//MOSS_API float GetJoyAxis(Joystick j);
+MOSS_API Moss_GamepadButton Moss_InputGetGamepadButton();
+MOSS_API Moss_GamepadAxis Moss_InputGetGamepadAxis();
+
 
 /*            Haptic Feedback          */
 /*! @brief X. @param X X.*/
@@ -809,6 +813,7 @@ MOSS_API void* Moss_Metal_GetLayer(Moss_MetalView view);
 MOSS_API void Moss_Metal_Resize(Moss_MetalView handle, uint32_t width, uint32_t height);
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
