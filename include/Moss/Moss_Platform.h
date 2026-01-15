@@ -55,136 +55,158 @@
 #include <stdint.h>
 
 #include <Moss/Moss_stdinc.h>
+// Keyboard
+/* Alphanumeric */
+#define KEY_0 0
+#define KEY_1 1
+#define KEY_2 2
+#define KEY_3 3
+#define KEY_4 4
+#define KEY_5 5
+#define KEY_6 6
+#define KEY_7 7
+#define KEY_8 8
+#define KEY_9 9
 
-#define KEY_0
-#define KEY_1
-#define KEY_2
-#define KEY_3
-#define KEY_4
-#define KEY_5
-#define KEY_6
-#define KEY_7
-#define KEY_8
-#define KEY_9
-#define KEY_A
-#define KEY_B
-#define KEY_C
-#define KEY_D
-#define KEY_E
-#define KEY_F
-#define KEY_G
-#define KEY_H
-#define KEY_I
-#define KEY_J
-#define KEY_K
-#define KEY_L
-#define KEY_M
-#define KEY_N
-#define KEY_O
-#define KEY_P
-#define KEY_Q
-#define KEY_R
-#define KEY_S
-#define KEY_T
-#define KEY_U
-#define KEY_V
-#define KEY_W
-#define KEY_X
-#define KEY_Y
-#define KEY_Z
-#define KEY_APOSTROPHE
-#define KEY_BACKSLASH
-#define KEY_COMMA
-#define KEY_EQUAL
-#define KEY_GRAVE_ACCENT
-#define KEY_LEFT_BRACKET
-#define KEY_MINUS
-#define KEY_PERIOD
-#define KEY_RIGHT_BRACKET
-#define KEY_SEMICOLON
-#define KEY_SLASH
-#define KEY_WORLD_1
-#define KEY_WORLD_2
-#define KEY_BACKSPACE
-#define KEY_DELETE
-#define KEY_END
-#define KEY_ENTER
-#define KEY_ESCAPE
-#define KEY_HOME
-#define KEY_INSERT
-#define KEY_MENU
-#define KEY_PAGE_DOWN
-#define KEY_PAGE_UP
-#define KEY_PAUSE
-#define KEY_SPACE
-#define KEY_TAB
-#define KEY_CAPS_LOCK
-#define KEY_NUM_LOCK
-#define KEY_SCROLL_LOCK
-#define KEY_F1
-#define KEY_F2
-#define KEY_F3
-#define KEY_F4
-#define KEY_F5
-#define KEY_F6
-#define KEY_F7
-#define KEY_F8
-#define KEY_F9
-#define KEY_F10
-#define KEY_F11
-#define KEY_F12
-#define KEY_F13
-#define KEY_F14
-#define KEY_F15
-#define KEY_F16
-#define KEY_F17
-#define KEY_F18
-#define KEY_F19
-#define KEY_F20
-#define KEY_F21
-#define KEY_F22
-#define KEY_F23
-#define KEY_F24
-#define KEY_LEFT_ALT
-#define KEY_LEFT_CONTROL
-#define KEY_LEFT_SHIFT
-#define KEY_LEFT_SUPER
-#define KEY_PRINT_SCREEN
-#define KEY_RIGHT_ALT
-#define KEY_RIGHT_CONTROL
-#define KEY_RIGHT_SHIFT
-#define KEY_RIGHT_SUPER
-#define KEY_DOWN
-#define KEY_LEFT
-#define KEY_RIGHT
-#define KEY_UP
-#define KEY_KP_0
-#define KEY_KP_1
-#define KEY_KP_2
-#define KEY_KP_3
-#define KEY_KP_4
-#define KEY_KP_5
-#define KEY_KP_6
-#define KEY_KP_7
-#define KEY_KP_8
-#define KEY_KP_9
-#define KEY_KP_ADD
-#define KEY_KP_DECIMAL
-#define KEY_KP_DIVIDE
-#define KEY_KP_ENTER
-#define KEY_KP_EQUAL
-#define KEY_KP_MULTIPLY
-#define KEY_KP_SUBTRACT
+#define KEY_A 10
+#define KEY_B 11
+#define KEY_C 12
+#define KEY_D 13
+#define KEY_E 14
+#define KEY_F 15
+#define KEY_G 16
+#define KEY_H 17
+#define KEY_I 18
+#define KEY_J 19
+#define KEY_K 20
+#define KEY_L 21
+#define KEY_M 22
+#define KEY_N 23
+#define KEY_O 24
+#define KEY_P 25
+#define KEY_Q 26
+#define KEY_R 27
+#define KEY_S 28
+#define KEY_T 29
+#define KEY_U 30
+#define KEY_V 31
+#define KEY_W 32
+#define KEY_X 33
+#define KEY_Y 34
+#define KEY_Z 35
 
-#define MOUSE_LEFT,
-#define MOUSE_RIGHT
-#define MOUSE_MIDDLE
-#define MOUSE_BUTTON_4
-#define MOUSE_BUTTON_5
-#define MOUSE_BUTTON_6
-#define MOUSE_BUTTON_7
-#define MOUSE_BUTTON_8
+/* Punctuation */
+#define KEY_APOSTROPHE      36
+#define KEY_BACKSLASH       37
+#define KEY_COMMA           38
+#define KEY_EQUAL           39
+#define KEY_GRAVE_ACCENT    40
+#define KEY_LEFT_BRACKET    41
+#define KEY_MINUS           42
+#define KEY_PERIOD          43
+#define KEY_RIGHT_BRACKET   44
+#define KEY_SEMICOLON       45
+#define KEY_SLASH           46
+#define KEY_WORLD_1         47
+#define KEY_WORLD_2         48
 
+/* Control keys */
+#define KEY_BACKSPACE       49
+#define KEY_DELETE          50
+#define KEY_END             51
+#define KEY_ENTER           52
+#define KEY_ESCAPE          53
+#define KEY_HOME            54
+#define KEY_INSERT          55
+#define KEY_MENU            56
+#define KEY_PAGE_DOWN       57
+#define KEY_PAGE_UP         58
+#define KEY_PAUSE           59
+#define KEY_SPACE           60
+#define KEY_TAB             61
+
+/* Locks */
+#define KEY_CAPS_LOCK       62
+#define KEY_NUM_LOCK        63
+#define KEY_SCROLL_LOCK     64
+
+/* Function keys */
+#define KEY_F1              65
+#define KEY_F2              66
+#define KEY_F3              67
+#define KEY_F4              68
+#define KEY_F5              69
+#define KEY_F6              70
+#define KEY_F7              71
+#define KEY_F8              72
+#define KEY_F9              73
+#define KEY_F10             74
+#define KEY_F11             75
+#define KEY_F12             76
+#define KEY_F13             77
+#define KEY_F14             78
+#define KEY_F15             79
+#define KEY_F16             80
+#define KEY_F17             81
+#define KEY_F18             82
+#define KEY_F19             83
+#define KEY_F20             84
+#define KEY_F21             85
+#define KEY_F22             86
+#define KEY_F23             87
+#define KEY_F24             88
+
+/* Modifiers */
+#define KEY_LEFT_ALT        89
+#define KEY_LEFT_CONTROL    90
+#define KEY_LEFT_SHIFT      91
+#define KEY_LEFT_SUPER      92
+#define KEY_PRINT_SCREEN    93
+#define KEY_RIGHT_ALT       94
+#define KEY_RIGHT_CONTROL   95
+#define KEY_RIGHT_SHIFT     96
+#define KEY_RIGHT_SUPER     97
+
+/* Arrows */
+#define KEY_DOWN            98
+#define KEY_LEFT            99
+#define KEY_RIGHT           100
+#define KEY_UP              101
+
+/* Keypad */
+#define KEY_KP_0            102
+#define KEY_KP_1            103
+#define KEY_KP_2            104
+#define KEY_KP_3            105
+#define KEY_KP_4            106
+#define KEY_KP_5            107
+#define KEY_KP_6            108
+#define KEY_KP_7            109
+#define KEY_KP_8            110
+#define KEY_KP_9            111
+#define KEY_KP_ADD          112
+#define KEY_KP_DECIMAL      113
+#define KEY_KP_DIVIDE       114
+#define KEY_KP_ENTER        115
+#define KEY_KP_EQUAL        116
+#define KEY_KP_MULTIPLY     117
+#define KEY_KP_SUBTRACT     118
+
+#define MOSS_LAST_KEY       KEY_KP_SUBTRACT
+
+// Mouse
+#define MOUSE_LEFT               0
+#define MOUSE_RIGHT              1
+#define MOUSE_MIDDLE             2
+#define MOUSE_BUTTON_4           3
+#define MOUSE_BUTTON_5           4
+#define MOUSE_BUTTON_6           5
+#define MOUSE_BUTTON_7           6
+#define MOUSE_BUTTON_8           7
+
+#define MOSS_MOUSE_BUTTON_LAST   MOUSE_BUTTON_8
+
+// Gamepad
 #define GAMEPAD_BUTTON_A                0
 #define GAMEPAD_BUTTON_B                1
 #define GAMEPAD_BUTTON_X                2
@@ -201,15 +223,15 @@
 #define GAMEPAD_BUTTON_DPAD_DOWN        13
 #define GAMEPAD_BUTTON_DPAD_LEFT        14
 
-#define MOSS_GAMEPAD_BUTTON_LAST            GAMEPAD_BUTTON_DPAD_LEFT
+#define MOSS_GAMEPAD_BUTTON_LAST        GAMEPAD_BUTTON_DPAD_LEFT
 
+// PS naming
 #define GAMEPAD_BUTTON_CROSS  = GAMEPAD_BUTTON_A
 #define GAMEPAD_BUTTON_CIRCLE = GAMEPAD_BUTTON_B
 #define GAMEPAD_BUTTON_SQUARE = GAMEPAD_BUTTON_X
 #define GAMEPAD_BUTTON_TRIANGLE = GAMEPAD_BUTTON_Y
 
-
-
+// Joystick axis
 #define GAMEPAD_AXIS_LEFT_X          0
 #define GAMEPAD_AXIS_LEFT_Y          1
 #define GAMEPAD_AXIS_RIGHT_X         2
@@ -222,33 +244,109 @@
 #define GAMEPAD_AXIS_GYRO_Y          9
 #define GAMEPAD_AXIS_GYRO_Z          10
 
+#define MOSS_JOY_AXIS_LAST           GAMEPAD_AXIS_GYRO_Z
 
 /*          Haptic          */
-#define MOSS_HAPTIC_AUTOCENTER
-#define MOSS_HAPTIC_CARTESIAN
-#define MOSS_HAPTIC_CONSTANT
-#define MOSS_HAPTIC_CUSTOM
-#define MOSS_HAPTIC_DAMPER
-#define MOSS_HAPTIC_FRICTION
-#define MOSS_HAPTIC_GAIN
-#define MOSS_HAPTIC_INERTIA
-#define MOSS_HAPTIC_INFINITY
-#define MOSS_HAPTIC_LEFTRIGHT
-#define MOSS_HAPTIC_PAUSE
-#define MOSS_HAPTIC_POLAR
-#define MOSS_HAPTIC_RAMP
-#define MOSS_HAPTIC_RESERVED1
-#define MOSS_HAPTIC_RESERVED2
-#define MOSS_HAPTIC_RESERVED3
-#define MOSS_HAPTIC_SAWTOOTHDOWN
-#define MOSS_HAPTIC_SAWTOOTHUP
-#define MOSS_HAPTIC_SINE
-#define MOSS_HAPTIC_SPHERICAL
-#define MOSS_HAPTIC_SPRING
-#define MOSS_HAPTIC_SQUARE
-#define MOSS_HAPTIC_STATUS
-#define MOSS_HAPTIC_STEERING_AXIS
-#define MOSS_HAPTIC_TRIANGLE
+/* Effect types */
+#define MOSS_HAPTIC_CONSTANT        (1u << 0)
+#define MOSS_HAPTIC_SINE            (1u << 1)
+#define MOSS_HAPTIC_SQUARE          (1u << 2)
+#define MOSS_HAPTIC_TRIANGLE        (1u << 3)
+#define MOSS_HAPTIC_SAWTOOTHUP      (1u << 4)
+#define MOSS_HAPTIC_SAWTOOTHDOWN    (1u << 5)
+#define MOSS_HAPTIC_RAMP            (1u << 6)
+#define MOSS_HAPTIC_CUSTOM          (1u << 7)
+
+/* Force feedback effects */
+#define MOSS_HAPTIC_SPRING          (1u << 8)
+#define MOSS_HAPTIC_DAMPER          (1u << 9)
+#define MOSS_HAPTIC_INERTIA         (1u << 10)
+#define MOSS_HAPTIC_FRICTION        (1u << 11)
+
+/* Device control */
+#define MOSS_HAPTIC_GAIN            (1u << 12)
+#define MOSS_HAPTIC_AUTOCENTER      (1u << 13)
+#define MOSS_HAPTIC_STATUS          (1u << 14)
+#define MOSS_HAPTIC_PAUSE           (1u << 15)
+
+/* Direction encoding */
+#define MOSS_HAPTIC_POLAR           (1u << 16)
+#define MOSS_HAPTIC_CARTESIAN       (1u << 17)
+#define MOSS_HAPTIC_SPHERICAL       (1u << 18)
+
+/* Device-specific */
+#define MOSS_HAPTIC_LEFTRIGHT       (1u << 19)
+#define MOSS_HAPTIC_STEERING_AXIS   (1u << 20)
+
+/* Special values */
+#define MOSS_HAPTIC_INFINITY        (1u << 21)
+
+/* Reserved for future expansion */
+#define MOSS_HAPTIC_RESERVED1       (1u << 22)
+#define MOSS_HAPTIC_RESERVED2       (1u << 23)
+#define MOSS_HAPTIC_RESERVED3       (1u << 24)
+
+
+typedef uint32_t Moss_FingerID;
+typedef uint32_t Moss_TouchID;
+typedef uint32_t Moss_HapticID;
+typedef uint32_t Moss_CameraID;
+
+
+typedef uint16_t Moss_Key;
+typedef uint8_t Moss_MouseButton;
+typedef uint8_t Moss_JoystickAxis;
+typedef uint8_t Moss_GamepadButton;
+
+typedef uint32_t Moss_HapticFlags;
+
+typedef struct Moss_Window;
+typedef struct Moss_Monitor;
+typedef struct Moss_Curser;
+typedef struct Moss_GamepadBinding;
+
+
+typedef struct Moss_GammaRamp { unsigned char* size; unsigned char* red; unsigned char* green; unsigned char* blue; };
+typedef struct Moss_VideoMode { int width, height, redBits, greenBits, blueBits, refreshRate; };
+typedef struct Moss_Image { int width; int height; unsigned char* pixels; };
+
+typedef struct Moss_Locale {
+    char* country;
+    char* language;
+};
+
+struct Moss_Timer;
+struct Moss_Thread;
+typedef uint64 Moss_Time;
+
+struct Moss_HapticDirection;
+struct Moss_HapticConstant;
+struct Moss_HapticPeriodic;
+struct Moss_HapticCondition;
+struct Moss_HapticRamp;
+struct Moss_HapticLeftRight;
+struct Moss_HapticCustom; 
+union Moss_HapticEffect;
+struct Moss_Haptic;
+
+struct Moss_VideoCapture;  // Add functions for this
+struct Moss_Joystick;  // Add functions for this
+struct Moss_Gamepad;   // Add functions for this
+struct Moss_Touchscreen;   // Add functions for this
+struct Moss_Pen;   // Add functions for this
+
+typedef uint16 Moss_Keycode;
+typedef uint16 Moss_Keymod;
+typedef uint16 Moss_HapticEffectType;
+typedef int Moss_HapticEffectID;
+
+// unique IDs
+typedef uint32 Moss_HapticID;
+typedef uint32 Moss_MonitorID;
+typedef uint32 Moss_KeyboardID;
+typedef uint32 Moss_JoystickID;
+typedef uint32 Moss_VideoCaptureID;
+
 
 typedef enum Moss_WindowFlags {
     MOSS_WINDOW_NOTITLEBAR = 0x00000001,        // no window decoration
@@ -336,103 +434,31 @@ typedef enum Moss_CursorShape {
     Moss_CursorShape_HELP = 16            //
 } Moss_CursorShape;
 
-typedef struct Moss_Window;
-typedef struct Moss_Monitor;
-typedef struct Moss_Curser;
 
-typedef struct Moss_GammaRamp { unsigned char* size; unsigned char* red; unsigned char* green; unsigned char* blue; };
-typedef struct Moss_VideoMode { int width, height, redBits, greenBits, blueBits, refreshRate; };
-typedef struct Moss_Image { int width; int height; unsigned char* pixels; };
+// =================================================
+//                 Callback Type Definitions
+// =================================================
 
-typedef struct Moss_Locale {
-    char* country;
-    char* language;
-};
+//! @brief Callback for framebuffer resize events. @param width  New framebuffer width, in pixels. @param height New framebuffer height, in pixels.
+typedef void (*Moss_FramebufferResizeCallback)(int width, int height);
+//! @brief Callback for logical window size changes. @param width  New window width, in screen coordinates. @param height New window height, in screen coordinates.
+typedef void (*Moss_WindowSizeCallback)(int width, int height);
+//! @brief Callback for window position changes on screen. @param xpos New X coordinate of the window’s top-left corner. @param ypos New Y coordinate of the window’s top-left corner.
+typedef void (*Moss_WindowPositionCallback)(int xpos, int ypos);
+//! @brief Callback for window focus events. @param focused True if the window gained focus; false if it lost focus.
+typedef void (*Moss_WindowFocusCallback)(bool focused);
+//! @brief Callback for content scale changes (e.g., HiDPI scaling). @param xscale X-axis content scale factor. @param yscale Y-axis content scale factor.
+typedef void (*Moss_WindowContentScaleCallback)(float xscale, float yscale);
+//! @brief Callback for general window resize notifications (platform-driven). @param width  New window width in pixels. @param height New window height in pixels.
+typedef void (*Moss_WindowResizeCallback)(int width, int height);
+//! @brief Callback for monitor configuration changes (e.g. hotplug events). @param monitorName Name or ID of the monitor that changed. @param connected True if the monitor was connected; false if disconnected.
+typedef void (*Moss_MonitorCallback)(const char* monitorName, bool connected);
+//! @brief X. @param width X. @param X. */
+typedef void (MOSS_CALL* Moss_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);
+//! @brief X. @param width X. @param X. */
+typedef bool (*Moss_DirectoryIterateFn)(const Moss_PathInfo* info, const char* path, void* user_data);
 
-struct Moss_Timer;
-struct Moss_Thread;
-typedef uint64 Moss_Time;
 
-//enum Moss_VideoCapturePosition { CAMERA_POSITION_UNKNOWN, CAMERA_POSITION_FRONT_FACING, CAMERA_POSITION_BACK_FACING } Moss_VideoCapturePosition;
-/*
-enum Moss_ThreadState
-{
-    THREAD_UNKNOWN,     // The thread is not valid
-    THREAD_ALIVE,       // The thread is currently running
-    THREAD_DETACHED,    // The thread is detached and can't be waited on
-    THREAD_COMPLETE     // The thread has finished and should be cleaned up with WaitThread()
-} Moss_ThreadState;
-
-enum Moss_ThreadPriority {
-    Moss_Thread_Priority_Low,
-    Moss_Thread_Priority_Normal,
-    Moss_Thread_Priority_High,
-    Moss_Thread_Priority_Critical
-} Moss_ThreadPriority;
-*/
-typedef enum InputEventType {
-    EVENT_NONE,
-    EVENT_KEYDOWN,
-    EVENT_KEYUP,
-    EVENT_MOUSEBUTTONDOWN,
-    EVENT_MOUSEBUTTONUP,
-    EVENT_MOUSEMOVE,
-    EVENT_CONTROLLERBUTTONDOWN,
-    EVENT_CONTROLLERBUTTONUP
-};
-
-#pragma warning(push)
-#pragma warning(disable : 4820)
-
-typedef struct Moss_Event {
-    InputEventType type;
-    union {
-        struct { int keycode; } keyboard;
-        struct { int button; int x, y; int deltaX, deltaY; int wheelDelta;} mouse;
-        struct { int button; float axisValueL; float axisValueR; } controller;
-    };
-};
-
-#pragma warning(pop)
-
-struct Moss_HapticDirection;
-struct Moss_HapticConstant;
-struct Moss_HapticPeriodic;
-struct Moss_HapticCondition;
-struct Moss_HapticRamp;
-struct Moss_HapticLeftRight;
-struct Moss_HapticCustom; 
-union Moss_HapticEffect;
-struct Moss_Haptic;
-
-struct Moss_VideoCapture;  // Add functions for this
-struct Moss_Joystick;  // Add functions for this
-struct Moss_Gamepad;   // Add functions for this
-struct Moss_Touchscreen;   // Add functions for this
-struct Moss_Pen;   // Add functions for this
-
-typedef uint16 Moss_Keycode;
-typedef uint16 Moss_Keymod;
-typedef uint16 Moss_HapticEffectType;
-typedef int Moss_HapticEffectID;
-
-// unique IDs
-typedef uint32 Moss_HapticID;
-typedef uint32 Moss_MonitorID;
-typedef uint32 Moss_KeyboardID;
-typedef uint32 Moss_JoystickID;
-typedef uint32 Moss_VideoCaptureID;
-
-// Callbacks
-static void (Moss_FramebufferSizeCallback)(int, int);
-static void (Moss_WindowResizeCallback)(int, int);
-static void (Moss_WindowContentScaleCallback)(int, int);
-static void (Moss_WindowPositionCallback)(int, int);
-static void (Moss_WindowFocusCallback)(bool focused);
-static void (Moss_WindowSizeCallback)(int width, int height);
-
-MOSS_API Moss_Monitor* Moss_GetPrimaryMonitor();
-MOSS_API Moss_Monitor* Moss_GetSecondaryMonitor();
 
 /*! @brief Initialization of Moss. Must be called before anything else. @param X X. @ingroup Moss */
 //MOSS_API bool Moss_Init();
@@ -466,6 +492,14 @@ MOSS_API int Moss_GetWindowHeight();
 MOSS_API void Moss_SetWindowTitle(Moss_Window* window, const char* title);
 /*! @brief X. @param X X @ingroup Window */
 MOSS_API void Moss_SetWindowIcon(Moss_Window* window, Moss_Image image);
+/*! @brief This is to call for closing a window. @param Moss_Window* window @ingroup Window */
+MOSS_API void Moss_CloseWindow(Moss_Window* window);
+
+/*            Monitor          */
+/*! @brief X. @param X X @ingroup Monitor */
+MOSS_API Moss_Monitor* Moss_MonitorGetPrimary();
+/*! @brief X. @param X X @ingroup Monitor @returns returns monitor unless if theres not a second will return nullptr. */
+MOSS_API Moss_Monitor* Moss_MonitorGetSecondary();
 /*! @brief X. @param X X @ingroup Monitor */
 MOSS_API void Moss_MonitorGetPhysicalSize(Moss_Monitor monitor, int* width_mm, int* height_mm);
 /*! @brief X. @param X X @ingroup Monitor */
@@ -592,7 +626,6 @@ MOSS_API bool Moss_StopHapticRumble(Moss_Haptic* haptic);
 MOSS_API bool Moss_UpdateHapticEffect(Moss_Haptic* haptic, Moss_HapticEffectID effect, const Moss_HapticEffect* data);
 
 MOSS_API Moss_PenDeviceType Moss_GetPenDeviceType(Moss_PenID instance_id);
-
 MOSS_API const char* Moss_GetTouchDeviceName(Moss_TouchID touchID);
 MOSS_API Moss_TouchID* Moss_GetTouchDevices(int *count);
 MOSS_API Moss_TouchDeviceType Moss_GetTouchDeviceType(Moss_TouchID touchID);
@@ -606,69 +639,38 @@ MOSS_API int Moss_GetCPUCacheLineSize(void);
 // Get the amount of RAM configured in the system.
 MOSS_API int Moss_GetSystemRAM(void);
 
-/*            Storage Info        */
-
-
 /*             OS Spesific        */
-
 /*! @brief URL to a website link. @param url URL link.*/
 MOSS_API bool Moss_OpenURL(const char *url);
 MOSS_API Moss_PowerState Moss_GetPowerInfo(int *seconds, int *percent);
 /*! @brief Get Locale of the Operating system. @return Moss_Locale e.g. "UK" for United Kingdom and "en" for English. */
 MOSS_API Moss_Locale* Moss_GetLocale();
+/*! @brief */
+MOSS_API Moss_PowerState Moss_GetPowerInfo(int *seconds, int *percent);
+/*! @brief Detct if an executible is running. @param executable_path exe name - e.g. obs.exe. */
+MOSS_API bool Moss_IsProcessRunningByName(const char* executable_path);
 /*! @brief Loads a dynamic library from the given path. @param lib_path Path to the library file. @return Handle to the loaded library, or NULL on failure. @note The returned handle must be released using Moss_UnloadDynamicLibrary().*/
 MOSS_API void* Moss_LoadDynamicLibrary(const char* lib_path);
 /*! @brief Retrieves a symbol from a loaded library. @param handle Handle to the loaded library. @param symbol_name Name of the symbol to retrieve. @return Pointer to the symbol, or NULL if not found.  @return A pointer to the requested symbol, or NULL if not found.  @warning The returned pointer must be cast to the appropriate function or data type.*/
 MOSS_API void* Moss_GetLibrarySymbol(void* handle, const char* symbol_name);
 /*! @brief Unloads a previously loaded dynamic library. @param handle Handle to the library to unload. @note After unloading, the handle should not be used again. */
 MOSS_API void Moss_UnloadDynamicLibrary(void* handle);
-// =================================================
-//                 Callback Type Definitions
-// =================================================
-
-//! @brief Callback for framebuffer resize events. @param width  New framebuffer width, in pixels. @param height New framebuffer height, in pixels.
-typedef void (*Moss_FramebufferResizeCallback)(int width, int height);
-
-//! @brief Callback for logical window size changes. @param width  New window width, in screen coordinates. @param height New window height, in screen coordinates.
-typedef void (*Moss_WindowSizeCallback)(int width, int height);
-
-//! @brief Callback for window position changes on screen. @param xpos New X coordinate of the window’s top-left corner. @param ypos New Y coordinate of the window’s top-left corner.
-typedef void (*Moss_WindowPositionCallback)(int xpos, int ypos);
-
-//! @brief Callback for window focus events. @param focused True if the window gained focus; false if it lost focus.
-typedef void (*Moss_WindowFocusCallback)(bool focused);
-
-//! @brief Callback for content scale changes (e.g., HiDPI scaling). @param xscale X-axis content scale factor. @param yscale Y-axis content scale factor.
-typedef void (*Moss_WindowContentScaleCallback)(float xscale, float yscale);
-
-//! @brief Callback for general window resize notifications (platform-driven). @param width  New window width in pixels. @param height New window height in pixels.
-typedef void (*Moss_WindowResizeCallback)(int width, int height);
-
-//! @brief Callback for monitor configuration changes (e.g., hotplug events). @param monitorName Name or ID of the monitor that changed. @param connected True if the monitor was connected; false if disconnected.
-typedef void (*Moss_MonitorCallback)(const char* monitorName, bool connected);
 
 // =================================================
 //              Callback Registration API
 // =================================================
-
 /*! @brief Sets the framebuffer resize callback. @param callback Pointer to a function to be invoked when framebuffer size changes. @ingroup Window */
 MOSS_API void Moss_SetFramebufferResizeCallback(Moss_FramebufferResizeCallback callback);
-
 /*! @brief Sets the window size callback. @param callback Pointer to a function invoked when the window size changes. @ingroup Window */
 MOSS_API void Moss_SetWindowSizeCallback(Moss_WindowSizeCallback callback);
-
 /*! @brief Sets the window resize callback (platform-level, e.g. minimize/maximize). @param callback Pointer to a function invoked when window resizing events occur. @ingroup Window */
 MOSS_API void Moss_SetWindowResizeCallback(Moss_WindowResizeCallback callback);
-
 /*! @brief Sets the window position callback. @param callback Pointer to a function invoked when the window position changes. @ingroup Window */
 MOSS_API void Moss_SetWindowPositionCallback(Moss_WindowPositionCallback callback);
-
 /*! @brief Sets the window focus callback. @param callback Pointer to a function invoked when the window focus changes. @ingroup Window */
 MOSS_API void Moss_SetWindowFocusCallback(Moss_WindowFocusCallback callback);
-
 /*! @brief Sets the window content scale callback (for HiDPI / Retina support). @param callback Pointer to a function invoked when the content scale changes. @ingroup Window */
 MOSS_API void Moss_SetWindowContentScaleCallback(Moss_WindowContentScaleCallback callback);
-
 /*! @brief Sets the monitor connection or configuration callback. @param callback Pointer to a function invoked when a monitor is connected or disconnected. @ingroup Monitor */
 MOSS_API void Moss_SetMonitorCallback(Moss_MonitorCallback callback);
 
@@ -715,17 +717,36 @@ MOSS_API void Moss_CloseVideoCapture(Moss_VideoCapture* cap);
 MOSS_API uint8_t* Moss_VideoCaptureReadFrame(Moss_VideoCapture* cap);
 
 
-MOSS_API bool Moss_CopyFile();
-MOSS_API bool Moss_CreateDirectory();
-MOSS_API bool Moss_EnumerateDirectory();
-MOSS_API bool Moss_GetBasePath();
-MOSS_API bool Moss_GetCurrentDirectory();
-MOSS_API bool Moss_GetPathInfo();
-MOSS_API bool Moss_GetPrefPath();
-MOSS_API bool Moss_GetUserFolder();
-MOSS_API bool Moss_GlobDirectory();
-MOSS_API bool Moss_RemovePath();
-MOSS_API bool Moss_RenamePath();
+
+MOSS_API bool Moss_CopyFile(const char* src_path, const char* dst_path, bool overwrite);
+MOSS_API bool Moss_CreateDirectory(const char* path, bool recursive);
+MOSS_API bool Moss_RemovePath(const char* path, bool recursive);
+MOSS_API bool Moss_RenamePath(const char* old_path, const char* new_path, bool overwrite);
+
+
+MOSS_API bool Moss_GetPathInfo(const char* path, Moss_PathInfo* out_info);
+MOSS_API bool Moss_GetCurrentDirectory(char* out_path, int max_len);
+MOSS_API bool Moss_GetBasePath(char* out_path, int max_len);
+
+
+typedef enum Moss_UserFolder {
+    MOSS_USER_FOLDER_HOME,
+    MOSS_USER_FOLDER_DESKTOP,
+    MOSS_USER_FOLDER_DOCUMENTS,
+    MOSS_USER_FOLDER_DOWNLOADS,
+    MOSS_USER_FOLDER_PICTURES,
+    MOSS_USER_FOLDER_MUSIC,
+    MOSS_USER_FOLDER_VIDEOS,
+    MOSS_USER_FOLDER_APPDATA,
+    MOSS_USER_FOLDER_CACHE
+} Moss_UserFolder;
+
+
+MOSS_API bool Moss_GetUserFolder(Moss_UserFolder folder, char* out_path, int max_len);
+MOSS_API bool Moss_GetPrefPath(const char* org_name, const char* app_name, char* out_path, int max_len);
+MOSS_API bool Moss_EnumerateDirectory( const char* path, bool recursive, Moss_DirectoryIterateFn callback, void* user_data);
+MOSS_API bool Moss_GlobDirectory(const char* pattern, Moss_DirectoryIterateFn callback, void* user_data);
+
 
 MOSS_API void Moss_ShowFileDialogWithProperties(Moss_DialogFileCallback callback, void *userdata, Moss_Window *window, const Moss_DialogFileFilter *filters, int nfilters, const char *default_location);
 MOSS_API void Moss_ShowOpenFileDialog(Moss_DialogFileCallback callback, void *userdata, Moss_Window *window, const char *default_location, bool allow_many);
@@ -788,6 +809,7 @@ MOSS_API void* Moss_Metal_GetLayer(Moss_MetalView view);
 MOSS_API void Moss_Metal_Resize(Moss_MetalView handle, uint32_t width, uint32_t height);
 
 #endif // MOSS_PLATFORM_H
+
 
 
 
