@@ -1,6 +1,6 @@
 //                        MIT License
 //
-//                  Copyright (c) 2025 Toby
+//                  Copyright (c) 2026 Toby
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,26 +37,15 @@
 extern "C" {
 #endif
 
-// Moss Framework version
-#define MOSS_MAJOR_VERSION 0
-#define MOSS_MINOR_VERSION 1
-#define MOSS_PATCH_VERSION 0
-
-#define MOSS_VERSION_NUM(major, minor, patch) ((major) * 10000 + (minor) * 100 + (patch))
-#define MOSS_VERSION MOSS_VERSION_NUM(MOSS_MAJOR_VERSION, MOSS_MINOR_VERSION, MOSS_PATCH_VERSION)
-
-#if MOSS_VERSION < MOSS_VERSION_NUM(0, 2, 0)
-#error "CMoss 0.2.0 or higher is required!"
-#endif
-
-#include <Moss/Moss_Platform.h>
-#include <Moss/Moss_Renderer.h>
-#include <Moss/Moss_Resources.h>
+#include <Moss/Moss_stdinc.h>
 #include <Moss/Moss_Variants.h>
+#include <Moss/Moss_Resources.h>
+#include <Moss/Moss_Platform.h>
+#include <Moss/Moss_GPU.h>
+#include <Moss/Moss_Renderer.h>
 #include <Moss/Moss_Network.h>
 #include <Moss/Moss_Physics.h>
 #include <Moss/Moss_Audio.h>
-#include <Moss/Moss_stdinc.h>
 #include <Moss/Moss_XR.h>
 
 #ifdef __cplusplus
