@@ -363,25 +363,25 @@ static void AudioEffectProcess_Flange(float* samples, uint32_t frames, uint32_t 
 static void* AudioEffect_AllocateState(AudioEffectType type) {
     void* state = NULL;
     switch(type) {
-        case AudioEffectType::LOWPASS:
-        case AudioEffectType::HIGHTPASS:
+        case AUDIO_EFFECT_LOWPASS:
+        case AUDIO_EFFECT_HIGHPASS:
             state = calloc(1, sizeof(float));
             break;
 
-        case AudioEffectType::NORMALIZE:
-        case AudioEffectType::DISTORTION: {
+        case AUDIO_EFFECT_NORMALIZE:
+        case AUDIO_EFFECT_DISTORTION: {
             state = malloc(sizeof(float));
             *(float*)state = 1.0f;
             break;
         }
 
-        case AudioEffectType::CHORUS:
+        case AUDIO_EFFECT_CHORUS:
             state = calloc(1, sizeof(ChorusState));
             ((ChorusState*)state)->depth = 0.05f;
             break;
 
-        case AudioEffectType::DELAY:
-        case AudioEffectType::ECHO: {
+        case AUDIO_EFFECT_DELAY:
+        case AUDIO_EFFECT_ECHO: {
             DelayState* d = (DelayState*)malloc(sizeof(DelayState));
             d->size = 44100; // 1 second at 44.1kHz
             d->buffer = (float*)calloc(d->size, sizeof(float));
@@ -401,18 +401,18 @@ static void* AudioEffect_AllocateState(AudioEffectType type) {
 // ============================
 static AudioEffectProcess AudioEffect_GetProcess(AudioEffectType type) {
     switch(type) {
-        case AudioEffectType::LOWPASS:     return AudioEffectProcess_Lowpass;
-        case AudioEffectType::HIGHTPASS:   return AudioEffectProcess_Highpass;
-        case AudioEffectType::NORMALIZE:   return AudioEffectProcess_Normalize;
-        case AudioEffectType::DISTORTION:  return AudioEffectProcess_Distortion;
-        case AudioEffectType::CHORUS:      return AudioEffectProcess_Chorus;
-        case AudioEffectType::ECHO:        return AudioEffectProcess_Delay;
-        case AudioEffectType::DELAY:       return AudioEffectProcess_Delay;
-        case AudioEffectType::FLANGE:      return AudioEffectProcess_Flange;
-        case AudioEffectType::PARAMEQ:     return AudioEffectProcess_ParamEq;
-        case AudioEffectType::REVERB:      return AudioEffectProcess_Reverb;
-        case AudioEffectType::COMPRESSOR:  return AudioEffectProcess_Compressor;
-        case AudioEffectType::PITCHSHIFTER:return AudioEffectProcess_PitchShifter;
+        case AUDIO_EFFECT_LOWPASS:     return AudioEffectProcess_Lowpass;
+        case AUDIO_EFFECT_HIGHPASS:   return AudioEffectProcess_Highpass;
+        case AUDIO_EFFECT_NORMALIZE:   return AudioEffectProcess_Normalize;
+        case AUDIO_EFFECT_DISTORTION:  return AudioEffectProcess_Distortion;
+        case AUDIO_EFFECT_CHORUS:      return AudioEffectProcess_Chorus;
+        case AUDIO_EFFECT_ECHO:        return AudioEffectProcess_Delay;
+        case AUDIO_EFFECT_DELAY:       return AudioEffectProcess_Delay;
+        case AUDIO_EFFECT_FLANGE:      return AudioEffectProcess_Flange;
+        case AUDIO_EFFECT_PARAMEQ:     return AudioEffectProcess_ParamEq;
+        case AUDIO_EFFECT_REVERB:      return AudioEffectProcess_Reverb;
+        case AUDIO_EFFECT_COMPRESSOR:  return AudioEffectProcess_Compressor;
+        case AUDIO_EFFECT_PITCHSHIFTER:return AudioEffectProcess_PitchShifter;
         default:                           return NULL;
     }
 }
@@ -437,8 +437,8 @@ void AudioEffect_Destroy(AudioEffect* fx) {
 
     if (fx->state) {
         switch(fx->type) {
-            case AudioEffectType::DELAY:
-            case AudioEffectType::ECHO: {
+            case AUDIO_EFFECT_DELAY:
+            case AUDIO_EFFECT_ECHO: {
                 DelayState* d = (DelayState*)fx->state;
                 free(d->buffer);
                 break;
@@ -458,18 +458,18 @@ void Moss_AudioEffectSetParameter(AudioEffect* fx, const char* paramName, float 
     if (!fx || !fx->state) return;
 
     switch(fx->type) {
-        case AudioEffectType::NORMALIZE:
-        case AudioEffectType::DISTORTION:
+        case AUDIO_EFFECT_NORMALIZE:
+        case AUDIO_EFFECT_DISTORTION:
             if (strcmp(paramName, "gain") == 0)
                 *(float*)fx->state = value;
             break;
-        case AudioEffectType::CHORUS: {
+        case AUDIO_EFFECT_CHORUS: {
             if (strcmp(paramName, "depth") == 0)
                 ((ChorusState*)fx->state)->depth = value;
             break;
         }
-        case AudioEffectType::DELAY:
-        case AudioEffectType::ECHO: {
+        case AUDIO_EFFECT_DELAY:
+        case AUDIO_EFFECT_ECHO: {
             if (strcmp(paramName, "feedback") == 0)
                 ((DelayState*)fx->state)->feedback = value;
             break;

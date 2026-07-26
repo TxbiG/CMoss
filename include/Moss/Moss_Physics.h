@@ -34,14 +34,14 @@
  * ---
  *
  * ### Core Features:
- * - **Jolt 5.3.0 Integration** — Lightweight, SIMD-accelerated, and cross-platform physics core.
- * - **2D & 3D Simulation** — Unified system supporting both 2D arcade-style and full 3D rigid-body dynamics.
- * - **Deterministic Simulation** — Ensures reproducible results across different platforms and frame rates.
- * - **Broadphase & Narrowphase Collision** — Highly optimized multi-threaded broadphase with efficient shape queries.
- * - **Continuous Collision Detection (CCD)** — Prevents tunneling for fast-moving objects.
- * - **Constraint Solver** — Handles joints, springs, and ragdolls with stable stacking and accurate motion.
- * - **Trigger & Query Support** — Overlap queries, raycasts, sweeps, and shape casts.
- * - **Material System** — Custom friction, restitution, and physical material blending.
+ * - **Jolt 5.3.0 Integration** ??? Lightweight, SIMD-accelerated, and cross-platform physics core.
+ * - **2D & 3D Simulation** ??? Unified system supporting both 2D arcade-style and full 3D rigid-body dynamics.
+ * - **Deterministic Simulation** ??? Ensures reproducible results across different platforms and frame rates.
+ * - **Broadphase & Narrowphase Collision** ??? Highly optimized multi-threaded broadphase with efficient shape queries.
+ * - **Continuous Collision Detection (CCD)** ??? Prevents tunneling for fast-moving objects.
+ * - **Constraint Solver** ??? Handles joints, springs, and ragdolls with stable stacking and accurate motion.
+ * - **Trigger & Query Support** ??? Overlap queries, raycasts, sweeps, and shape casts.
+ * - **Material System** ??? Custom friction, restitution, and physical material blending.
  *
  * ---
  *
@@ -69,7 +69,7 @@
  *
  * PhysicsWorld* world = Moss_CreatePhysicsWorld({
  *     .gravity = Vec3(0.0f, -9.81f, 0.0f),
- *     .broadphase = BroadphaseType::DynamicAABBTree
+ *     .broadphase = dynamic AABB tree
  * });
  *
  * // Create a rigid body
@@ -520,77 +520,8 @@ typedef enum TransmissionMode {
     _TransmissionMode_Force32 = 0x7FFFFFFF
 } TransmissionMode;
 
-typedef struct Vec3 {
-	float x;
-	float y;
-	float z;
-} Vec3;
-
-typedef struct Vec4 {
-	float x;
-	float y;
-	float z;
-	float w;
-} Vec4;
-
-typedef struct Quat {
-	float x;
-	float y;
-	float z;
-	float w;
-} Quat;
-
-typedef struct Plane {
-	Vec3 normal;
-	float distance;
-} Plane;
-
-typedef struct Matrix4x4 {
-	float m11, m12, m13, m14;
-	float m21, m22, m23, m24;
-	float m31, m32, m33, m34;
-	float m41, m42, m43, m44;
-} Matrix4x4;
-
-#if defined(DOUBLE_PRECISION)
-typedef struct RVec3 {
-	double x;
-	double y;
-	double z;
-} RVec3;
-
-typedef struct RMatrix4x4 {
-	float m11, m12, m13, m14;
-	float m21, m22, m23, m24;
-	float m31, m32, m33, m34;
-	double m41, m42, m43, m44;
-} RMatrix4x4;
-#else
-typedef Vec3 RVec3;
-typedef Matrix4x4 RMatrix4x4;
-#endif
-
-typedef uint32_t Color;
-
-typedef struct AABB2 {
-	Vec2 min;
-	Vec2 max;
-} AABB2;
-
-typedef struct AABB3 {
-	Vec3 min;
-	Vec3 max;
-} AABB3;
-
-typedef struct OBB2 {
-	Mat44 orientation;
-	Vec2 max;
-} AABB2;
-
-typedef struct OBB3 {
-	Mat44 orientation;
-	Vec3 max;
-} AABB3;
+typedef Mat44 Matrix4x4;
+typedef Mat44 RMatrix4x4;
 
 typedef struct Triangle {
 	Vec3 v1;
@@ -644,7 +575,7 @@ typedef struct CollideSettingsBase {
 	float						penetrationTolerance/* = DEFAULT_PENETRATION_TOLERANCE*/;
 
 	/// When mActiveEdgeMode is CollideOnlyWithActive a movement direction can be provided. When hitting an inactive edge, the system will select the triangle normal as penetration depth only if it impedes the movement less than with the calculated penetration depth.
-	Vec3					activeEdgeMovementDirection/* = Vec3::sZero()*/;
+	Vec3					activeEdgeMovementDirection/* default: zero vector */;
 } CollideSettingsBase;
 
 /* CollideShapeSettings */
@@ -2977,6 +2908,8 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 
 
 #endif // MOSS_PHYSICS_H
+
+
 
 
 

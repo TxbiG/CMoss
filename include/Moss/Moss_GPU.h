@@ -1,23 +1,20 @@
-//                        MIT License
-//
-//                  Copyright (c) 2026 Toby
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+#ifndef MOSS_GPU_H
+#define MOSS_GPU_H
 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+#include <Moss/Moss_stdinc.h>
 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#pragma once
+typedef struct Moss_GPUDevice Moss_GPUDevice;
+typedef struct Moss_GPUBuffer Moss_GPUBuffer;
+typedef struct Moss_GPUTexture Moss_GPUTexture;
+typedef struct Moss_GPUShader Moss_GPUShader;
+typedef struct Moss_GPUCommandList Moss_GPUCommandList;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // MOSS_GPU_H

@@ -1,621 +1,156 @@
 //                        MIT License
 //
-//                  Copyright (c) 2025 Toby
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//                  Copyright (c) 2026 Toby
 //
 #ifndef MOSS_STDINC_H
 #define MOSS_STDINC_H
 
-/*!
- * @file Moss_stdinc.h
- * @brief Standard include header for the Moss Framework.
- *
- * Provides:
- * - Platform and compiler abstraction.
- * - Standardized type definitions and compile-time configuration.
- * - Utility macros, assertions, and inline helpers.
- * - Integration foundation for all other Moss subsystems.
- *
- * ---
- *
- * ### Overview:
- * `Moss_stdinc.h` acts as the foundational include for the entire Moss Framework.
- * It ensures consistent definitions across compilers, platforms, and languages.
- *
- * ---
- *
- * ### Core Responsibilities:
- * - **Platform Detection**
- *   - Identifies OS and hardware targets.
- *   - Defines portable symbols for Windows, Linux, macOS, Android, iOS, and WebAssembly.
- *
- * - **Compiler Detection**
- *   - Supports MSVC, GCC, Clang, and AppleClang.
- *   - Enables warning suppression and compiler-specific optimization attributes.
- *
- * - **Type Normalization**
- *   - Defines fixed-size integer and float types (uint8, int16, float32, etc).
- *   - Establishes Moss-specific aliases for cross-language consistency.
- *
- * - **Macros & Attributes**
- *   - Inline, constexpr, restrict, likely/unlikely, alignment, and export/import macros.
- *   - Simplifies platform-specific linkage (DLLs, shared libraries).
- *
- * - **Error Handling & Debugging**
- *   - Unified `MOSS_ASSERT`, `MOSS_LOG`, and panic/debug hooks.
- *   - Optional integration with custom logging systems or crash reporters.
- *
- * - **Namespace & Symbol Management**
- *   - Ensures consistent namespacing for C and C++.
- *   - Enables `MOSS_NAMESPACE_BEGIN` / `MOSS_NAMESPACE_END` macros.
- *
- * ---
- *
- * ### Platform Defines:
- * | Platform | Define | Notes |
- * |-----------|---------|-------|
- * | Windows   | `MOSS_PLATFORM_WINDOWS` | Desktop and UWP supported |
- * | Linux     | `MOSS_PLATFORM_LINUX` | Supports X11, Wayland, headless |
- * | macOS     | `MOSS_PLATFORM_MACOS` | Metal and OpenGL supported |
- * | iOS       | `MOSS_PLATFORM_IOS` | Metal-based rendering only |
- * | Android   | `MOSS_PLATFORM_ANDROID` | GLES / Vulkan support |
- * | Web (Emscripten) | `MOSS_PLATFORM_WEB` | WebAssembly / WebGPU support |
- *
- * ---
- *
- * ### Compiler Defines:
- * | Compiler | Define | Notes |
- * |-----------|---------|-------|
- * | MSVC      | `MOSS_COMPILER_MSVC` | Supports MSVC-specific intrinsics |
- * | GCC       | `MOSS_COMPILER_GCC` | Enables GCC attributes |
- * | Clang     | `MOSS_COMPILER_CLANG` | Unified with AppleClang |
- *
- * ---
- *
- * ### Common Macros:
- * ```cpp
- * #define MOSS_INLINE       inline __attribute__((always_inline))
- * #define MOSS_NOINLINE     __attribute__((noinline))
- * #define MOSS_ALIGN(x)     __attribute__((aligned(x)))
- * #define MOSS_LIKELY(x)    __builtin_expect(!!(x), 1)
- * #define MOSS_UNLIKELY(x)  __builtin_expect(!!(x), 0)
- *
- * #define MOSS_EXPORT       extern "C" __declspec(dllexport)
- * #define MOSS_IMPORT       extern "C" __declspec(dllimport)
- * ```
- *
- * ---
- *
- * ### Utility Macros:
- * - `MOSS_ARRAY_SIZE(arr)` — Returns the number of elements in an array.
- * - `MOSS_UNUSED(x)` — Prevents unused variable warnings.
- * - `MOSS_BIT(x)` — Shifts bitmask `(1 << x)`.
- * - `MOSS_OFFSET_OF(type, member)` — Returns byte offset of struct member.
- *
- * ---
- *
- * Ensures version compatibility between Moss Framework components and bindings.
- *
- * ---
- *
- * ### Future Roadmap:
- * - Platform-independent threading primitives (atomic, mutex, condition variable).
- * - Intrinsic wrappers for SIMD (SSE, NEON, AVX).
- * - Compile-time feature detection macros (`MOSS_HAS_VULKAN`, `MOSS_HAS_OPENXR`, etc).
- * - Static compile-time assertion and reflection utilities.
- *
- */
-
-#include <stdint.h>
 #include <stdbool.h>
-#include <time.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
-#include <stdio.h>
+#include <time.h>
 
-
-// Determine platform
-#if defined(MOSS_PLATFORM_BLUE)
-	// Correct define already defined, this overrides everything else
-#elif defined(__EMSCRIPTEN__)
-	#define MOSS_PLATFORM_WASM
-#elif defined(_WIN32) || defined(_WIN64)
-	#include <winapifamily.h>
-
-	// Windows
-	#define MOSS_PLATFORM_WINDOWS
-
-	#if (WINAPI_FAMILY == WINAPI_FAMILY_APP)
-        #define MOSS_PLATFORM_WINDOWS_UWP
-    #endif
-
-	/* Xbox (GDK covers Xbox One + Series) */
-    #if defined(_GAMING_XBOX)
-        #define MOSS_PLATFORM_GDK
-        #if defined(_GAMING_XBOX_X)
-            #define MOSS_PLATFORM_XBOXSERIES
-        #else
-            #define MOSS_PLATFORM_XBOXONE
-        #endif
-    #endif
+#if defined(_WIN32) || defined(_WIN64)
+#  define MOSS_PLATFORM_WINDOWS
+#  if defined(MOSS_SHARED_LIBRARY) && defined(MOSS_BUILD_SHARED_LIBRARY)
+#    define MOSS_EXPORT __declspec(dllexport)
+#  elif defined(MOSS_SHARED_LIBRARY)
+#    define MOSS_EXPORT __declspec(dllimport)
+#  else
+#    define MOSS_EXPORT
+#  endif
 #elif defined(__APPLE__)
-	#elif defined(__APPLE__)
-    #include <TargetConditionals.h>
-    #define MOSS_PLATFORM_APPLE
-
-    #if TARGET_OS_OSX
-        #define MOSS_PLATFORM_MACOS
-    #elif TARGET_OS_IPHONE
-        #define MOSS_PLATFORM_IOS
-    #elif TARGET_OS_TV
-        #define MOSS_PLATFORM_TVOS
-    #elif TARGET_OS_VISION
-        #define MOSS_PLATFORM_VISIONOS
-    #endif
-#elif defined(ANDROID) || defined(__ANDROID__) 	// Android is linux too, so that's why we check it first
-	#define MOSS_PLATFORM_ANDROID
-	// Add Android TV
-#elif defined(linux) || defined(__linux) || defined(__linux__)
-	// Linux
-    #define MOSS_PLATFORM_LINUX
-#elif defined(__FreeBSD__)
-    #define MOSS_PLATFORM_FREEBSD
-#elif defined(__OpenBSD__)
-    #define MOSS_PLATFORM_OPENBSD
-#elif defined(__NetBSD__)
-    #define MOSS_PLATFORM_NETBSD
-#elif defined(__bsdi__)
-    #define MOSS_PLATFORM_BSDI
-#elif defined(__sun)
-    #define MOSS_PLATFORM_SOLARIS
-#elif defined(_AIX)
-    #define MOSS_PLATFORM_AIX
-#elif defined(__hpux)
-    #define MOSS_PLATFORM_HPUX
-#elif defined(__HAIKU__)
-    #define MOSS_PLATFORM_HAIKU
-#elif defined(__GNU__)
-    #define MOSS_PLATFORM_HURD
-#elif defined(__sgi)
-    #define MOSS_PLATFORM_IRIX
-#elif defined(__QNX__)
-    #define MOSS_PLATFORM_QNXNTO
-#elif defined(__riscos__)
-    #define MOSS_PLATFORM_RISCOS
-#elif defined(__osf__)
-    #define MOSS_PLATFORM_OSF
-#elif defined(__unix__) || defined(__unix)
-    #define MOSS_PLATFORM_UNIX
-#elif defined(__3DS__)
-    #define MOSS_PLATFORM_3DS
-#elif defined(__NGAGE__)
-    #define MOSS_PLATFORM_NGAGE
-#elif defined(__psp__)
-    #define MOSS_PLATFORM_PSP
-#elif defined(__vita__)
-    #define MOSS_PLATFORM_VITA
-#elif defined(__ps2__)
-    #define MOSS_PLATFORM_PS2
-#elif defined(__CYGWIN__)
-    #define MOSS_PLATFORM_CYGWIN
-#elif defined(__OS2__)
-    #define MOSS_PLATFORM_OS2
-#endif
-#elif defined(__EMSCRIPTEN__)
-	#define MOSS_PLATFORM_WASM
-#endif
-
-// Platform helper macros
-#ifdef MOSS_PLATFORM_ANDROID
-	#define MOSS_IF_NOT_ANDROID(x)
+#  define MOSS_PLATFORM_APPLE
+#  include <TargetConditionals.h>
+#  if TARGET_OS_OSX
+#    define MOSS_PLATFORM_MACOS
+#  elif TARGET_OS_IPHONE
+#    define MOSS_PLATFORM_IOS
+#  endif
+#  define MOSS_EXPORT __attribute__((visibility("default")))
+#elif defined(__ANDROID__)
+#  define MOSS_PLATFORM_ANDROID
+#  define MOSS_EXPORT __attribute__((visibility("default")))
+#elif defined(__linux__)
+#  define MOSS_PLATFORM_LINUX
+#  define MOSS_EXPORT __attribute__((visibility("default")))
 #else
-	#define MOSS_IF_NOT_ANDROID(x) x
+#  define MOSS_EXPORT
 #endif
 
-// Determine compiler
-#if defined(__clang__)
-	#define MOSS_COMPILER_CLANG
-#elif defined(__GNUC__)
-	#define MOSS_COMPILER_GCC
-#elif defined(_MSC_VER)
-	#define MOSS_COMPILER_MSVC 1943
-#endif
-
-#if (defined(__MINGW64__) || defined(__MINGW32__))
-	#define MOSS_COMPILER_MINGW
-#endif
-
-// #if defined(__i386__)
-// Detect CPU architecture
-#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
-	// X86 CPU architecture
-	#define MOSS_CPU_X86
-	#if defined(__x86_64__) || defined(_M_X64)
-		#define MOSS_CPU_ADDRESS_BITS 64
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-	#endif
-	#define MOSS_USE_SSE
-	#define MOSS_VECTOR_ALIGNMENT 16
-	#define MOSS_DVECTOR_ALIGNMENT 32
-
-	#if defined(__AVX512F__) && defined(__AVX512VL__) && defined(__AVX512DQ__) && !defined(MOSS_USE_AVX512)
-		#define MOSS_USE_AVX512
-	#endif
-	#if (defined(__AVX2__) || defined(MOSS_USE_AVX512)) && !defined(MOSS_USE_AVX2)
-		#define MOSS_USE_AVX2
-	#endif
-	#if (defined(__AVX__) || defined(MOSS_USE_AVX2)) && !defined(MOSS_USE_AVX)
-		#define MOSS_USE_AVX
-	#endif
-	#if (defined(__SSE4_2__) || defined(MOSS_USE_AVX)) && !defined(MOSS_USE_SSE4_2)
-		#define MOSS_USE_SSE4_2
-	#endif
-	#if (defined(__SSE4_1__) || defined(MOSS_USE_SSE4_2)) && !defined(MOSS_USE_SSE4_1)
-		#define MOSS_USE_SSE4_1
-	#endif
-	#if (defined(__F16C__) || defined(MOSS_USE_AVX2)) && !defined(MOSS_USE_F16C)
-		#define MOSS_USE_F16C
-	#endif
-	#if (defined(__LZCNT__) || defined(MOSS_USE_AVX2)) && !defined(MOSS_USE_LZCNT)
-		#define MOSS_USE_LZCNT
-	#endif
-	#if (defined(__BMI__) || defined(MOSS_USE_AVX2)) && !defined(MOSS_USE_TZCNT)
-		#define MOSS_USE_TZCNT
-	#endif
-	#ifndef MOSS_CROSS_PLATFORM_DETERMINISTIC
-		#if defined(MOSS_COMPILER_CLANG) || defined(MOSS_COMPILER_GCC)
-			#if defined(__FMA__) && !defined(MOSSH_USE_FMADD)
-				#define MOSS_USE_FMADD
-			#endif
-		#elif defined(MOSS_COMPILER_MSVC)
-			#if defined(__AVX2__) && !defined(MOSS_USE_FMADD) // AVX2 also enables fused multiply add
-				#define MOSS_USE_FMADD
-			#endif
-		#else
-			#error Undefined compiler
-		#endif
-	#endif // MOSS_CROSS_PLATFORM_DETERMINISTIC
-#elif (defined(__aarch64__) || defined(_M_ARM64) || defined(__arm__) || defined(_M_ARM))
-	// ARM CPU architecture
-	#define MOSS_CPU_ARM
-	#if defined(__aarch64__) || defined(_M_ARM64)
-		#define MOSS_CPU_ADDRESS_BITS 64
-		#define MOSS_USE_NEON
-		#define MOSS_VECTOR_ALIGNMENT 16
-		#define MOSS_DVECTOR_ALIGNMENT 32
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-		#define MOSS_VECTOR_ALIGNMENT 8 // 32-bit ARM does not support aligning on the stack on 16 byte boundaries
-		#define MOSS_DVECTOR_ALIGNMENT 8
-	#endif
-#elif defined(__riscv)
-	// RISC-V CPU architecture
-	#define MOSS_CPU_RISCV
-	#if __riscv_xlen == 64
-		#define MOSS_CPU_ADDRESS_BITS 64
-		#define MOSS_VECTOR_ALIGNMENT 16
-		#define MOSS_DVECTOR_ALIGNMENT 32
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-		#define MOSS_VECTOR_ALIGNMENT 16
-		#define MOSS_DVECTOR_ALIGNMENT 8
-	#endif
-#elif defined(MOSS_PLATFORM_WASM)
-	// WebAssembly CPU architecture
-	#define MOSS_CPU_WASM
-	#if defined(__wasm64__)
-		#define MOSS_CPU_ADDRESS_BITS 64
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-	#endif
-	#define MOSS_VECTOR_ALIGNMENT 16
-	#define MOSS_DVECTOR_ALIGNMENT 32
-	#ifdef __wasm_simd128__
-		#define MOSS_USE_SSE
-		#define MOSS_USE_SSE4_1
-		#define MOSS_USE_SSE4_2
-	#endif
-#elif (defined(__powerpc__) || defined(__powerpc64__))
-	// PowerPC CPU architecture
-	#define MOSS_CPU_PPC
-	#if defined(__powerpc64__)
-		#define MOSS_CPU_ADDRESS_BITS 64
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-	#endif
-	#ifdef _BIG_ENDIAN
-		#define MOSS_CPU_BIG_ENDIAN
-	#endif
-	#define MOSS_VECTOR_ALIGNMENT 16
-	#define MOSS_DVECTOR_ALIGNMENT 8
-#elif defined(__loongarch__)
-	// LoongArch CPU architecture
-	#define MOSS_CPU_LOONGARCH
-	#if defined(__loongarch64)
-		#define MOSS_CPU_ADDRESS_BITS 64
-	#else
-		#define MOSS_CPU_ADDRESS_BITS 32
-	#endif
-	#define MOSS_VECTOR_ALIGNMENT 16
-	#define MOSS_DVECTOR_ALIGNMENT 8
-#elif defined(__e2k__)
-	// E2K CPU architecture (MCST Elbrus 2000)
-	#define MOSS_CPU_E2K
-	#define MOSS_CPU_ADDRESS_BITS 64
-	#define MOSS_VECTOR_ALIGNMENT 16
-	#define MOSS_DVECTOR_ALIGNMENT 32
-
-	// Compiler flags on e2k arch determine CPU features
-	#if defined(__SSE__) && !defined(MOSS_USE_SSE)
-		#define MOSS_USE_SSE
-	#endif
+#ifdef __cplusplus
+#  define MOSS_API extern "C" MOSS_EXPORT
 #else
-	#error Unsupported CPU architecture
+#  define MOSS_API extern MOSS_EXPORT
 #endif
 
-// If this define is set, Jolt is compiled as a shared library
-#ifdef MOSS_SHARED_LIBRARY
-	#ifdef MOSS_BUILD_SHARED_LIBRARY
-		// While building the shared library, we must export these symbols
-		#if defined(MOSS_PLATFORM_WINDOWS) && !defined(MOSS_COMPILER_MINGW)
-			#define MOSS_EXPORT __declspec(dllexport)
-		#else
-			#define MOSS_EXPORT __attribute__ ((visibility ("default")))
-			#if defined(MOSS_COMPILER_GCC)
-				// Prevents an issue with GCC attribute parsing (see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69585)
-				#define MOSS_EXPORT_GCC_BUG_WORKAROUND [[gnu::visibility("default")]]
-			#endif
-		#endif
-	#else
-		// When linking against Jolt, we must import these symbols
-		#if defined(MOSS_PLATFORM_WINDOWS) && !defined(MOSS_COMPILER_MINGW)
-			#define MOSS_EXPORT __declspec(dllimport)
-		#else
-			#define MOSS_EXPORT __attribute__ ((visibility ("default")))
-			#if defined(MOSS_COMPILER_GCC)
-				// Prevents an issue with GCC attribute parsing (see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69585)
-				#define MOSS_EXPORT_GCC_BUG_WORKAROUND [[gnu::visibility("default")]]
-			#endif
-		#endif
-	#endif
-#else
-	// If the define is not set, we use static linking and symbols don't need to be imported or exported
-	#define MOSS_EXPORT
+#ifndef MOSS_CALL
+#  if defined(_WIN32)
+#    define MOSS_CALL __cdecl
+#  else
+#    define MOSS_CALL
+#  endif
 #endif
 
-#define MOSS_API extern "C" MOSS_EXPORT
-
-#ifndef MOSS_EXPORT_GCC_BUG_WORKAROUND
-	#define MOSS_EXPORT_GCC_BUG_WORKAROUND MOSS_EXPORT
-#endif
-
-// Define inline macro
-#if defined(MOSS_NO_FORCE_INLINE)
-	#define MOSS_INLINE inline
-#elif defined(MOSS_COMPILER_CLANG)
-	#define MOSS_INLINE __inline__ __attribute__((always_inline))
-#elif defined(MOSS_COMPILER_GCC)
-	// On gcc 14 using always_inline in debug mode causes error: "inlining failed in call to 'always_inline' 'XXX': function not considered for inlining"
-	// See: https://github.com/jrouwe/JoltPhysics/issues/1096
-	#if __GNUC__ >= 14 && defined(MOSS_DEBUG)
-		#define MOSS_INLINE inline
-	#else
-		#define MOSS_INLINE __inline__ __attribute__((always_inline))
-	#endif
-#elif defined(MOSS_COMPILER_MSVC)
-	#define MOSS_INLINE __forceinline
-#else
-	#error Undefined
-#endif
-
-#define MOSS_FALSE   0U
-#define MOSS_TRUE    1U
-
-// Signed
-#define MAX_INT8    ((int8_t)(0x7F))
-#define MAX_INT16   ((int16_t)(0x7FFF))
-#define MAX_INT32   ((int32_t)(0x7FFFFFFF))
-#define MAX_INT64   ((int64_t)(0x7FFFFFFFFFFFFFFF))
-#define MIN_INT8    ((int8_t)(~0x7F))
-#define MIN_INT16   ((int16_t)(~0x7FFF))
-#define MIN_INT32   ((int32_t)(~0x7FFFFFFF))
-#define MIN_INT64   ((int64_t)(~0x7FFFFFFFFFFFFFFF))
-
-// Unsigned
-#define MAX_UINT8   ((uint8_t)(0xFF))
-#define MAX_UINT16  ((uint16_t)(0xFFFF))
-#define MAX_UINT32  ((uint32_t)(0xFFFFFFFFu))
-#define MAX_UINT64  ((uint64_t)(0xFFFFFFFFFFFFFFFF))
-#define MIN_UINT8   ((uint8_t)(0x00))
-#define MIN_UINT16  ((uint16_t)(0x0000))
-#define MIN_UINT32  ((uint32_t)(0x00000000))
-#define MIN_UINT64  ((uint64_t)(0x0000000000000000))
+#define MOSS_FALSE 0U
+#define MOSS_TRUE 1U
+#define MOSS_BIT(x) (1u << (x))
+#define MOSS_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#define MOSS_UNUSED(x) ((void)(x))
 
 #ifndef PI
-#   define PI          3.141592653589793238462643383279502884F
-#endif  // PI
-
-#define HALF_PI        1.5707963267948966F
-#define QUARTER_PI     0.7853981633974483F
-
-#ifndef TAU
-#   define TAU         PI * 2
-#endif  // TAU
-/*
-#ifndef EPSILON
-#   define FLT_EPSILON 1.1920928955078125e-07F
-#endif  // EPSILON
-*/
-#ifndef INF
-#   define INF         ((float)(1e+300 * 1e+300))
-#endif  // INF
-
-#ifndef M_E
-#   define M_E        2.71828182845904523536F   // e
-#endif // M_E
-#ifndef M_LOG2E
-#   define M_LOG2E    1.44269504088896340736F   // log2(e)
-#endif // M_LOG2E
-#ifndef M_LOG10E
-#   define M_LOG10E   0.434294481903251827651F  // log10(e)
-#endif // M_LOG10E
-#ifndef M_LN2
-#   define M_LN2      0.693147180559945309417F  // ln(2)
-#endif // M_LN2
-#ifndef M_LN10
-#   define M_LN10     2.30258509299404568402F   // ln(10)
-#endif // M_LN10
-#ifndef M_2_SQRTPI
-#   define M_2_SQRTPI 1.12837916709551257390F   // 2/sqrt(pi)
-#endif // M_2_SQRTPI
-#ifndef M_SQRT2
-#   define M_SQRT2    1.41421356237309504880F   // sqrt(2)
-#endif // M_SQRT2
-#ifndef M_SQRT1_2
-#   define M_SQRT1_2  0.707106781186547524401F  // 1/sqrt(2)
-#endif // M_SQRT1_2
-
-#ifndef ATAN_POLY
-#   define ATAN_POLY(x)  ((x) * (0.999866 + 0.333331 * (x) * (x)))
-#endif // ATAN_POLY
-
-#define RAD(x)        ((x) * (PI / 180.0))
-#define FACT(n)       ((n) <= 1 ? 1 : (n) * FACT((n) - 1))
-#define SIGN(x)       ((inV < 0)? (-1) : (1))
-//#define LERP(a, b, t) ((a) + (t) * ((b) - (a)))
-
-#define ATAN2(y, x)  ((x) > 0 ? ATAN_POLY((y) / (x)) : \ ((x) < 0 && (y) >= 0 ? ATAN_POLY((y) / (x)) + PI : \ ((x) < 0 && (y) < 0 ? ATAN_POLY((y) / (x)) - PI : \ ((x) == 0 && (y) > 0 ? HALF_PI : \ ((x) == 0 && (y) < 0 ? -HALF_PI : 0)))))
-#define SQRT(x)      ({ double guess = (x) / 2; \ for (int i = 0; i < 5; i++) guess = (guess + (x) / guess) / 2; \ guess; }) // using Newton method
-#define ACOS(x)      (ATAN2(SQRT(1 - (x) * (x)), (x)))
-#define ASIN(x)      (ATAN2((x), SQRT(1 - (x) * (x))))
-#define ATAN(x)      (ATAN2((x), 1))
-#define CEIL(x)      (((x) == (int)(x)) ? (x) : (int)((x) + 1))
-#define FABS(x)      ((x) < 0 ? -(x) : (x))
-#define FLOOR(x)     (((x) == (int)(x)) ? (x) : (int)(x))
-
-// Logarithm approximations using Taylor series
-#define LOG(x)       ((x) - 1 - (((x) - 1) * ((x) - 1)) / 2 + (((x) - 1) * ((x) - 1) * ((x) - 1)) / 3)
-#define LOG10(x)     (LOG(x) / LN10)
-#define LOG2(x)      (LOG(x) / LN2)
-
-// Power functions
-#define EXP(x)       (1 + (x) + (x) * (x) / 2 + (x) * (x) * (x) / 6 + (x) * (x) * (x) * (x) / 24)
-#define POW(b, e)    (EXP((e) * LOG(b)))
-#define EXP2(x)      (POW(2, (x)))
-
-#define ROUND(x)     ((x) < 0 ? (int)((x) - 0.5) : (int)((x) + 0.5))
-#define TRUNC(x)     ((x) < 0 ? CEIL(x) : FLOOR(x))
-
-// Hyperbolic functions
-#define COSH(x)      ((EXP(x) + EXP(-(x))) / 2)
-#define SINH(x)      ((EXP(x) - EXP(-(x))) / 2)
-#define TANH(x)      (SINH(x) / COSH(x))
-
-// Inverse hyperbolic functions
-#define ACOSH(x)     (LOG((x) + SQRT((x) * (x) - 1)))
-#define ASINH(x)     (LOG((x) + SQRT((x) * (x) + 1)))
-#define ATANH(x)     (0.5 * LOG((1 + (x)) / (1 - (x))))
-
-// Hypotenuse function
-#define HYPOT(x, y)  (SQRT((x) * (x) + (y) * (y)))
-
-#define DEG_TO_RAD(d) ((d) * (M_PI / 180.0))
-#define RAD_TO_DEG(r) ((r) * (180.0 / M_PI))
-
+#  define PI 3.14159265358979323846f
+#endif
+#define HALF_PI 1.57079632679489661923f
+#define TAU (PI * 2.0f)
+#define DEG_TO_RAD(d) ((d) * (PI / 180.0f))
+#define RAD_TO_DEG(r) ((r) * (180.0f / PI))
 #define CLAMP(x, a, b) (((x) < (a)) ? (a) : (((x) > (b)) ? (b) : (x)))
 
-#define MOSS_DIFFERENCE(x, y) ((x) < (y) ? (y) - (x) : (x) - (y))
+#define MAX_INT8 INT8_MAX
+#define MAX_INT16 INT16_MAX
+#define MAX_INT32 INT32_MAX
+#define MAX_INT64 INT64_MAX
+#define MIN_INT8 INT8_MIN
+#define MIN_INT16 INT16_MIN
+#define MIN_INT32 INT32_MIN
+#define MIN_INT64 INT64_MIN
+#define MAX_UINT8 UINT8_MAX
+#define MAX_UINT16 UINT16_MAX
+#define MAX_UINT32 UINT32_MAX
+#define MAX_UINT64 UINT64_MAX
+#define MIN_UINT8 0u
+#define MIN_UINT16 0u
+#define MIN_UINT32 0u
+#define MIN_UINT64 0ull
 
-#define SQUARE(x) (x * x)
-#define CUBED(x) (x * x * x)
+typedef int8_t int8;
+typedef int16_t int16;
+typedef int32_t int32;
+typedef int64_t int64;
+typedef uint8_t uint8;
+typedef uint16_t uint16;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
 
-#define ArraySize(x) (sizeof(x)) / (sizeof((x)[0]))
+typedef signed char s8;
+typedef signed short s16;
+typedef signed int s32;
+typedef signed long long s64;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned int u32;
+typedef unsigned long long u64;
 
-typedef signed char         s8;
-typedef signed short        s16;
-typedef signed int          s32;
-typedef signed long long    s64;
+typedef float float32;
+typedef double float64;
+typedef float DeltaTime;
 
-typedef unsigned char       u8;
-typedef unsigned short      u16;
-typedef unsigned int        u32;
-typedef unsigned long long  u64;
+typedef struct Vec2 { float x, y; } Vec2;
+typedef struct Vec3 { float x, y, z; } Vec3;
+typedef struct Vec4 { float x, y, z, w; } Vec4;
+typedef struct iVec2 { int x, y; } iVec2;
+typedef struct iVec3 { int x, y, z; } iVec3;
+typedef struct iVec4 { int x, y, z, w; } iVec4;
+typedef struct dVec2 { double x, y; } dVec2;
+typedef struct dVec3 { double x, y, z; } dVec3;
+typedef struct dVec4 { double x, y, z, w; } dVec4;
 
-// Variants
-typedef struct Vec2;
-typedef struct Vec3;
-typedef struct Vec4;
-typedef struct iVec2;
-typedef struct iVec3;
-typedef struct iVec4;
-typedef struct dVec2;
-typedef struct dVec3;
-typedef struct dVec4;
-typedef struct Float2   { float x, y; };
-typedef struct Float3   { float x, y, z; };
-typedef struct Float4   { float x, y, z, w; };
-typedef struct Int2     { int x, y; };
-typedef struct Int3     { int x, y, z; };
-typedef struct Int4     { int x, y, z, w; };
-typedef struct Double2  { double x, y; };
-typedef struct Double3  { double x, y, z; };
-typedef struct Double4  { double x, y, z, w; };
-typedef struct Mat2x3;
-typedef struct Mat2x4;
-typedef struct Mat2;
-typedef struct Mat3x2;
-typedef struct Mat3x4;
-typedef struct Mat3;
-typedef struct Mat4x2;
-typedef struct Mat4x3;
-typedef struct Mat4;
-typedef struct Color    { unsigned char r, g, b, a; };
-typedef struct Rect     { float x, y, width, height; };
-typedef struct iRect    { int x, y, width, height; };
+typedef Vec2 Float2;
+typedef Vec3 Float3;
+typedef Vec4 Float4;
+typedef iVec2 Int2;
+typedef iVec3 Int3;
+typedef iVec4 Int4;
+typedef dVec2 Double2;
+typedef dVec3 Double3;
+typedef dVec4 Double4;
+
+typedef struct Mat2 { float m[2][2]; } Mat2;
+typedef struct Mat2x3 { float m[2][3]; } Mat2x3;
+typedef struct Mat2x4 { float m[2][4]; } Mat2x4;
+typedef struct Mat3 { float m[3][3]; } Mat3;
+typedef struct Mat3x2 { float m[3][2]; } Mat3x2;
+typedef struct Mat3x4 { float m[3][4]; } Mat3x4;
+typedef struct Mat4 { float m[4][4]; } Mat4;
+typedef struct Mat4x2 { float m[4][2]; } Mat4x2;
+typedef struct Mat4x3 { float m[4][3]; } Mat4x3;
+typedef Mat4 Mat44;
+
+typedef struct Color { uint8 r, g, b, a; } Color;
+typedef struct Rect { float x, y, width, height; } Rect;
+typedef struct iRect { int x, y, width, height; } iRect;
 typedef Vec4 Quat;
-typedef struct Basis;
-typedef struct Texture {
-    unsigned int id;        // OpenGL texture id
-    int width;              // Texture base width
-    int height;             // Texture base height
-    int mipmaps;            // Mipmap levels, 1 by default
-    int format;             // Data format (PixelFormat type)
-} Texture;
-typedef Texture Texture2D;
-typedef Texture3D Texture3D;
-typedef Texture TextureCubemap;
+typedef struct Plane { Vec3 normal; float distance; } Plane;
+typedef struct AABB2 { Vec2 min; Vec2 max; } AABB2;
+typedef struct AABB3 { Vec3 min; Vec3 max; } AABB3;
+typedef struct OBB2 { Mat44 orientation; Vec2 center; Vec2 half_extents; } OBB2;
+typedef struct OBB3 { Mat44 orientation; Vec3 center; Vec3 half_extents; } OBB3;
+typedef struct Basis { Vec3 x, y, z; } Basis;
 
-
-
-// Resources
-typedef struct BezierCurve;
-typedef struct BezierCurve2;
-typedef struct BezierCurve3;
-typedef struct Gradient;
-typedef struct Json;
-typedef struct Material;
-typedef struct PCK;
-typedef struct Timer;
-
-#ifndef MOSS_DOUBLE_PRECISION
+#ifdef MOSS_DOUBLE_PRECISION
 typedef dVec2 RVec2;
 typedef dVec3 RVec3;
 typedef dVec4 RVec4;
@@ -623,153 +158,57 @@ typedef dVec4 RVec4;
 typedef Vec2 RVec2;
 typedef Vec3 RVec3;
 typedef Vec4 RVec4;
-#endif // MOSS_DOUBLE_PRECISION
+#endif
 
-#ifndef MOSS_USE_OBB
+#ifdef MOSS_USE_OBB
 typedef OBB2 AABox2;
-typedef OBB2 AABox3;
+typedef OBB3 AABox3;
 #else
 typedef AABB2 AABox2;
 typedef AABB3 AABox3;
-#endif // MOSS_USE_OBB
-
-#if (defined(MOSS_PLATFORM_WINDOWS) || defined(MOSS_PLATFORM_MACSO) || defined(MOSS_PLATFORM_LINUX))
-#include <stddef.h>
-typedef unsigned long long size;
-#else
-typedef unsigned int size;
 #endif
 
-// Signed
-#define MAX_INT8    ((int8_t)(0x7F))
-#define MAX_INT16   ((int16_t)(0x7FFF))
-#define MAX_INT32   ((int32_t)(0x7FFFFFFF))
-#define MAX_INT64   ((int64_t)(0x7FFFFFFFFFFFFFFF))
-#define MIN_INT8    ((int8_t)(~0x7F))
-#define MIN_INT16   ((int16_t)~0x7FFF)
-#define MIN_INT32   ((int32_t)(~0x7FFFFFFF))
-#define MIN_INT64   ((int64_t)(~0x7FFFFFFFFFFFFFFF))
+typedef struct Texture {
+    unsigned int id;
+    int width;
+    int height;
+    int mipmaps;
+    int format;
+} Texture;
+typedef Texture Texture2D;
+typedef Texture Texture3D;
+typedef Texture TextureCubemap;
 
-// Unsigned
-#define MAX_UINT8   ((uint8_t)(0xFF))
-#define MAX_UINT16  ((uint16_t)(0xFFFF))
-#define MAX_UINT32  ((uint32_t)(0xFFFFFFFFu))
-#define MAX_UINT64  ((uint64_t)(0xFFFFFFFFFFFFFFFF))
-#define MIN_UINT8   ((uint8_t)0x00)
-#define MIN_UINT16  ((uint16_t)0x0000)
-#define MIN_UINT32  ((uint32_t)0x00000000)
-#define MIN_UINT64  ((uint64_t)(0x0000000000000000))
+static inline float Moss_Min(float a, float b) { return a < b ? a : b; }
+static inline float Moss_Max(float a, float b) { return a > b ? a : b; }
+static inline float Moss_Abs(float v) { return v < 0.0f ? -v : v; }
+static inline float Moss_Sqrt(float v) { return sqrtf(v); }
+static inline float Moss_Ceil(float v) { return ceilf(v); }
+static inline float Moss_Floor(float v) { return floorf(v); }
+static inline float Moss_Trunc(float v) { return truncf(v); }
+static inline float Moss_Round(float v) { return roundf(v); }
+static inline float Moss_Fmod(float a, float b) { return fmodf(a, b); }
+static inline bool Moss_IsFinite(float v) { return isfinite(v) != 0; }
+static inline bool Moss_IsNaN(float v) { return isnan(v) != 0; }
+static inline float Moss_Clamp(float v, float minv, float maxv) { return CLAMP(v, minv, maxv); }
+static inline float Moss_Lerp(float a, float b, float t) { return a + t * (b - a); }
+static inline void seed_random(void) { srand((unsigned int)time(NULL)); }
+static inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
+static inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
 
-
-#ifndef MOSS_MALLOC
-    #define MOSS_MALLOC(size)       malloc(sz)
-#endif
-#ifndef MOSS_CALLOC
-    #define MOSS_CALLOC(nmemb, size)     calloc(n,sz)
-#endif
-#ifndef MOSS_REALLOC
-    #define MOSS_REALLOC(ptr, size)  realloc(ptr,sz)
-#endif
-#ifndef MOSS_FREE
-    #define MOSS_FREE(ptr)        free(ptr)
-#endif
-#ifndef MOSS_ALIGNED_ALLOC
-    #define MOSS_ALIGNED_ALLOC(ptr, size_t alignment, size_t size) aligned_alloc(alignment, alignment*sizeof *ptr);
-#endif
-#ifndef MOSS_ALIGNED_FREE
-    #define MOSS_ALIGNED_FREE(void *mem) aligned_free(void *mem)
-#endif
-
-typedef float DeltaTime;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-MOSS_API inline float Moss_Cos();
-MOSS_API inline float Moss_Sin();
-MOSS_API inline float Moss_Tan();
-
-MOSS_API inline float Moss_Min(float a, float b) { return (a < b) ? a : b; }
-MOSS_API inline float Moss_Max(float a, float b) { return (a > b) ? a : b; }
-MOSS_API inline float Moss_Abs(float v)         { return (v < 0.0f) ? -v : v; }
-
-MOSS_API inline float Moss_Sqrt(float v)        { return sqrtf(v); }
-MOSS_API inline float Moss_Ceil(float v)        { return ceilf(v); }
-MOSS_API inline float Moss_Floor(float v)       { return floorf(v); }
-MOSS_API inline float Moss_Trunc(float v)       { return truncf(v); }
-MOSS_API inline float Moss_Round(float v)       { return roundf(v); }
-MOSS_API inline float Moss_Fmod(float a, float b) { return fmodf(a, b); }
-
-
-
-MOSS_API inline bool Moss_IsFinite(float v) { return isfinite(v) != 0; }
-MOSS_API inline bool Moss_IsNaN(float v)    { return isnan(v) != 0; }
-
-
-MOSS_API inline float Moss_Asinh(float v) { return asinhf(v); }
-MOSS_API inline float Moss_Acosh(float v) { return acoshf(v); }
-MOSS_API inline float Moss_Atanh(float v) { return atanhf(v); }
-
-MOSS_API inline float Moss_Clamp(float v, float minv, float maxv)
-{
-    if (v < minv) return minv;
-    if (v > maxv) return maxv;
-    return v;
-}
-
-MOSS_API inline float Moss_Lerp(float a, float b, float t)
-{
-    return a + t * (b - a);
-}
-
-
-MOSS_API bool Moss_OBB2_Overlaps(const AABB2& inBox, float inEpsilon = 1.0e-6f);
-MOSS_API bool Moss_OBB2_Overlaps(const OBB2& inBox, float inEpsilon = 1.0e-6f);
-MOSS_API bool Moss_OBB3_Overlaps(const AABB3& inBox, float inEpsilon = 1.0e-6f);
-MOSS_API bool Moss_OBB3_Overlaps(const OBB3& inBox, float inEpsilon = 1.0e-6f);
-
-
-
-MOSS_API static inline Mat44 Moss_Ortho(float left, float right, float bottom, float top, float near, float far);
-MOSS_API static inline Mat44 Moss_Perspective(float fovY, float aspect, float near, float far);
-MOSS_API static inline Mat44 Moss_LookAt(Vec3 position, Vec3 target, Vec3 up);
-
-MOSS_API static inline Vec3 Moss_Vec2_Lerp(Vec2 a, Vec2 b, float t);
-MOSS_API static inline Vec3 Moss_Vec2_Clamp(Vec2 value, Vec2 min, Vec2 max);
-
-MOSS_API static inline Vec3 Moss_Vec3_Lerp(Vec3 a, Vec3 b, float t);
-MOSS_API static inline Vec3 Moss_Vec3_Clamp(Vec3 value, Vec3 min, Vec3 max);
-
-
-MOSS_API inline void seed_random() { srand((unsigned int)time(NULL)); }
-MOSS_API inline float randf_range(float min, float max) { return min + (float)rand() / (float)RAND_MAX * (max - min); }
-MOSS_API inline int randi_range(int min, int max) { return min + rand() % (max - min + 1); }
-
-#ifdef __cplusplus
-}
-#endif
+MOSS_API float Moss_Cos(float v);
+MOSS_API float Moss_Sin(float v);
+MOSS_API float Moss_Tan(float v);
+MOSS_API bool Moss_AABB2_Overlaps(const AABB2* box, float epsilon);
+MOSS_API bool Moss_OBB2_Overlaps(const OBB2* box, float epsilon);
+MOSS_API bool Moss_AABB3_Overlaps(const AABB3* box, float epsilon);
+MOSS_API bool Moss_OBB3_Overlaps(const OBB3* box, float epsilon);
+MOSS_API Mat44 Moss_Ortho(float left, float right, float bottom, float top, float near_plane, float far_plane);
+MOSS_API Mat44 Moss_Perspective(float fov_y, float aspect, float near_plane, float far_plane);
+MOSS_API Mat44 Moss_LookAt(Vec3 position, Vec3 target, Vec3 up);
+MOSS_API Vec2 Moss_Vec2_Lerp(Vec2 a, Vec2 b, float t);
+MOSS_API Vec2 Moss_Vec2_Clamp(Vec2 value, Vec2 min_value, Vec2 max_value);
+MOSS_API Vec3 Moss_Vec3_Lerp(Vec3 a, Vec3 b, float t);
+MOSS_API Vec3 Moss_Vec3_Clamp(Vec3 value, Vec3 min_value, Vec3 max_value);
 
 #endif // MOSS_STDINC_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

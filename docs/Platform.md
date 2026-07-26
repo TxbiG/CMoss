@@ -1,362 +1,208 @@
 # Platform
-
 ## Overview
 
-The Platform module provides cross-platform abstraction for window management, input handling, monitors, and system integration.
 
-Supported platforms: **Windows**, **Linux**, **macOS**, **FreeBSD**, **Android**, **iOS**
+Platforms supported ```Windows```, ```Linux```, ```MacOS```, ```FreeBSD```, ```Android```, ```IOS```.
 
 > [!NOTE]  
-> For VR vendors or other platforms not listed, manual integration may be required.
+Working with VR vendors or any other platform not specified here will require manual creation, such as creating a window and input.
 
-## Platform Support Matrix
+## Platforms
+| Windows | MacOS | Linux  | IOS  | Android  |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
 
-### Operating Systems
-| Feature | Windows | macOS | Linux | iOS | Android |
-| --- | --- | --- | --- | --- | --- |
-| Window Management | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Keyboard/Mouse | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Touch Input | ❌ | ❌ | ❌ | ✅ | ✅ |
-| Haptic Feedback | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Gamepads | ✅ | ✅ | ✅ | ❌ | ❌ |
+### Input Suort
+| Input Devices | Windows | MacOS | Linux  | IOS  | Android  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| Keyboard      | ✅ | ✅ | ✅ | ❌ | ❌  |
+| Mouse         | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Touch         | ❌ |❌  | ❌ | ✅ | ✅ |
+| Pen           | ✅ |✅  | ✅ | ✅ | ✅ |
+| Xbox 360 Controllers  | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Xbox One Controllers  | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Xbox Series S Controllers | ✅ | ✅ | ✅ | ❌ | ❌ |
+| PlayStation 4 Controllers | ✅ | ✅ | ✅ | ❌ | ❌ |
+| PlayStation 5 Controllers | ✅ | ✅ | ✅ | ❌ | ❌ |
 
-### Input Device Support
-| Device | Windows | macOS | Linux | iOS | Android |
-| --- | --- | --- | --- | --- | --- |
-| Keyboard | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Mouse | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Touch | ❌ | ❌ | ❌ | ✅ | ✅ |
-| Stylus/Pen | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Xbox 360 Controller | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Xbox One Controller | ✅ | ✅ | ✅ | ❌ | ❌ |
-| PlayStation 4 Controller | ✅ | ✅ | ✅ | ❌ | ❌ |
-| PlayStation 5 Controller | ✅ | ✅ | ✅ | ❌ | ❌ |
+### Haptic Feedback suort
+| Haptic Feedback | Playstation (DualSense) | Xbox Impulse Triggers | Mouses | Keyboard | IOS Haptic  | Android Haptic |
+| -------------   | -------------           | ------------- | ------------- | ------------- | ------------- | ------------- |
+| Suorted       | ✅                     | ✅            | ❌            | ❌           | ✅           | ✅           |
 
-### Haptic Feedback Support
-| Feature | DualSense | Xbox Series | Mouse | iOS | Android |
-| --- | --- | --- | --- | --- | --- |
-| Haptic Feedback | ✅ | ✅ | ❌ | ✅ | ✅ |
-| Trigger Feedback | ✅ | ✅ | ❌ | ❌ | ❌ |
-
-### Graphics API Support
-| Platform | Recommended APIs |
-| --- | --- |
-| Windows | DirectX 12, Vulkan, OpenGL |
-| macOS | Metal, Vulkan |
-| Linux | Vulkan, OpenGL |
-| iOS | Metal, OpenGL ES |
-| Android | Vulkan, OpenGL ES |
+### Graphics APIs to use
+| Platforms     |Windows                          | MacOS  | Linux          | IOS              | Android           |
+| ------------- | -------------                   | -------| -------------  | -------------    | -------------     |
+| Recommended   | OpenGL Vulkan, DirectX 12 or 12 | Metal  | OpenGL, Vulkan | OpenGL ES, Metal | OpenGL ES, Vulkan | 
 
 ## Macros
-
 ```c
-// Platform Detection
+// Provided by Moss
 #define MOSS_PLATFORM_WINDOWS
+#define MOSS_PLATFORM_WINDOWS_UWP
+#define MOSS_PLATFORM_XBOXONE
+#define MOSS_PLATFORM_XBOXSCARLETT
+#define MOSS_PLATFORM_PS4
+#define MOSS_PLATFORM_PS5
 #define MOSS_PLATFORM_LINUX
+#define MOSS_PLATFORM_UNIX
+#define MOSS_PLATFORM_BSD
+#define MOSS_PLATFORM_ANDROID
 #define MOSS_PLATFORM_MACOS
 #define MOSS_PLATFORM_IOS
-#define MOSS_PLATFORM_ANDROID
-#define MOSS_PLATFORM_XBOX
-#define MOSS_PLATFORM_PLAYSTATION
+#define MOSS_PLATFORM_TVOS
+#define MOSS_PLATFORM_WASM
 ```
-
 ## Enums
-
 ```c
-enum Moss_WindowMode { WINDOWED, FULLSCREEN, BORDERLESS };
-enum Moss_CursorMode { NORMAL, HIDDEN, DISABLED };
-enum Moss_CursorShape { ARROW, HAND, CROSSHAIR, TEXT, WAIT };
-enum InputEventType { INPUT_KEY, INPUT_MOUSE, INPUT_GAMEPAD, INPUT_TOUCH };
+// Provided by Moss
+enum Keyboard;
+enum Mouse;
+enum Gamepad
+enum Joystick
+enum Moss_WindowFlags;
+enum Moss_MessageBoxFlags;
+enum Moss_WindowMode;
+enum Moss_CursorMode;
+enum Moss_CursorShape;
+enum InputEventType;
 ```
 
 ## Structs
-
 ```c
-struct Moss_Window { /* opaque */ };
-struct Moss_Monitor { /* opaque */ };
-struct Moss_Event { InputEventType type; /* ... */ };
+// Provided by Moss
+struct Moss_Window;
+struct Moss_Monitor;
+struct Moss_Cursor;
+struct Moss_GammaRamp;
+struct Moss_VideoMode;
+struct Moss_Image;
+struct Moss_Event;
 struct Moss_Locale {
-    const char* language;   // "en", "de", etc.
-    const char* country;    // "US", "DE", etc.
+    char* country;
+    char* language;
 };
+struct Moss_HapticFeedback;
 ```
 
 ## Functions
-
-### Window Management
-
 ```c
-// Create a new window
-Moss_Window* Moss_CreateWindow(const char* title);
-
-// Check if window should close
-bool Moss_ShouldWindowClose(Moss_Window* window);
-
-// Check if window is currently running
-bool Moss_IsWindowRunning(Moss_Window* window);
-
-// Terminate window and clean up resources
+Moss_Window* Moss_CreateWindow(const char* Title);
 void Moss_TerminateWindow(Moss_Window* window);
+bool ShouldWindowClose(Moss_Window* window);
+void Moss_PollEvents();
+bool Moss_CreateMessageBox();
 
-// Get window dimensions
-void Moss_GetWindowSize(Moss_Window* window, int* width, int* height);
-
-// Set window dimensions
-void Moss_SetWindowSize(Moss_Window* window, int width, int height);
-
-// Get window position on screen
-void Moss_GetWindowPosition(Moss_Window* window, int* x, int* y);
-
-// Set window title
-void Moss_SetWindowTitle(Moss_Window* window, const char* title);
-```
-
-### Event Handling
-
-```c
-// Poll all pending events
-void Moss_PollEvents(void);
-
-// Get next event (blocking)
-bool Moss_GetNextEvent(Moss_Event* event);
-
-// Process event callback
-typedef void (*EventCallback)(const Moss_Event* event);
-void Moss_SetEventCallback(EventCallback callback);
-```
-
-### Monitor Detection
-
-```c
-// Get monitor at index
-Moss_Monitor Moss_GetMonitor(int index);
-
-// Get primary monitor
-Moss_Monitor Moss_GetPrimaryMonitor(void);
-
-// Count available monitors
-int Moss_GetMonitorCount(void);
-
-// Get monitor name
-const char* Moss_GetMonitorName(Moss_Monitor monitor);
-
-// Get monitor position in virtual space
-void Moss_GetMonitorPosition(Moss_Monitor monitor, int* x, int* y);
-
-// Get monitor dimensions in millimeters
 void Moss_GetMonitorPhysicalSize(Moss_Monitor monitor, int* width_mm, int* height_mm);
-
-// Get DPI scaling
 void Moss_GetMonitorContentScale(Moss_Monitor monitor, float* xscale, float* yscale);
+void Moss_GetMonitorPosition(Moss_Monitor monitor, int* x, int* y);
+const char* Moss_GetMonitorName(Moss_Monitor monitor);
+void Moss_SetGammaRamp(Moss_Monitor monitor, const Moss_GammaRamp* gammaRamp);
+void Moss_SetGamma(Moss_Monitor monitor, float gamma);
+Moss_GammaRamp* Moss_GetGammaRamp(Moss_Monitor monitor);
 
-// Get current refresh rate
-int Moss_GetMonitorRefreshRate(Moss_Monitor monitor);
-```
+inline bool IsPressed(Keyboard k);
+inline bool IsReleased(Keyboard k);
+inline bool IsJustPressed(Keyboard k);
+inline bool IsJustReleased(Keyboard k);
 
-### Input Handling
+inline bool IsPressed(Mouse b);
+inline bool IsReleased(Mouse b);
+inline bool IsJustPressed(Mouse b);
+inline bool IsJustReleased(Mouse b);
 
-```c
-// Keyboard input
-bool Moss_IsKeyPressed(int key);
-bool Moss_IsKeyReleased(int key);
-bool Moss_IsKeyJustPressed(int key);
-bool Moss_IsKeyJustReleased(int key);
+inline bool IsPressed(Gamepad b);
+inline bool IsReleased(Gamepad b);
+inline bool IsJustPressed(Gamepad b);
+inline bool IsJustReleased(Gamepad b);
+float GetJoyAxis(Joystick j);
 
-// Mouse input
-bool Moss_IsMouseButtonPressed(int button);
-bool Moss_IsMouseButtonReleased(int button);
-bool Moss_IsMouseButtonJustPressed(int button);
-float Moss_GetMouseX(void);
-float Moss_GetMouseY(void);
-void Moss_GetMousePosition(float* x, float* y);
-void Moss_SetMousePosition(float x, float y);
-
-// Gamepad input
-bool Moss_IsGamepadConnected(int gamepad_id);
-bool Moss_IsGamepadButtonPressed(int gamepad_id, int button);
-float Moss_GetGamepadAxis(int gamepad_id, int axis);
-
-// Touch input (Mobile)
-int Moss_GetTouchCount(void);
-void Moss_GetTouchPosition(int touch_id, float* x, float* y);
-float Moss_GetTouchPressure(int touch_id);
-```
-
-### Cursor Management
-
-```c
-// Set cursor mode (visible, hidden, disabled)
-void Moss_SetCursorMode(Moss_CursorMode mode);
-
-// Set cursor shape
-void Moss_SetCursorShape(Moss_CursorShape shape);
-
-// Show/hide cursor
-void Moss_ShowCursor(bool show);
-```
-
-### Haptic Feedback
-
-```c
-// Play haptic feedback on a device
-void Moss_PlayHapticFeedback(int device_id, float intensity, float duration);
-
-// Set trigger feedback (Xbox/DualSense)
-void Moss_SetTriggerFeedback(int device_id, float left_intensity, float right_intensity);
-```
-
-### Graphics API Specific
-
-#### OpenGL
-
-```c
-// Make OpenGL context current
-void Moss_MakeContextCurrent(Moss_Window* window);
-
-// Swap front/back buffers
-void Moss_SwapBuffers(Moss_Window* window);
-
-// Set V-Sync interval (0 = off, 1 = on)
-void Moss_SwapBuffersInterval(int interval);
-
-// Get OpenGL function pointer
-void* Moss_GetProcAddress(const char* procname);
-```
-
-#### Vulkan
-
-```c
-// Create Vulkan surface for window
-VkResult Moss_CreateWindowSurface(Moss_Window* window, VkInstance instance,
-                                   const VkAllocationCallbacks* allocator,
-                                   VkSurfaceKHR* surface);
-
-// Check if Vulkan is supported
-int Moss_VulkanSupported(void);
-
-// Initialize Vulkan loader
-void Moss_InitVulkanLoader(PFN_vkGetInstanceProcAddr loader);
-
-// Get required instance extensions for window surface
-const char** Moss_GetRequiredInstanceExtensions(uint32_t* count);
-
-// Get Vulkan instance function
-void* Moss_GetInstanceProcAddress(VkInstance instance, const char* procname);
-
-// Check if device can present to window
-int Moss_GetPhysicalDevicePresentationSupport(Moss_Window* window,
-                                              VkPhysicalDevice device,
-                                              uint32_t queue_family);
-```
-
-### System Information
-
-```c
-// Get system locale
-struct Moss_Locale* Moss_GetLocale(void);
-
-// Get number of CPU cores
-int Moss_GetCPUCount(void);
-
-// Get system RAM in bytes
-uint64_t Moss_GetSystemMemory(void);
-
-// Open URL in default browser
+Moss_Locale* Moss_GetLocale();
 bool Moss_OpenURL(const char* url);
 ```
 
 ## Examples
-
-### Creating and Managing a Window
-
+### Window
 ```c
+#pragma once
 #include <Moss.h>
 
-int main() {
-    // Initialize Moss
-    if (!Moss_Init()) {
-        return 1;
-    }
+int main()
+{
+  if (!MossInit()) { return 0; }
+  Moss_Window* m_window = Moss_CreateWindow("Game", CENTER_POSITION, CENTER_POSITION, 700, 600, NULL, NULL);
+  if (!m_window) { MossTerminate(); return 0; }
 
-    // Create window
-    Moss_Window* window = Moss_CreateWindow("My Moss Application");
-    if (!window) {
-        Moss_Terminate();
-        return 1;
-    }
+  while(!ShouldWindowClose(m_window))
+  {
+      PollEvents();
+      /*    Code    */
+      SwapBuffers(m_window);
+  }
 
-    // Main loop
-    while (!Moss_ShouldWindowClose(window)) {
-        // Poll events
-        Moss_PollEvents();
-
-        // Handle input
-        if (Moss_IsKeyJustPressed(KEY_ESCAPE)) {
-            break;  // Exit on ESC
-        }
-
-        // Update and render (your code here)
-        // ...
-    }
-
-    // Cleanup
-    Moss_TerminateWindow(window);
-    Moss_Terminate();
-    return 0;
+  Moss_TerminateWindow(m_window);
+  MossTerminate();
+  return 0;
 }
 ```
-
-### Handling Input Events
-
+### Monitor
 ```c
-void HandleEvents() {
-    // Check keyboard
-    if (Moss_IsKeyPressed(KEY_W)) {
-        // Move forward
-    }
-
-    // Check mouse
-    float mouse_x, mouse_y;
-    Moss_GetMousePosition(&mouse_x, &mouse_y);
-
-    if (Moss_IsMouseButtonJustPressed(MOUSE_BUTTON_LEFT)) {
-        // Fire weapon at mouse_x, mouse_y
-    }
-
-    // Check gamepad
-    if (Moss_IsGamepadConnected(0)) {
-        float lx = Moss_GetGamepadAxis(0, GAMEPAD_AXIS_LX);
-        float ly = Moss_GetGamepadAxis(0, GAMEPAD_AXIS_LY);
-        // Use analog stick input
-    }
-}
 ```
-
-### Monitor Detection
-
+### Input
 ```c
-void PrintMonitorInfo() {
-    int count = Moss_GetMonitorCount();
-    printf("Connected monitors: %d\n", count);
-
-    for (int i = 0; i < count; i++) {
-        Moss_Monitor monitor = Moss_GetMonitor(i);
-        const char* name = Moss_GetMonitorName(monitor);
-        int x, y;
-        Moss_GetMonitorPosition(monitor, &x, &y);
-        
-        printf("Monitor %d: %s at (%d, %d)\n", i, name, x, y);
-    }
-}
 ```
-
 ### Haptic Feedback
+```c
+```
+### Video Capture
+```c
+```
+
+
+## Graphics API Specific
+### OpenGL
+```c
+void Moss_MakeContextCurrent(Moss_Window* window);
+```
+```c
+void Moss_SwapBuffers(); // < Used in Moss_Renderer so only call if you are making your own renderer
+```
+Moss_SwapBuffersInterval is used for V-Sync. However, it may cause the game to lag and introduce input lag.
+```c
+void Moss_SwapBuffersInterval(int interval);
+```
 
 ```c
-void PlayGamepadVibration() {
-    if (Moss_IsGamepadConnected(0)) {
-        // Vibrate gamepad with 80% intensity for 100ms
-        Moss_PlayHapticFeedback(0, 0.8f, 0.1f);
-    }
-}
+void* Moss_GetProcAddress(const char* procname);
+```
+### OpenGL ES
+```c
+```
+
+### Vulkan
+```c
+VkResult Moss_CreateWindowSurface(Moss_Window* window, VkInstance vk_instance,
+  const VkAllocationCallbacks *allocator, VkSurfaceKHR* vk_surface);
+```
+Moss_VulkanSuorted is used to help check if the Vulkan driver is installed.
+```c
+int Moss_VulkanSuorted(void);
+```
+```c
+void Moss_InitVulkanLoader(PFN_vkGetInstanceProcAddr loader);
+```
+```c
+const char** Moss_GetRequiredInstanceExtensions(uint32_t* count);
+```
+```c
+void* Moss_GetInstanceProcAddress(VkInstance instance, const char* procname);
+```
+```c
+int Moss_GetPhysicalDevicePresentationSuort(Moss_Window& window, VkPhysicalDevice device, uint32_t queuefamily);
 ```

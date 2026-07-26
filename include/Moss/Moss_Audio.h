@@ -2,426 +2,149 @@
 //
 //                  Copyright (c) 2026 Toby
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-/*!
- * @file Moss_Audio.h
- * @brief Cross-platform audio subsystem for the Moss Framework.
- *
- * The audio module provides a unified, high-performance abstraction over
- * multiple platform-specific backends. It is designed to support both
- * **real-time 3D spatial audio** and **2D streamed playback** for games,
- * XR experiences, and simulation systems.
- *
- * ---
- *
- * ### Supported Backends:
- * - **Windows:** XAudio2 / WASAPI
- * - **macOS:** CoreAudio *(under testing)*
- * - **Linux:** ALSA *(under testing)*
- *
- * ---
- *
- * ### Core Capabilities:
- * - **2D / 3D Audio Streams** — Play, pause, and stop streamed or preloaded sounds.
- * - **Audio Effects Pipeline** — Supports a broad range of DSP effects:
- *   - Lowpass / Highpass filters
- *   - Echo, Flange, Distortion
- *   - Normalize, Parametric EQ
- *   - Pitch Shifting, Chorus, Compressor
- *   - Reverb and Delay
- * - **Dynamic Audio Control** — Real-time adjustment of pitch, gain, and pan per stream or channel.
- * - **Hardware Abstraction** — Unified interface for **Speakers** and **Microphones**, with support for enumeration, selection, and control.
- * - **Audio Listeners** — Spatial representation for 2D and 3D listener transforms, integrated with camera and XR systems.
- * - **Ray-Traced Audio Listeners** - CPU tracing for real-time occlusion and first-order reflections.
- * - **Wav Files** - .Wav files are supported
- *
- * ---
- *
- * ### Design Goals:
- * - Low-latency, high-fidelity cross-platform audio.
- * - Thread-safe mixing and real-time streaming.
- * - Integration with Moss Engine’s physics and rendering systems for synchronized A/V effects.
- * - Modular extension for third-party DSPs and audio middleware.
- */
-
 #ifndef MOSS_AUDIO_H
 #define MOSS_AUDIO_H
 
 #include <Moss/Moss_stdinc.h>
-#include <Moss/Moss_Physics.h>
 
-// AudioStream player set as signal for calling
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CHANNEL_INVALID 0U
 
-// Forward declarations
-struct AudioEffect;
-struct AudioStream;
-struct AudioStream2D;
-struct AudioStream3D;
-struct AudioListener2D;
-struct AudioListener3D;
-struct RayAudioListener2D;
-struct RayAudioListener3D;
-struct Moss_AudioSource;
-struct Moss_Microphone;
-struct Moss_Wav;
+typedef struct AudioEffect AudioEffect;
+typedef struct AudioStream AudioStream;
+typedef struct AudioStream2D AudioStream2D;
+typedef struct AudioStream3D AudioStream3D;
+typedef struct AudioListener2D AudioListener2D;
+typedef struct AudioListener3D AudioListener3D;
+typedef struct RayAudioListener2D RayAudioListener2D;
+typedef struct RayAudioListener3D RayAudioListener3D;
+typedef struct Moss_AudioSource Moss_AudioSource;
+typedef struct Moss_Microphone Moss_Microphone;
+typedef struct Moss_Wav Moss_Wav;
 
-typedef uint32_t ChannelID;
+typedef uint32 ChannelID;
 
-enum class AudioEffectType {
-    LOWPASS                     = 0, 
-    HIGHPASS                    = 1 << 0, 
-    ECHO                        = 1 << 1, 
-    FLANGE                      = 1 << 2, 
-    DISTORTION                  = 1 << 3,
-    NORMALIZE                   = 1 << 4, 
-    PARAMEQ                     = 1 << 5, 
-    PITCHSHIFTER                = 1 << 6, 
-    CHORUS                      = 1 << 7,
-    COMPRESSOR                  = 1 << 8, 
-    REVERB                      = 1 << 9, 
-    DELAY                       = 1 << 10,
-    DOPPLER                     = 1 << 11, 
-    PANNING                     = 1 << 12, 
-    DISTANCE_ATTENUATION        = 1 << 13
-};
+typedef enum AudioEffectType {
+    AUDIO_EFFECT_LOWPASS = 0,
+    AUDIO_EFFECT_HIGHPASS = 1 << 0,
+    AUDIO_EFFECT_ECHO = 1 << 1,
+    AUDIO_EFFECT_FLANGE = 1 << 2,
+    AUDIO_EFFECT_DISTORTION = 1 << 3,
+    AUDIO_EFFECT_NORMALIZE = 1 << 4,
+    AUDIO_EFFECT_PARAMEQ = 1 << 5,
+    AUDIO_EFFECT_PITCHSHIFTER = 1 << 6,
+    AUDIO_EFFECT_CHORUS = 1 << 7,
+    AUDIO_EFFECT_COMPRESSOR = 1 << 8,
+    AUDIO_EFFECT_REVERB = 1 << 9,
+    AUDIO_EFFECT_DELAY = 1 << 10,
+    AUDIO_EFFECT_DOPPLER = 1 << 11,
+    AUDIO_EFFECT_PANNING = 1 << 12,
+    AUDIO_EFFECT_DISTANCE_ATTENUATION = 1 << 13
+} AudioEffectType;
 
-enum class DistanceModel { 
-    LINEAR, 
-    INVERSE, 
-    EXPONENTIAL 
-};
+typedef enum DistanceModel { DISTANCE_MODEL_LINEAR, DISTANCE_MODEL_INVERSE, DISTANCE_MODEL_EXPONENTIAL } DistanceModel;
+typedef enum AudioLoadType { AUDIO_LOAD_FULLY_LOADED, AUDIO_LOAD_STREAMING } AudioLoadType;
 
-enum class AudioLoadType { 
-    FULLY_LOADED, 
-    STREAMING 
-};
-
-typedef void (*MicrophoneCallback)(const float* buffer, int samples, void* userData);
+typedef void (*MicrophoneCallback)(const float* buffer, int frames, void* userData);
 typedef void (*AudioStreamCallback)(float* buffer, int frames, void* userData);
 
-/*! 
- * @brief Initialize the Moss Audio system.
- * 
- * Must be called before using any audio functionality.
- * Initializes the audio backend, mixer, and device interfaces.
- *
- * @return 0 on success, non-zero on failure.
- */
-MOSS_API int Moss_Init_Audio();
-/*!
- * @brief Shut down the Moss Audio system.
- * 
- * Stops all playback, releases devices, and frees internal resources.
- * No audio functions may be called after this.
- */
-MOSS_API void Moss_Terminate_Audio();
-/*!
- * @brief Update the audio system.
- * 
- * Must be called once per frame.
- * Handles spatialization, streaming, callbacks, and effect updates.
- *
- * @param deltaTime Time elapsed since last update (seconds).
- */
+MOSS_API int Moss_Init_Audio(void);
+MOSS_API void Moss_Terminate_Audio(void);
 MOSS_API void Moss_AudioUpdate(float deltaTime);
 
-/*!
- * @brief Load a WAV audio source.
- *
- * @return Pointer to a loaded audio source.
- */
-MOSS_API Moss_AudioSource* Moss_AudioLoadWav();
-
-/*!
- * @brief Load an OGG audio source.
- *
- * @param filename Path to the OGG file.
- * @param type Load type (fully loaded or streaming).
- * @return Pointer to a loaded audio source.
- */
+MOSS_API Moss_AudioSource* Moss_AudioLoadWav(const char* filename);
 MOSS_API Moss_AudioSource* Moss_AudioLoadOgg(const char* filename, AudioLoadType type);
-
-/*!
- * @brief Load an MP3 audio source.
- *
- * @param filename Path to the MP3 file.
- * @return Pointer to a loaded audio source.
- */
 MOSS_API Moss_AudioSource* Moss_AudioLoadMP3(const char* filename);
-/*!
- * @brief Create an audio source from a microphone device.
- *
- * @param mic Microphone device handle.
- * @return Pointer to an audio source capturing microphone input.
- */
 MOSS_API Moss_AudioSource* Moss_AudioCaptureMicrophone(Moss_Microphone* mic);
 
-// Effects
-/*!
- * @brief Create an audio effect.
- *
- * @param type Type of effect to create.
- * @return Created audio effect.
- */
-MOSS_API AudioEffect Moss_AudioCreateEffect(AudioEffectType type);
-
-/*!
- * @brief Set a parameter on an audio effect.
- *
- * @param effect Effect to modify.
- * @param paramName Name of the parameter.
- * @param value Parameter value.
- */
-MOSS_API void Moss_AudioCreateEffect(AudioEffect* effect, const char* paramName, float value);
-/*!
- * @brief Remove and destroy an audio effect.
- *
- * @param effect Effect to remove.
- */
+MOSS_API AudioEffect* Moss_AudioCreateEffect(AudioEffectType type);
+MOSS_API void Moss_AudioEffectSetParameter(AudioEffect* effect, const char* paramName, float value);
 MOSS_API void Moss_AudioRemoveEffect(AudioEffect* effect);
 
-// Channel
-/*!
- * @brief Create or retrieve an audio channel.
- *
- * @param channel Channel ID.
- * @return Channel ID.
- */
 MOSS_API ChannelID Moss_AudioCreateChannel(ChannelID channel);
-/*!
- * @brief Remove an audio channel.
- *
- * @param channel Channel ID.
- */
-MOSS_API void Audio_RemoveChannel(ChannelID channel);
-/*!
- * @brief Get the master audio channel.
- *
- * @return Master channel ID.
- */
-MOSS_API ChannelID Moss_AudioGetMasterChannel();
-
-/*!
- * @brief Set channel volume.
- *
- * @param channel Channel ID.
- * @param volume Volume (0.0 – 1.0).
- */
+MOSS_API void Moss_AudioRemoveChannel(ChannelID channel);
+MOSS_API ChannelID Moss_AudioGetMasterChannel(void);
 MOSS_API void Moss_AudioSetChannelVolume(ChannelID channel, float volume);
-/*!
- * @brief Mute or unmute a channel.
- *
- * @param channel Channel ID.
- * @param mute True to mute.
- */
 MOSS_API void Moss_AudioSetChannelMute(ChannelID channel, bool mute);
-/*! @brief X. */
 MOSS_API void Moss_AudioAddChannelEffect(ChannelID channel, AudioEffect* effect);
-/*! @brief X. */
 MOSS_API void Moss_AudioRemoveChannelEffect(ChannelID channel, AudioEffect* effect);
-/*! @brief X. */
 MOSS_API void Moss_AudioRemoveAllChannelEffects(ChannelID channel);
 
-/*!
- * @brief Create a non-spatial audio stream.
- *
- * @return Pointer to the created stream.
- */
-MOSS_API AudioStream* Moss_AudioStreamCreate();
-/*!
- * @brief Start playback of an audio stream.
- *
- * @param audiostream Stream to play.
- */
-MOSS_API void Moss_AudioStreamPlay(AudioStream* audiostream);
-/*!
- * @brief Stop playback of an audio stream.
- *
- * @param audiostream Stream to stop.
- */
-MOSS_API void Moss_AudioStreamStop(AudioStream* audiostream);
-/*!
- * @brief Set stream volume.
- *
- * @param audiostream Stream to modify.
- * @param volume Volume (0.0 – 1.0).
- */
-MOSS_API void Moss_AudioStreamSetVolume(AudioStream* audiostream, float volume);
-/*! @brief X. */
-MOSS_API void Moss_AudioStreamSetPitch(AudioStream* audiostream, float pitch);
-/*! @brief X. */
-MOSS_API void Moss_AudioStreamSetLoop(AudioStream* audiostream, bool loop);
-/*! @brief X. */
-MOSS_API void Moss_AudioStreamRemove(AudioStream* audiostream);
-
-/*! @brief X. */
-MOSS_API AudioStream2D* Moss_AudioStream2DCreate();
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DPlay(AudioStream2D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DStop(AudioStream2D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DSetVolume(AudioStream2D* audiostream, float volume);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DSetPitch(AudioStream2D* audiostream, float pitch);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DSetLoop(AudioStream2D* audiostream, bool loop);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetPosition(AudioStream2D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetVelocity(AudioStream2D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetMaxDistance(AudioStream2D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream2DRemove(AudioStream2D* audiostream);
-
-/*! @brief X. */
-MOSS_API AudioStream3D* Moss_AudioStream3DCreate();
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DPlay(AudioStream3D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DStop(AudioStream3D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetVolume(AudioStream3D* audiostream, float volume);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetPitch(AudioStream3D* audiostream, float pitch);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetLoop(AudioStream3D* audiostream, bool loop);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetPosition(AudioStream3D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetVelocity(AudioStream3D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetMaxDistance(AudioStream3D* audiostream);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DSetDistanceModel(AudioStream3D* stream, DistanceModel model);
-/*! @brief X. */
-MOSS_API void Moss_AudioStream3DRemove(AudioStream3D* audiostream);
-
-// Listeners
-/*! @brief X. */
-MOSS_API AudioListener2D* Moss_AudioCreateAudioListener2D();
-/*! @brief Create a 3D audio listener. @return Pointer to the created listener. */
-MOSS_API AudioListener3D* Moss_AudioCreateAudioListener3D();
-/*! @brief X. */
-MOSS_API RayAudioListener2D* Moss_AudioCreateRayAudioListener2D();
-/*! @brief X. */
-MOSS_API RayAudioListener3D* Moss_AudioCreateRayAudioListener3D();
-
-/*! @brief X. */
-MOSS_API void Moss_AudioRemoveAudioListener2D(AudioListener2D* listener);
-/*! @brief X. */
-MOSS_API void Moss_AudioRemoveAudioListener3D(AudioListener3D* listener);
-/*! @brief X. */
-MOSS_API void Moss_AudioRemoveRayAudioListener2D(RayAudioListener2D* listener);
-/*! @brief X. */
-MOSS_API void Moss_AudioRemoveRayAudioListener3D(RayAudioListener3D* listener);
-
-/*! @brief X. */
-MOSS_API void Moss_AudioActivateAudioListener2D(AudioListener2D* listener, bool activate);
-/*! @brief X. */
-MOSS_API void Moss_AudioActivateAudioListener3D(AudioListener3D* listener, bool activate);
-/*! @brief X. */
-MOSS_API void Moss_AudioActivateRayAudioListener2D(RayAudioListener2D* listener, bool activate);
-/*! @brief X. */
-MOSS_API void Moss_AudioActivateRayAudioListener3D(RayAudioListener3D* listener, bool activate);
-
-/*!
- * @brief Set listener orientation.
- *
- * @param listener Listener to modify.
- * @param forward Forward direction vector.
- * @param up Up direction vector.
- */
-MOSS_API void Moss_AudioListenerSetOrientation(AudioListener3D* listener, const Vec3& forward, const Vec3& up);
-
-// Speakers
-/*! @brief Check if a speaker device is available. @return True if a device is ready. */
-MOSS_API bool Moss_IsSpeakerDeviceReady();
-/*! @brief Open the current speaker device. */
-MOSS_API void Moss_AudioSpeakerOpen();
-
-/*! @brief Pause audio output. */
-MOSS_API void Moss_AudioSpeakerPause();
-/*! @brief Resume audio output. */
-MOSS_API void Moss_AudioSpeakerResume();
-/*! @brief X. */
-MOSS_API bool Moss_AudioSpeakerIsPaused();
-/*! @brief X. @param X X. */
-MOSS_API bool Moss_AudioSelectSpeakerDevice(int id);
-/*! @brief X. */
-MOSS_API int Moss_GetCurrentSpeakerDeviceID();
-/*! @brief Get speaker name. @param X X. */
-MOSS_API const char* Moss_GetSpeakerDeviceName(int id);
-/*! @brief Return number of speakers. */
-MOSS_API int Moss_ListSpeakerDevices();
-
-// Microphone
-/*! @brief Check if microphone is ready. */
-MOSS_API bool Moss_IsMicrophoneDeviceReady();
-/*! @brief Initialize microphone. */
-MOSS_API int Moss_AudioMicrophoneOpen();
-/*! @brief Terminate microphone. */
-MOSS_API void Moss_AudioMicrophoneClose();
-/*! @brief Start capture. */
-MOSS_API void Moss_AudioMicrophonePlay();
-/*! @brief Stop capture. */
-MOSS_API void Moss_AudioMicrophoneStop();
-/*! @brief Get default microphone ID. */
-MOSS_API int Moss_AudioMicrophoneID();
-/*! @brief X. @param X X. */
-MOSS_API bool Moss_AudioSelectMicrophoneDevice(int id);
-/*! @brief Get microphone name. */
-MOSS_API const char* Moss_GetMicrophoneDeviceName(int index);
-/*! @brief Return number of microphones. */
-MOSS_API int Moss_ListMicrophoneDevices();
-
-void Moss_AudioMicrophoneSetGain(Moss_Microphone* mic, float gain);
-
-int Moss_AudioMicrophoneGetSampleRate(Moss_Microphone* mic);
-
-int Moss_AudioMicrophoneGetChannels(Moss_Microphone* mic);
-
-/*!
- * @brief Open the microphone device.
- *
- * @return 0 on success, non-zero on failure.
- */
+MOSS_API AudioStream* Moss_AudioStreamCreate(void);
+MOSS_API void Moss_AudioStreamPlay(AudioStream* stream);
+MOSS_API void Moss_AudioStreamStop(AudioStream* stream);
+MOSS_API void Moss_AudioStreamSetVolume(AudioStream* stream, float volume);
+MOSS_API void Moss_AudioStreamSetPitch(AudioStream* stream, float pitch);
+MOSS_API void Moss_AudioStreamSetLoop(AudioStream* stream, bool loop);
 MOSS_API void Moss_AudioStreamSetCallback(AudioStream* stream, AudioStreamCallback callback, void* userData);
+MOSS_API void Moss_AudioStreamRemove(AudioStream* stream);
 
-/*!
- * @brief Set a microphone capture callback.
- *
- * @param mic Microphone device.
- * @param callback Callback function.
- * @param userData User-defined pointer.
- */
-MOSS_API void Moss_AudioMicrophoneSetCallback(Microphone* mic, MicrophoneCallback callback, void* userData);
+MOSS_API AudioStream2D* Moss_AudioStream2DCreate(void);
+MOSS_API void Moss_AudioStream2DPlay(AudioStream2D* stream);
+MOSS_API void Moss_AudioStream2DStop(AudioStream2D* stream);
+MOSS_API void Moss_AudioStream2DSetVolume(AudioStream2D* stream, float volume);
+MOSS_API void Moss_AudioStream2DSetPitch(AudioStream2D* stream, float pitch);
+MOSS_API void Moss_AudioStream2DSetLoop(AudioStream2D* stream, bool loop);
+MOSS_API void Moss_AudioStream2DSetPosition(AudioStream2D* stream, Vec2 position);
+MOSS_API void Moss_AudioStream2DSetVelocity(AudioStream2D* stream, Vec2 velocity);
+MOSS_API void Moss_AudioStream2DSetMaxDistance(AudioStream2D* stream, float max_distance);
+MOSS_API void Moss_AudioStream2DRemove(AudioStream2D* stream);
 
-MOSS_SUPRESS_WARNINGS_END
+MOSS_API AudioStream3D* Moss_AudioStream3DCreate(void);
+MOSS_API void Moss_AudioStream3DPlay(AudioStream3D* stream);
+MOSS_API void Moss_AudioStream3DStop(AudioStream3D* stream);
+MOSS_API void Moss_AudioStream3DSetVolume(AudioStream3D* stream, float volume);
+MOSS_API void Moss_AudioStream3DSetPitch(AudioStream3D* stream, float pitch);
+MOSS_API void Moss_AudioStream3DSetLoop(AudioStream3D* stream, bool loop);
+MOSS_API void Moss_AudioStream3DSetPosition(AudioStream3D* stream, Vec3 position);
+MOSS_API void Moss_AudioStream3DSetVelocity(AudioStream3D* stream, Vec3 velocity);
+MOSS_API void Moss_AudioStream3DSetMaxDistance(AudioStream3D* stream, float max_distance);
+MOSS_API void Moss_AudioStream3DSetDistanceModel(AudioStream3D* stream, DistanceModel model);
+MOSS_API void Moss_AudioStream3DRemove(AudioStream3D* stream);
+
+MOSS_API AudioListener2D* Moss_AudioCreateAudioListener2D(void);
+MOSS_API AudioListener3D* Moss_AudioCreateAudioListener3D(void);
+MOSS_API RayAudioListener2D* Moss_AudioCreateRayAudioListener2D(void);
+MOSS_API RayAudioListener3D* Moss_AudioCreateRayAudioListener3D(void);
+MOSS_API void Moss_AudioRemoveAudioListener2D(AudioListener2D* listener);
+MOSS_API void Moss_AudioRemoveAudioListener3D(AudioListener3D* listener);
+MOSS_API void Moss_AudioRemoveRayAudioListener2D(RayAudioListener2D* listener);
+MOSS_API void Moss_AudioRemoveRayAudioListener3D(RayAudioListener3D* listener);
+MOSS_API void Moss_AudioActivateAudioListener2D(AudioListener2D* listener, bool activate);
+MOSS_API void Moss_AudioActivateAudioListener3D(AudioListener3D* listener, bool activate);
+MOSS_API void Moss_AudioActivateRayAudioListener2D(RayAudioListener2D* listener, bool activate);
+MOSS_API void Moss_AudioActivateRayAudioListener3D(RayAudioListener3D* listener, bool activate);
+MOSS_API void Moss_AudioListenerSetOrientation(AudioListener3D* listener, const Vec3* forward, const Vec3* up);
+
+MOSS_API bool Moss_IsSpeakerDeviceReady(void);
+MOSS_API void Moss_AudioSpeakerOpen(void);
+MOSS_API void Moss_AudioSpeakerPause(void);
+MOSS_API void Moss_AudioSpeakerResume(void);
+MOSS_API bool Moss_AudioSpeakerIsPaused(void);
+MOSS_API bool Moss_AudioSelectSpeakerDevice(int id);
+MOSS_API int Moss_GetCurrentSpeakerDeviceID(void);
+MOSS_API const char* Moss_GetSpeakerDeviceName(int id);
+MOSS_API int Moss_ListSpeakerDevices(void);
+
+MOSS_API bool Moss_IsMicrophoneDeviceReady(void);
+MOSS_API int Moss_AudioMicrophoneOpen(void);
+MOSS_API void Moss_AudioMicrophoneClose(void);
+MOSS_API void Moss_AudioMicrophonePlay(void);
+MOSS_API void Moss_AudioMicrophoneStop(void);
+MOSS_API int Moss_AudioMicrophoneID(void);
+MOSS_API bool Moss_AudioSelectMicrophoneDevice(int id);
+MOSS_API const char* Moss_GetMicrophoneDeviceName(int index);
+MOSS_API int Moss_ListMicrophoneDevices(void);
+MOSS_API void Moss_AudioMicrophoneSetGain(Moss_Microphone* mic, float gain);
+MOSS_API int Moss_AudioMicrophoneGetSampleRate(Moss_Microphone* mic);
+MOSS_API int Moss_AudioMicrophoneGetChannels(Moss_Microphone* mic);
+MOSS_API void Moss_AudioMicrophoneSetCallback(Moss_Microphone* mic, MicrophoneCallback callback, void* userData);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // MOSS_AUDIO_H
-
-
-
-
-
