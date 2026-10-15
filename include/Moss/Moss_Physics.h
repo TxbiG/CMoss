@@ -2905,8 +2905,6 @@ MOSS_API void MotorcycleController_SetLeanSmoothingFactor(MotorcycleController* 
 #ifdef __cplusplus
 }
 #endif
-
-
 #endif // MOSS_PHYSICS_H
 
 
