@@ -15,7 +15,7 @@ Comprehensive documentation is available in the [`docs/`](./docs) directory:
 * Platform backend architecture
 * Performance guidelines
 
-- [API cheatsheet](docs/API_Cheatsheet.md)
+- [Cheatsheet](docs/Cheatsheet.md)
 
 ## Compiling
 - Moss framework 0.1.0
