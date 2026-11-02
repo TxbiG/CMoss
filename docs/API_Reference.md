@@ -18,28 +18,9 @@
 | [`Moss_Network.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Network.h) | ENet and transport/network APIs. |
 | [`Moss_XR.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_XR.h) | XR subsystem API. |
 
-## Top-level API map
-
-| Header | Main API families | Export-marked declarations |
-|---|---|---:|
-| [`Moss_stdinc.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_stdinc.h) | Compiler/platform macros, type aliases, logging, assertions and common support. | 34 |
-| [`Moss_Platform.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Platform.h) | Window and monitor control, input, gamepads, touch, haptics, cameras, paths, storage and dialogs. | 181 |
-| [`Moss_GPU.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_GPU.h) | GPU device, buffers, textures, samplers, shaders, pipelines, command buffers, swapchain and synchronization. | 241 |
-| [`Moss_Renderer.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Renderer.h) | Renderer lifecycle, materials, resource sets, framebuffers, mesh/model/font/sprite and debug draw. | 195 |
-| [`Moss_Audio.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Audio.h) | Audio subsystem, source loading, effects, channels, streams, listeners, ray acoustics and microphones. | 113 |
-| [`Moss_GUI.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_GUI.h) | GUI context, window/container lifecycle, widgets, sliders, drag controls and text/scalar input. | 73 |
-| [`Moss_Physics.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Physics.h) | Layer/filter setup, collision dispatch, contact manifold access, skeleton and triangle helpers. | 39 |
-| [`Moss_Navigation.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Navigation.h) | Recast/Detour mesh/query/corridor/crowd/tile-cache classes; class-oriented declarations. | 0 |
-| [`Moss_Network.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_Network.h) | ENet socket/host/peer/packet APIs, transport, HTTP/TLS, WebSocket and WebRTC declarations. | 146 |
-| [`Moss_XR.h`](https://github.com/TxbiG/Moss/blob/main/include/Moss/Moss_XR.h) | XR initialization, session/frame/views, actions, haptics, tracking and optional rendering features. | 41 |
-
-## Complete header inventory
-
-Each link opens the corresponding source file in `include/Moss/`. The rightmost count shows declarations beginning with `MOSS_API` in that header; zero does not mean the header has no public API (it may expose class members, templates, inline methods, typedefs, or preprocessor declarations).
-
 ## Export-marked declaration index
 
-The following section reproduces active declaration lines whose source line begins with `MOSS_API`. Multiline declarations are joined for readability; names, parameter types, default arguments and qualifiers are retained. Source links point to the declaration start line. This section is deliberately not a replacement for the class/member APIs in the header inventory.
+The following section reproduces active declaration lines whose source line begins with `MOSS_API`. Multiline declarations are joined for readability; names, parameter types, default arguments and qualifiers are retained. Source links point to the declaration start line.
 
 ### `Moss_Audio.h`
 
