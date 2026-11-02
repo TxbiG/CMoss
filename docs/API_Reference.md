@@ -2,21 +2,6 @@
 
 > Declaration index generated from the Moss header archive supplied for this documentation update. The source files in the archive map to `include/Moss/` in the repository.
 
-## Scope and reading guide
-
-- **270** `.h` headers inventoried.
-- **19** `.inl` companion implementation headers inventoried.
-- **60** `.cpp` implementation files were present in the archive (not reproduced as API signatures here).
-- **1101** active lines beginning with `MOSS_API` were extracted as export-marked declarations across **22** headers. This count includes exported class/struct declarations where they use that prefix as well as function declarations.
-
-This reference has two complementary indexes:
-1. The **complete header inventory** lists every `.h` and `.inl` path found in the supplied tree.
-2. The **export-marked declaration index** reproduces declarations that begin with `MOSS_API`, preserving their source spelling and linking to the source line.
-
-Many C++ APIs are class members, templates, inline methods, typedefs, or declarations decorated as `class MOSS_API` / `[[nodiscard]] MOSS_API`. They do not necessarily begin a source line with `MOSS_API`, so they are not duplicated in the free-function export list. Use the linked source header as the authoritative reference for those members. Declarations inside preprocessor branches are conditional on the selected platform/build macros.
-
-No API namespace, parameter, ownership rule, default argument, or implementation status is inferred where it is not stated in the header.
-
 ## Umbrella headers
 
 | Header | Responsibility |
