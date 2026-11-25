@@ -1,6 +1,6 @@
 [![Build](https://github.com/TxbiG/CMoss/actions/workflows/build.yml/badge.svg)](https://github.com/TxbiG/CMoss/actions/workflows/build.yml)
 # CMoss
-CMoss is the [Moss Framework](https://github.com/TxbiG/MossFramework) binding written in C. Rendering and physics are primarily written in C++ in the backend.
+CMoss is the [Moss Framework](https://github.com/TxbiG/Moss) binding written in C. Rendering and physics are primarily written in C++ in the backend.
 
 ## Documentation
 
