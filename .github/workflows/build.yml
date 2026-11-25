@@ -14,12 +14,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout CMoss
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: CMoss
 
       - name: Checkout Moss (dependency)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: TxbiG/Moss
           path: Moss
