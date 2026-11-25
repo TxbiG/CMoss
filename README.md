@@ -17,7 +17,7 @@ Comprehensive documentation is available in the [`docs/`](./docs) directory:
 - [Cheatsheet](docs/Cheatsheet.md)
 
 ## Compiling
-CMake 3.20 or newer.
+- CMake 3.20 or newer.
 - C 99
 
 ## License
