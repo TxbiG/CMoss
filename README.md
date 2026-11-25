@@ -1,7 +1,6 @@
 [![Build](https://github.com/TxbiG/CMoss/actions/workflows/build.yml/badge.svg)](https://github.com/TxbiG/CMoss/actions/workflows/build.yml)
 # CMoss
-CMoss is the [Moss Framework](https://github.com/TxbiG/Moss) binding written in C. Rendering and physics are primarily written in C++ in the backend.
-
+CMoss is the [Moss Framework](https://github.com/TxbiG/Moss) written in C.
 ## Documentation
 
 Comprehensive documentation is available in the [`docs/`](./docs) directory:
@@ -18,9 +17,8 @@ Comprehensive documentation is available in the [`docs/`](./docs) directory:
 - [Cheatsheet](docs/Cheatsheet.md)
 
 ## Compiling
-- Moss framework 0.1.0
+CMake 3.20 or newer.
 - C 99
-- C++ 17
 
 ## License
 The project is distributed under the [MIT license](/LICENSE).
